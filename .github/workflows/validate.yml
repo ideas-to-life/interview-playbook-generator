@@ -19,6 +19,7 @@ jobs:
           set -euo pipefail
 
           required_files=(
+            "README.md"
             "requirements-spec.md"
             "spec-refinements.md"
             "docs/superpowers/specs/2026-07-29-interview-playbook-generator-design.md"
