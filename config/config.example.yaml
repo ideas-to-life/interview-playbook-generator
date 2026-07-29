@@ -1,0 +1,42 @@
+project:
+  name: "Master Interview Playbook"
+  version: "0.1"
+
+candidate:
+  name: "Alexandre Franco"
+
+inputs:
+  portfolio: "config/portfolio.example/"
+  cv: "config/portfolio.example/cv.md"
+  linkedin: ""
+  publications: ""
+  architecture_docs: "config/portfolio.example/arch-doc-cloud-migration.md"
+  presentations: ""
+
+target_opportunity:
+  source: "config/portfolio.example/target-jd.md"
+  type: "job_description"
+  company: "TechCorp Global"
+  industry: "Enterprise Software"
+  interviewer: "VP of Engineering"
+  interview_stage: "hiring_manager"
+  recruiter_notes: "Focusing on enterprise cloud architecture, cross-region governance, and AI/agentic integration experience."
+
+output:
+  okf_bundle: "./out/okf/"
+  playbook_view: "./out/playbook.md"
+  stage_packs: "./out/packs/"
+
+pipeline:
+  skills:
+    - portfolio-ingestor
+    - portfolio-analyzer
+    - achievement-extractor
+    - evidence-card-generator
+    - signature-theme-miner
+    - narrative-generator
+    - interview-strategy-generator
+    - knowledge-gaps
+    - playbook-assembler
+  run_knowledge_gaps: true
+  fail_on_severe_gaps: false

@@ -1,0 +1,10 @@
+# Output directory
+out/
+
+# Python / pytest
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# OS files
+.DS_Store

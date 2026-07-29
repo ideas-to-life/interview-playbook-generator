@@ -1,0 +1,23 @@
+project:
+  name: "Test Interview Playbook"
+  version: "0.1"
+
+candidate:
+  name: "Alexandre Franco"
+
+inputs:
+  portfolio: "tests/fixtures/portfolio_minimal/"
+  cv: "tests/fixtures/portfolio_minimal/cv.md"
+
+target_opportunity:
+  source: "tests/fixtures/portfolio_minimal/target-jd.md"
+  type: "job_description"
+  company: "TechCorp Global"
+
+output:
+  okf_bundle: "./out/test_okf/"
+  playbook_view: "./out/test_playbook.md"
+
+pipeline:
+  run_knowledge_gaps: true
+  fail_on_severe_gaps: false

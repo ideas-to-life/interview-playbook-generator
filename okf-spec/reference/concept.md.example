@@ -1,0 +1,25 @@
+---
+type: Achievement
+title: Cloud Platform Migration
+description: Migration of core workload to cloud platform Y
+tags: [cloud, architecture]
+generated: { by: achievement-extractor/claude-sonnet, at: 2026-07-29T12:00:00Z }
+status: draft
+sources:
+  - id: cv-2024
+    resource: inputs/cv.md
+    title: CV (2024 edition)
+---
+
+# Situation
+
+[evidence] Migration from legacy platform to cloud platform Y across 3 regions. [^cv-2024]
+
+# Actions
+
+[evidence] Authored cutover runbooks and architecture guidelines. [^cv-2024]
+[inference] Required alignment across distributed regional teams.
+
+# Results
+
+[evidence] Migration finished on schedule without unplanned downtime. [^cv-2024]

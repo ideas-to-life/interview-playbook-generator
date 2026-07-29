@@ -1,0 +1,42 @@
+project:
+  name: "Master Interview Playbook"
+  version: "0.1"
+
+candidate:
+  name: "Alexandre Franco"
+
+inputs:
+  portfolio: "/Users/avfranco/GitHub/portfolio/site"
+  cv: "/Users/avfranco/Documents/ideas-to-life/ideas-to-life-prompts/evidence-to-skill-extractor/career-history/Alexandre Franco Resume.pdf"
+  linkedin: "/Users/avfranco/Documents/ideas-to-life/ideas-to-life-prompts/evidence-to-skill-extractor/career-history/Alexandre Franco Resume.pdf"
+  publications: ""
+  architecture_docs: ""
+  presentations: ""
+
+target_opportunity:
+  source: "config/portfolio/ai-coe.md"
+  type: "Enterprise Architect - AI CoE"
+  company: ""
+  industry: ""
+  interviewer: "Head of Private Sector at SR2 Consulting."
+  interview_stage: "Recruiter"
+  recruiter_notes: ""
+
+output:
+  okf_bundle: "./out/okf/"
+  playbook_view: "./out/playbook.md"
+  stage_packs: "./out/packs/"
+
+pipeline:
+  skills:
+    - portfolio-ingestor
+    - portfolio-analyzer
+    - achievement-extractor
+    - evidence-card-generator
+    - signature-theme-miner
+    - narrative-generator
+    - interview-strategy-generator
+    - knowledge-gaps
+    - playbook-assembler
+  run_knowledge_gaps: true
+  fail_on_severe_gaps: false

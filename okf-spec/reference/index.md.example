@@ -1,0 +1,9 @@
+---
+okf_version: "0.2"
+title: "Sample OKF Knowledge Graph"
+generated: { by: "system", at: "2026-07-29T12:00:00Z" }
+---
+
+# Knowledge Catalog Index
+
+* [Platform Migration Achievement](achievements/platform-migration.md) - Multi-region cloud platform migration.
