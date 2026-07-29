@@ -1,6 +1,6 @@
 project:
   name: "Master Interview Playbook"
-  version: "0.1"
+  version: "0.2"
 
 candidate:
   name: "Alexandre Franco"
@@ -8,8 +8,8 @@ candidate:
 inputs:
   portfolio: "/Users/avfranco/GitHub/portfolio/site"
   cv: "/Users/avfranco/Documents/ideas-to-life/ideas-to-life-prompts/evidence-to-skill-extractor/career-history/Alexandre Franco Resume.pdf"
-  linkedin: "/Users/avfranco/Documents/ideas-to-life/ideas-to-life-prompts/evidence-to-skill-extractor/career-history/Alexandre Franco Resume.pdf"
-  publications: ""
+  linkedin: "/Users/avfranco/Documents/ideas-to-life/ideas-to-life-prompts/evidence-to-skill-extractor/career-history/Alexandre Franco Resume.csv"
+  publications: "/Users/avfranco/Documents/ideas-to-life/ideas-to-life-ai-web/src/content/"
   architecture_docs: ""
   presentations: ""
 
