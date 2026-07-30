@@ -175,7 +175,7 @@ All three new concept types are **canonical-layer** (§2.1, R1). They are persis
 
 ### 3.2 New frontmatter fields on `EvidenceCard`
 
-Five new fields, all additive (forward-compatible per OKF v0.2 §11). Per the layer discipline (§2.1, R2, R10), none of these fields is opportunity-specific — the canonical evidence card stays the same across all target opportunities.
+Six new fields, all additive (forward-compatible per OKF v0.2 §11). Per the layer discipline (§2.1, R2, R10), none of these fields is opportunity-specific — the canonical evidence card stays the same across all target opportunities.
 
 ```yaml
 conversation_hook: "This reminds me of a programme we delivered at BBC…"   # how to *enter* the story
