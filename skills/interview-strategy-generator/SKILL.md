@@ -20,14 +20,14 @@ All strategy claims must be tagged `[inference]` or `[recommendation]`, grounded
 
 ## Input & Output Contracts
 
-- **Inputs**: `okf/evidence/*.md`, `okf/signature-themes.md`, target opportunity source file.
+- **Inputs**: `okf/evidence/*.md`, `okf/signature-themes.md`, active target opportunity source file declared in `target_opportunity.source` of `config/config.yaml`.
 - **Outputs**:
   - `okf/interview-strategy.md` (type: `InterviewStrategy`)
   - `okf/log.md` (append entry)
 
 ## Execution Instructions
 
-1. **Parse Target Opportunity & Stage Context**: Analyze requirements, role title, company context, and interview stage (Recruiter, Hiring Manager, Executive).
+1. **Parse Target Opportunity & Stage Context**: Read `config/config.yaml` to identify the active `target_opportunity.source` file path, role title, company, interviewer, and stage context. Analyze requirements and context directly from that specified target opportunity file.
 2. **Rank Evidence Cards**: Rank every Evidence Card into one of 4 tiers:
    - `Primary Story`
    - `Supporting Story`

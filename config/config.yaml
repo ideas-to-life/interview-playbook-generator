@@ -7,18 +7,18 @@ candidate:
 
 inputs:
   portfolio: "/Users/avfranco/GitHub/portfolio/site"
-  cv: "/Users/avfranco/Documents/ideas-to-life/ideas-to-life-prompts/evidence-to-skill-extractor/career-history/Alexandre Franco Resume.pdf"
-  linkedin: "/Users/avfranco/Documents/ideas-to-life/ideas-to-life-prompts/evidence-to-skill-extractor/career-history/Alexandre Franco Resume.csv"
+  cv: "evidence/resume-profile/Alexandre Franco Resume.pdf"
+  linkedin: "evidence/resume-profile/LinkedIn Profile.csv"
   publications: "/Users/avfranco/Documents/ideas-to-life/ideas-to-life-ai-web/src/content/"
   architecture_docs: ""
   presentations: ""
 
 target_opportunity:
-  source: "config/portfolio/ai-coe.md"
-  type: "Enterprise Architect - AI CoE"
-  company: ""
+  source: "config/target-position/head-of-ai.md"
+  type: "Head of AI"
+  company: "Vervaunt"
   industry: ""
-  interviewer: "Head of Private Sector at SR2 Consulting."
+  interviewer: "Senior Talent Acquisition Specialist - IDHL"
   interview_stage: "Recruiter"
   recruiter_notes: ""
 
