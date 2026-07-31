@@ -40,6 +40,12 @@ sources:
   - id: <source-id>
     resource: <resource-path>
     title: "<source-title>"
+conversation_hook: "<single sentence in second-person imperative, how to enter the story>"
+transition_sentence: "<single sentence in second-person imperative, how to leave the story>"
+organisational_impact: "[inference] <intrinsic impact statement>"
+strategic_significance: "[inference] <intrinsic strategic-significance statement>"
+recency: "<YYYY-MM or YYYY-MM-DD>"
+duplicates_of: []  # populated by the duplicate-detection pass
 ---
 
 # Situation
@@ -72,9 +78,12 @@ sources:
 <High | Medium | Low>
 ```
 
+If a value is missing in source, the corresponding field is left as `[recommendation] <placeholder>` and the missing value is surfaced to `okf/knowledge-gaps.md`.
+
 ## Execution Instructions
 
 1. **Read Achievements**: Load each concept in `okf/achievements/`.
 2. **Build STAR Evidence Cards**: Structure into Situation, Actions, Results, Lessons, Competencies, Questions, and Supporting artefacts.
 3. **Run Classification Scan**: Verify every non-heading non-empty body line has a valid classification prefix.
-4. **Append Log**: Log changes to `okf/log.md`.
+4. **Duplicate-detection pass**: After all cards are generated, scan every pair (new, existing) for source overlap (shared `sources[].id`) AND token overlap (≥40% on Situation + Actions sections). For each pair that matches both criteria, set `duplicates_of: [<existing-slug>]` on the new card, leave `status: draft`, and append a one-line entry to `okf/knowledge-gaps.md` listing the duplicate for user review.
+5. **Append Log**: Log changes to `okf/log.md`.
