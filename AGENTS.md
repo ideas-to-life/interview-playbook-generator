@@ -1,10 +1,10 @@
 # AGENTS.md
 
-Operating instructions for any AI agent (Claude Code, Antigravity, GitHub Copilot, Cursor, Jules, Codex CLI, Aider, Zed, etc.) working in this repository. This file is vendor-neutral; for Claude-Code-specific notes see [`CLAUDE.md`](CLAUDE.md). For architecture see [`ARCHITECTURE.md`](ARCHITECTURE.md). For the approved design spec see [`docs/superpowers/specs/2026-07-29-interview-playbook-generator-design.md`](docs/superpowers/specs/2026-07-29-interview-playbook-generator-design.md).
+Operating instructions for any AI agent (Claude Code, Antigravity, GitHub Copilot, Cursor, Jules, Codex CLI, Aider, Zed, etc.) working in this repository. This file is vendor-neutral; for Claude-Code-specific notes see [`CLAUDE.md`](CLAUDE.md). For architecture see [`ARCHITECTURE.md`](ARCHITECTURE.md). For approved design specs see [`docs/superpowers/specs/`](docs/superpowers/specs/).
 
 ## What this project is
 
-The Interview Playbook Generator turns a candidate's portfolio (CV, LinkedIn, slide decks, architecture docs, publications) and a target opportunity (JD / recruiter message / role summary) into a structured OKF v0.2 knowledge graph and a tailored Interview Playbook. The pipeline runs as a sequence of Skills — each Skill is a `SKILL.md` file the user invokes; state passes between Skills as the OKF bundle on disk. There is no LLM code to run; the agent (you) *is* the runtime.
+The Career Projection Platform (Interview Playbook Generator v0.4) turns a candidate's portfolio (CV, LinkedIn, slide decks, architecture docs, publications) and a target opportunity (JD / recruiter message / role summary) into a structured OKF v0.2 knowledge graph and multiple tailored executive communication artefacts (Resumes, Cover Letters, LinkedIn Profiles, Playbooks, Briefings). The pipeline runs as a sequence of Skills — each Skill is a `SKILL.md` file the user invokes; state passes between Skills as the OKF bundle and execution context on disk. There is no LLM code to run; the agent (you) *is* the runtime.
 
 ## The five hard rules
 
@@ -79,98 +79,65 @@ Surface the question to the user; do not invent an answer.
 
 Every Skill's input set determines its output set. Re-running a Skill overwrites its own output; it does not append and does not touch other Skills' outputs. The `generated.at` timestamp updates on every write; `verified` is preserved if the body is unchanged.
 
-## How the pipeline runs
+## How the pipeline runs (v0.4)
 
 ```
 KNOWLEDGE LAYER (canonical; writes to okf/)
   portfolio-ingestor
   portfolio-analyzer
   achievement-extractor
-  evidence-card-generator        ← extended (new fields + dup detection)
-  behaviour-profile-generator    ← new (canonical)
-  capability-extractor            ← new (canonical)
-  signature-achievements-curator  ← new (canonical)
+  evidence-card-generator        (Extended: 6 fields + dup detection)
+  behaviour-profile-generator    (Canonical: okf/behaviour-profile.md)
+  capability-extractor            (Canonical: okf/capabilities/)
+  signature-achievements-curator  (Canonical: okf/signature-achievements.md)
   signature-theme-miner
   narrative-generator
 
-COACHING LAYER (derived; reads canonical + target opportunity)
-  interview-strategy-generator   ← extended (Opportunity Analysis + Story→Question mapping)
+RUNTIME LAYER (derived execution context; writes to out/runtime/)
+  opportunity-analyzer            (New: out/runtime/opportunity-analysis.yaml)
+
+COACHING LAYER (derived; reads canonical + opportunity-analysis)
+  interview-strategy-generator
   knowledge-gaps
 
-PROJECTION LAYER (views; reads canonical + coaching + target opportunity; writes to out/)
-  playbook-assembler
-  opportunity-alignment-view      ← new view Skill
-  executive-brief-view           ← new view Skill
+PROJECTION LAYER (views; reads canonical + opportunity-analysis; writes to out/)
+  projection-registry             (New: orchestrates pluggable projections)
+  resume-projection               (New: out/resume-executive.md, resume-ats.md, resume-recruiter.md)
+  cover-letter-projection         (New: out/cover-letter.md)
+  linkedin-projection             (New: out/linkedin-profile.md)
+  opportunity-alignment-view      (out/opportunity-alignment.md)
+  executive-brief-view           (out/executive-brief.md)
+  playbook-assembler              (out/playbook.md & out/interview-cheatsheet.md)
+  projection-validator            (New: out/runtime/projection-validation-report.yaml)
 ```
 
-The user invokes each Skill manually inside Claude Code (or Antigravity). The orchestrator tells them which to invoke next. There is no code-driven orchestration in v0.1.
-
-For an end-to-end run on the example portfolio, the user runs:
+For an end-to-end run on the portfolio, the user runs:
 
 ```
 /skill playbook-orchestrator
 ```
 
-then follows the prompts. Each subsequent Skill is invoked the same way.
-
 ## Conventions
 
 ### OKF v0.2 compliance
 
-Every concept document follows [`GoogleCloudPlatform/knowledge-catalog/okf/SPEC.md`](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md). The minimum required frontmatter is `type` (non-empty string). Producers MAY include any additional keys; consumers MUST tolerate unknown keys. We use this latitude heavily.
-
-Reserved filenames: `index.md` (directory listing, no frontmatter except `okf_version` at bundle root) and `log.md` (update history, ISO-8601 date headings, newest first).
+Every concept document follows [`GoogleCloudPlatform/knowledge-catalog/okf/SPEC.md`](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md). The minimum required frontmatter is `type` (non-empty string). Reserved filenames: `index.md` and `log.md`.
 
 ### Project concept types
 
-The project extends OKF's open `type` vocabulary. v0.3 types: `Source`, `SourceIndex`, `PortfolioAnalysis`, `Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `InterviewStrategy`, `KnowledgeGap`. See the v0.3 design spec §5.3 for field additions on `EvidenceCard`.
+v0.4 types: `Source`, `SourceIndex`, `PortfolioAnalysis`, `Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `InterviewStrategy`, `KnowledgeGap`.
 
 ### File layout
 
-- `skills/<name>/SKILL.md` — the Skill's instructions. May carry `examples/` and `schema.md`.
+- `skills/<name>/SKILL.md` — the Skill's instructions.
 - `config/config.example.yaml` — the YAML config template.
-- `okf-spec/` — vendored copy of OKF SPEC.md (offline reference).
-- `tests/fixtures/`, `tests/golden/` — fixtures and golden OKF subtrees.
 - `out/` — gitignored output directory.
-
-### Git
-
-- Branch: `master`.
-- Conventional commits encouraged (`docs:`, `feat:`, `fix:`, `test:`, `chore:`). Not enforced.
-- Do not commit `out/` or any OKF bundle. Output is regenerable.
+  - `out/okf/` — canonical OKF bundle.
+  - `out/runtime/` — runtime execution context (`opportunity-analysis.yaml`, `projection-validation-report.yaml`).
+  - `out/*.md` — projection presentation views.
 
 ## Testing
 
-Three layers, all CI-friendly:
-
-1. **Snapshot per Skill.** Run the Skill against a fixture, diff the output subtree against `tests/golden/<skill>/` using `filecmp.dircmp`. Structural only — `generated.at` timestamps are stripped before comparison.
-2. **End-to-end thin slice.** Run the full 8-Skill pipeline on the example portfolio and diff the resulting bundle + playbook.
-3. **Lint pass.** Every concept must pass classification + source attribution checks.
-
-LLM-as-judge eval is **not** part of v0.1; quality is enforced by lint + human review of golden fixtures.
-
-## Out of scope for v0.1 (do NOT add)
-
-The following are explicitly deferred. Adding them in v0.1 violates the spec's guiding principle.
-
-- Competency ontology / catalogue
-- View generator (stage-specific packs)
-- Career narrative evolution
-- Mock interviews / conversation simulator
-- LLM-as-judge evaluation
-- Company research / salary research / market intelligence
-- Advanced OKF linting
-
-If a task seems to require one of these, surface it as a "deferred — should this be v0.2?" question to the user; do not implement it silently.
-
-## What to do if you're stuck
-
-1. Re-read the Skill's `SKILL.md`. The contract is documented there.
-2. Re-read the design spec — especially §6 (Skills) and §7 (error handling).
-3. Read a real OKF v0.2 example in `okf-spec/reference/`.
-4. Look at a golden fixture under `tests/golden/`.
-5. If still stuck, ask the user.
-
-## Doing the right thing
-
-This system exists because generating interview prep without grounding produces confidently wrong output. Refusing to invent, classifying every claim, attributing every source, stopping when uncertain — these are not bureaucracy, they are the product. The system is only useful if a candidate trusts it enough to use it in a real interview.
+1. **Snapshot per Skill.** Diff output against `tests/golden/<skill>/`.
+2. **End-to-end criteria.** `tests/test_v04_success_criteria.py`.
+3. **Lint pass.** Every concept passes classification & attribution checks.
