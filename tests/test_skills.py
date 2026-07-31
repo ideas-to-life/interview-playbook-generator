@@ -29,6 +29,7 @@ def test_skills_exist():
         "playbook-assembler",
         "projection-validator",
         "brand-validator",
+        "architecture-diagram-generator",
     ]
     skills_dir = "skills"
     for skill in expected_skills:

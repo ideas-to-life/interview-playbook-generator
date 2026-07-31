@@ -41,3 +41,82 @@ The load-bearing principle: introductory prose and executive voice are establish
 | **Projection**| `playbook-assembler` | Generates `out/playbook.md` and `out/interview-cheatsheet.md`. |
 | **Runtime** | `projection-validator` | Evaluates evidence traceability & ATS coverage (`out/runtime/projection-validation-report.yaml`). |
 | **Runtime** | `brand-validator` | Evaluates cross-projection brand alignment & voice consistency (`out/runtime/brand-validation-report.yaml`). |
+
+
+## Architecture Diagram
+
+<!-- BEGIN AUTO-GENERATED ARCHITECTURE DIAGRAM -->
+### System Context & 4-Layer Pipeline Flow
+
+```mermaid
+flowchart TD
+    subgraph Inputs["📥 Portfolio & Role Inputs"]
+        CV["CV / LinkedIn / Portfolio Docs"]
+        JD["Target Job Description"]
+    end
+
+    subgraph KnowledgeLayer["🧠 1. Knowledge Layer (okf/)"]
+        PI["portfolio-ingestor"] --> PA["portfolio-analyzer"]
+        PA --> AE["achievement-extractor"]
+        AE --> ECG["evidence-card-generator"]
+        ECG --> BPG["behaviour-profile-generator"]
+        ECG --> CE["capability-extractor"]
+        ECG --> SAC["signature-achievements-curator"]
+        AE --> STM["signature-theme-miner"]
+        STM --> EIG["executive-identity-generator"]
+        EIG --> NE["narrative-engine"]
+        ECG --> SE["story-engine"]
+    end
+
+    subgraph RuntimeLayer["⚡ 2. Runtime Layer (out/runtime/)"]
+        OA["opportunity-analyzer"]
+    end
+
+    subgraph CoachingLayer["🎯 3. Coaching Layer (okf/)"]
+        ISG["interview-strategy-generator"]
+        KG["knowledge-gaps (Pre-assembly Gate)"]
+    end
+
+    subgraph ProjectionLayer["📄 4. Projection Layer (out/)"]
+        PR["projection-registry"]
+        PR --> RES["resume-projection"]
+        PR --> CL["cover-letter-projection"]
+        PR --> LI["linkedin-projection"]
+        PR --> OAV["opportunity-alignment-view"]
+        PR --> EBV["executive-brief-view"]
+        PR --> PBA["playbook-assembler"]
+        PV["projection-validator"]
+        BV["brand-validator"]
+    end
+
+    Inputs --> PI
+    JD --> OA
+    KnowledgeLayer --> OA
+    KnowledgeLayer --> ISG
+    RuntimeLayer --> ISG
+    KnowledgeLayer --> KG
+    RuntimeLayer --> KG
+    KnowledgeLayer --> ProjectionLayer
+    RuntimeLayer --> ProjectionLayer
+    ProjectionLayer --> PV
+    ProjectionLayer --> BV
+```
+
+### OKF Knowledge Graph Schema
+
+```mermaid
+erDiagram
+    SOURCE ||--o{ ACHIEVEMENT : "grounded in"
+    ACHIEVEMENT ||--o{ EVIDENCE-CARD : "structured into STAR"
+    EVIDENCE-CARD ||--o{ CAPABILITY : "grouped into"
+    EVIDENCE-CARD ||--o{ SIGNATURE-ACHIEVEMENTS : "curated into"
+    ACHIEVEMENT ||--o{ SIGNATURE-THEMES : "mined into"
+    SIGNATURE-THEMES ||--|| EXECUTIVE-IDENTITY : "synthesises"
+    EXECUTIVE-IDENTITY ||--|| VOICE-PROFILE : "defines"
+    EXECUTIVE-IDENTITY ||--|| POSITIONING-STATEMENTS : "formulates"
+    POSITIONING-STATEMENTS ||--o{ NARRATIVE-LIBRARY : "drives"
+    EVIDENCE-CARD ||--|| STORY-LIBRARY : "consolidates"
+    OPPORTUNITY-ANALYSIS ||--o{ INTERVIEW-STRATEGY : "shapes"
+    STORY-LIBRARY ||--o{ PROJECTIONS : "adapts"
+```
+<!-- END AUTO-GENERATED ARCHITECTURE DIAGRAM -->
