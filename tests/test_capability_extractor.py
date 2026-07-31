@@ -32,3 +32,13 @@ def test_fixtures_evidence_cards_exist():
 def test_capability_golden_subtree_exists():
     assert os.path.isdir(GOLDEN), f"Golden subtree missing at {GOLDEN}"
     assert os.path.exists(os.path.join(GOLDEN, "index.md"))
+
+
+def test_capability_golden_snapshot(tmp_path):
+    expected = GOLDEN
+    assert os.path.isdir(expected)
+    expected_files = set(os.listdir(expected))
+    assert "index.md" in expected_files
+    assert len(expected_files) >= 5, f"Expected ≥5 capabilities (index + 4 min), got {len(expected_files)}"
+    assert len(expected_files) <= 16, f"Expected ≤15 capabilities, got {len(expected_files)}"
+
