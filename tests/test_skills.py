@@ -9,10 +9,15 @@ def test_skills_exist():
         "portfolio-analyzer",
         "achievement-extractor",
         "evidence-card-generator",
+        "behaviour-profile-generator",
+        "capability-extractor",
+        "signature-achievements-curator",
         "signature-theme-miner",
         "narrative-generator",
         "interview-strategy-generator",
         "knowledge-gaps",
+        "opportunity-alignment-view",
+        "executive-brief-view",
         "playbook-assembler",
     ]
     skills_dir = "skills"
