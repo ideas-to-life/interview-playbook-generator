@@ -1,0 +1,66 @@
+version: "0.4"
+generated_at: "2026-07-31T08:00:00Z"
+target_opportunity:
+  company: "Vervaunt"
+  role_title: "Head of AI"
+  industry: "E-Commerce & Digital Agency"
+  interviewer: "Senior Talent Acquisition Specialist"
+
+hiring_goals:
+  - "Build internal GenAI and agentic workflow tools across delivery, ops, and finance."
+  - "Expand client-facing AI service offerings for enterprise e-commerce clients."
+
+executive_positioning: "Enterprise AI Architect & Builder specialising in production GenAI platforms, agentic guardrails, and rapid ROI."
+
+capability_priorities:
+  - capability: "Enterprise AI Governance"
+    priority: "High"
+  - capability: "Agentic AI Architecture"
+    priority: "High"
+  - capability: "Architecture-as-Code & Spec-Driven Development"
+    priority: "High"
+  - capability: "Executive Stakeholder Leadership"
+    priority: "Medium"
+  - capability: "Observability & Agent Evals"
+    priority: "Medium"
+
+behaviour_expectations:
+  - "Hands-on builder"
+  - "Founder mindset"
+  - "High velocity execution"
+  - "Governance as enablement"
+
+ats_vocabulary:
+  mandatory:
+    - "Generative AI"
+    - "Multi-Agent Systems"
+    - "LLM Tools"
+    - "AI Governance"
+  strong:
+    - "Architecture-as-Code"
+    - "Agentic Workflows"
+    - "Observability & Evals"
+  optional:
+    - "SAP Integration"
+    - "Enterprise Architecture"
+
+organisational_signals:
+  company_maturity: "Fast-growing high-velocity agency"
+  delivery_style: "Pragmatic, spec-driven, hands-on"
+  governance_expectations: "Lightweight automated rails"
+
+risks:
+  - "Corporate over-governance perception"
+  - "Deep research vs production engineering confusion"
+
+coverage_matrix:
+  - requirement: "Operationalising GenAI in Enterprise Production"
+    coverage: "High"
+    confidence: "Strong"
+    primary_evidence: ["bbc-studios-genai-framework", "wpp-agentic-ai-platform"]
+    capabilities: ["enterprise-ai-governance"]
+  - requirement: "Multi-Agent Systems & Platform Architecture"
+    coverage: "High"
+    confidence: "Strong"
+    primary_evidence: ["wpp-agentic-ai-platform", "cas-architecture-as-code"]
+    capabilities: ["agentic-ai-architecture"]
