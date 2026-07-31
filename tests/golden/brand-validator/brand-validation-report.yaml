@@ -1,0 +1,40 @@
+version: "0.5"
+generated_at: "2026-07-31T08:30:00Z"
+brand_alignment_status: "PASSED"
+overall_brand_score: 99.0
+
+metrics:
+  voice_tone_consistency:
+    score: 100.0
+    status: "PASS"
+    prohibited_terms_detected: 0
+    details: "Zero marketing buzzwords detected. Voice aligns with calm, authoritative tone."
+
+  positioning_statement_alignment:
+    score: 100.0
+    status: "PASS"
+    details: "All projections adapt canonical positioning statements from okf/positioning-statements.md."
+
+  narrative_messaging_reuse:
+    score: 97.0
+    status: "PASS"
+    details: "30s and 2m messaging blocks reused consistently across cover letter and briefing."
+
+  story_asset_traceability:
+    score: 100.0
+    status: "PASS"
+    details: "All executive stories trace directly to okf/story-library.md."
+
+evaluated_projections:
+  - projection: "resume-executive"
+    positioning_variant_used: "Executive Variant"
+    brand_status: "PASS"
+  - projection: "cover-letter"
+    positioning_variant_used: "Executive Variant"
+    brand_status: "PASS"
+  - projection: "linkedin-profile"
+    positioning_variant_used: "Executive Variant"
+    brand_status: "PASS"
+  - projection: "executive-brief"
+    positioning_variant_used: "Executive Variant"
+    brand_status: "PASS"
