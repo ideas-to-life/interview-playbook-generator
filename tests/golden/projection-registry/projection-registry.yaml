@@ -1,0 +1,36 @@
+version: "0.4"
+generated_at: "2026-07-31T08:00:00Z"
+registered_projections:
+  - name: "resume-projection"
+    version: "0.4"
+    skill: "skills/resume-projection/SKILL.md"
+    outputs:
+      - "out/resume-executive.md"
+      - "out/resume-ats.md"
+      - "out/resume-recruiter.md"
+  - name: "cover-letter-projection"
+    version: "0.4"
+    skill: "skills/cover-letter-projection/SKILL.md"
+    outputs:
+      - "out/cover-letter.md"
+  - name: "linkedin-projection"
+    version: "0.4"
+    skill: "skills/linkedin-projection/SKILL.md"
+    outputs:
+      - "out/linkedin-profile.md"
+  - name: "opportunity-alignment-view"
+    version: "0.4"
+    skill: "skills/opportunity-alignment-view/SKILL.md"
+    outputs:
+      - "out/opportunity-alignment.md"
+  - name: "executive-brief-view"
+    version: "0.4"
+    skill: "skills/executive-brief-view/SKILL.md"
+    outputs:
+      - "out/executive-brief.md"
+  - name: "playbook-assembler"
+    version: "0.4"
+    skill: "skills/playbook-assembler/SKILL.md"
+    outputs:
+      - "out/playbook.md"
+      - "out/interview-cheatsheet.md"
