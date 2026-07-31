@@ -1,5 +1,5 @@
-# Configuration for Interview Playbook Generator (v0.4)
-pipeline_version: "0.4"
+# Configuration for Career Projection Platform (v0.5)
+pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
@@ -32,7 +32,9 @@ pipeline:
     - capability-extractor
     - signature-achievements-curator
     - signature-theme-miner
-    - narrative-generator
+    - executive-identity-generator
+    - narrative-engine
+    - story-engine
     # Runtime Layer
     - opportunity-analyzer
     # Coaching Layer
@@ -47,3 +49,4 @@ pipeline:
     - executive-brief-view
     - playbook-assembler
     - projection-validator
+    - brand-validator
