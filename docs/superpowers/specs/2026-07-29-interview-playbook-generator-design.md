@@ -217,7 +217,26 @@ These extend OKF v0.2's open `type` vocabulary. Consumers MUST tolerate unknown 
 | `Question` | `okf/questions/<slug>.md` | Question to ask the interviewer | v0.2 |
 | `SalaryStrategy` | `okf/salary.md` | Salary negotiation strategy | v0.2 |
 
-### 5.3 Per-statement classification (in body)
+### 5.3 Sprint 3 additions (v0.3)
+
+Three new canonical concept types:
+
+- `ExecutiveBehaviourProfile` — single concept at `okf/behaviour-profile.md`. Four core dimensions (Leadership, Communication, Decision, Delivery) always generated; three optional dimensions (Stakeholder, Collaboration, Executive Presence) only when sufficient evidence exists, otherwise omitted.
+- `Capability` — directory of concepts at `okf/capabilities/<slug>.md` (≥5, ≤15). Body: Primary Evidence / Supporting Evidence / Additional Evidence / Demonstrated in achievements / Mapped to themes / Evidence strength.
+- `SignatureAchievements` — single concept at `okf/signature-achievements.md`. Curated list of 5–12 `Achievement` nodes ranked on intrinsic properties (strategic significance, organisational impact, capability breadth, recency, confidence).
+
+Six new frontmatter fields on `EvidenceCard`:
+
+- `conversation_hook` — single sentence, second-person imperative, how to *enter* the story.
+- `transition_sentence` — single sentence, second-person imperative, how to *leave* the story.
+- `organisational_impact` — inline-classified text describing intrinsic impact.
+- `strategic_significance` — inline-classified text describing intrinsic significance.
+- `recency` — structured date `YYYY-MM` or `YYYY-MM-DD`.
+- `duplicates_of` — list of evidence-card slugs flagged by the duplicate-detection pass; populated by `evidence-card-generator`.
+
+**No `opportunity_relevance` field on canonical evidence cards.** Opportunity-specific interpretation is computed at view time in `opportunity-alignment-view` and `interview-strategy-generator`.
+
+### 5.4 Per-statement classification (in body)
 
 Every claim in a concept body starts with a classification marker:
 
@@ -235,7 +254,7 @@ Marker semantics:
 - `[recommendation]` — the candidate should do or say this in the interview. Always grounded in an earlier `[evidence]` or `[inference]` line.
 - `[assumption]` — a value the Skill needed but did not find in any source. Flagged so the user can confirm, replace, or remove it.
 
-### 5.4 Per-claim source attribution (in body)
+### 5.5 Per-claim source attribution (in body)
 
 OKF v0.2 footnote-style attribution with `sources[].id` as the join key:
 
@@ -245,7 +264,7 @@ OKF v0.2 footnote-style attribution with `sources[].id` as the join key:
 
 The footnote label resolves to an entry in the concept's frontmatter `sources` list. This is in addition to (not instead of) the body's classification markers.
 
-### 5.5 Cross-linking
+### 5.6 Cross-linking
 
 Edges are markdown links:
 
@@ -254,14 +273,14 @@ Edges are markdown links:
 - `EvidenceCard → PossibleQuestion` (v0.2): the card lists possible interview questions, each linking to `okf/questions/<slug>.md`.
 - `Playbook (view) → bundle node`: the assembler's output uses bundle-relative links starting with `/` (OKF-recommended) so docs can move within their subdirectory without breaking links.
 
-### 5.6 Trust and lifecycle defaults
+### 5.7 Trust and lifecycle defaults
 
 - New concepts start `status: draft` with no `verified` key (unverified).
 - The user promotes a concept to `status: stable` by reading it and either accepting as-is or editing — that is the `verified: [{ by: human:<id>, at: ... }]` event.
 - `stale_after` is set by the producing Skill, defaulting to 90 days after `generated.at`. The user may override per concept.
 - The playbook assembler shows trust tier in the playbook view: every section header shows a `[draft]`, `[machine-confirmed]`, or `[human-reviewed]` badge. The user can grep for `[draft]` to find every part of the playbook that has not been personally reviewed.
 
-### 5.7 Reserved filenames
+### 5.8 Reserved filenames
 
 Per OKF v0.2, `index.md` and `log.md` are reserved. The bundle root `index.md` carries `okf_version: "0.2"`. Other directories' `index.md` files contain only a body listing concepts as `* [Title](relative-url) - short description`. `log.md` records change history (newest first, ISO-8601 date headings) and is updated by every Skill after it writes.
 
