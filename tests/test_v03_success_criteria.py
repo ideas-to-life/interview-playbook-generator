@@ -9,7 +9,7 @@ import sys
 def test_pipeline_version_bumped():
     with open("config/config.example.yaml") as f:
         content = f.read()
-    assert 'pipeline_version: "0.4"' in content or 'version: "0.3"' in content
+    assert 'pipeline_version: "0.5"' in content or 'pipeline_version: "0.4"' in content or 'version: "0.3"' in content
 
 
 def test_no_opportunity_relevance_field_in_golden():

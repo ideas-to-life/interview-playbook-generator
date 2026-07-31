@@ -1,5 +1,6 @@
 # Output directory
 out/
+tmp/
 
 # Python / pytest
 __pycache__/

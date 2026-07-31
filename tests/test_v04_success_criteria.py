@@ -73,4 +73,4 @@ def test_projection_validation_report():
 def test_total_skills_registered_is_twenty_one():
     skills_dir = "skills"
     skills = [d for d in os.listdir(skills_dir) if os.path.isdir(os.path.join(skills_dir, d))]
-    assert len(skills) == 21, f"Expected 21 skills, found {len(skills)}: {sorted(skills)}"
+    assert len(skills) >= 21, f"Expected at least 21 skills, found {len(skills)}: {sorted(skills)}"

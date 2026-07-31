@@ -4,7 +4,7 @@ Operating instructions for any AI agent (Claude Code, Antigravity, GitHub Copilo
 
 ## What this project is
 
-The Career Projection Platform (Interview Playbook Generator v0.4) turns a candidate's portfolio (CV, LinkedIn, slide decks, architecture docs, publications) and a target opportunity (JD / recruiter message / role summary) into a structured OKF v0.2 knowledge graph and multiple tailored executive communication artefacts (Resumes, Cover Letters, LinkedIn Profiles, Playbooks, Briefings). The pipeline runs as a sequence of Skills — each Skill is a `SKILL.md` file the user invokes; state passes between Skills as the OKF bundle and execution context on disk. There is no LLM code to run; the agent (you) *is* the runtime.
+The Career Projection Platform (Interview Playbook Generator v0.5) turns a candidate's portfolio (CV, LinkedIn, slide decks, architecture docs, publications) and a target opportunity (JD / recruiter message / role summary) into a structured OKF v0.2 knowledge graph and multiple tailored executive communication artefacts (Resumes, Cover Letters, LinkedIn Profiles, Playbooks, Briefings). The pipeline runs as a sequence of Skills — each Skill is a `SKILL.md` file the user invokes; state passes between Skills as the OKF bundle and execution context on disk. There is no LLM code to run; the agent (you) *is* the runtime.
 
 ## The five hard rules
 
@@ -79,7 +79,7 @@ Surface the question to the user; do not invent an answer.
 
 Every Skill's input set determines its output set. Re-running a Skill overwrites its own output; it does not append and does not touch other Skills' outputs. The `generated.at` timestamp updates on every write; `verified` is preserved if the body is unchanged.
 
-## How the pipeline runs (v0.4)
+## How the pipeline runs (v0.5)
 
 ```
 KNOWLEDGE LAYER (canonical; writes to okf/)
@@ -91,24 +91,27 @@ KNOWLEDGE LAYER (canonical; writes to okf/)
   capability-extractor            (Canonical: okf/capabilities/)
   signature-achievements-curator  (Canonical: okf/signature-achievements.md)
   signature-theme-miner
-  narrative-generator
+  executive-identity-generator    (New: okf/executive-identity.md, voice-profile.md, positioning-statements.md)
+  narrative-engine                (New: okf/narrative-library.md, messaging-library.md)
+  story-engine                    (New: okf/story-library.md)
 
 RUNTIME LAYER (derived execution context; writes to out/runtime/)
-  opportunity-analyzer            (New: out/runtime/opportunity-analysis.yaml)
+  opportunity-analyzer            (out/runtime/opportunity-analysis.yaml)
 
 COACHING LAYER (derived; reads canonical + opportunity-analysis)
   interview-strategy-generator
   knowledge-gaps
 
 PROJECTION LAYER (views; reads canonical + opportunity-analysis; writes to out/)
-  projection-registry             (New: orchestrates pluggable projections)
-  resume-projection               (New: out/resume-executive.md, resume-ats.md, resume-recruiter.md)
-  cover-letter-projection         (New: out/cover-letter.md)
-  linkedin-projection             (New: out/linkedin-profile.md)
+  projection-registry             (Orchestrates registered projections)
+  resume-projection               (out/resume-executive.md, resume-ats.md, resume-recruiter.md)
+  cover-letter-projection         (out/cover-letter.md)
+  linkedin-projection             (out/linkedin-profile.md)
   opportunity-alignment-view      (out/opportunity-alignment.md)
   executive-brief-view           (out/executive-brief.md)
   playbook-assembler              (out/playbook.md & out/interview-cheatsheet.md)
-  projection-validator            (New: out/runtime/projection-validation-report.yaml)
+  projection-validator            (out/runtime/projection-validation-report.yaml)
+  brand-validator                 (New: out/runtime/brand-validation-report.yaml)
 ```
 
 For an end-to-end run on the portfolio, the user runs:
@@ -125,7 +128,7 @@ Every concept document follows [`GoogleCloudPlatform/knowledge-catalog/okf/SPEC.
 
 ### Project concept types
 
-v0.4 types: `Source`, `SourceIndex`, `PortfolioAnalysis`, `Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `InterviewStrategy`, `KnowledgeGap`.
+v0.5 types: `Source`, `SourceIndex`, `PortfolioAnalysis`, `Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `ExecutiveIdentity`, `VoiceProfile`, `PositioningStatements`, `NarrativeLibrary`, `StoryLibrary`, `MessagingLibrary`, `InterviewStrategy`, `KnowledgeGap`.
 
 ### File layout
 
@@ -133,11 +136,11 @@ v0.4 types: `Source`, `SourceIndex`, `PortfolioAnalysis`, `Achievement`, `Eviden
 - `config/config.example.yaml` — the YAML config template.
 - `out/` — gitignored output directory.
   - `out/okf/` — canonical OKF bundle.
-  - `out/runtime/` — runtime execution context (`opportunity-analysis.yaml`, `projection-validation-report.yaml`).
+  - `out/runtime/` — runtime execution context (`opportunity-analysis.yaml`, `projection-validation-report.yaml`, `brand-validation-report.yaml`).
   - `out/*.md` — projection presentation views.
 
 ## Testing
 
 1. **Snapshot per Skill.** Diff output against `tests/golden/<skill>/`.
-2. **End-to-end criteria.** `tests/test_v04_success_criteria.py`.
+2. **End-to-end criteria.** `tests/test_v05_success_criteria.py`.
 3. **Lint pass.** Every concept passes classification & attribution checks.
