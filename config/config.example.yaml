@@ -1,34 +1,29 @@
-project:
-  name: "Master Interview Playbook"
-  version: "0.3"
+# Configuration template for Interview Playbook Generator (v0.4)
+pipeline_version: "0.4"
 
 candidate:
   name: "Alexandre Franco"
-
-inputs:
-  portfolio: "config/portfolio.example/"
-  cv: "config/portfolio.example/cv.md"
-  linkedin: ""
-  publications: ""
-  architecture_docs: "config/portfolio.example/arch-doc-cloud-migration.md"
-  presentations: ""
+  target_role: "Head of AI / Enterprise AI Architect"
+  portfolio_dir: "inputs/"
 
 target_opportunity:
-  source: "config/portfolio.example/target-jd.md"
-  type: "job_description"
-  company: "TechCorp Global"
-  industry: "Enterprise Software"
-  interviewer: "VP of Engineering"
-  interview_stage: "hiring_manager"
-  recruiter_notes: "Focusing on enterprise cloud architecture, cross-region governance, and AI/agentic integration experience."
+  company: "Vervaunt"
+  role_title: "Head of AI"
+  industry: "E-Commerce & Digital Agency"
+  interviewer: "Senior Talent Acquisition Specialist"
+  source: "inputs/target_opportunity.pdf"
 
-output:
-  okf_bundle: "./out/okf/"
-  playbook_view: "./out/playbook.md"
-  stage_packs: "./out/packs/"
+projections:
+  resume:
+    variant: "all"  # Options: all, executive, ats, recruiter
+  cover_letter:
+    max_pages: 1
+  linkedin:
+    style: "executive"
 
 pipeline:
   skills:
+    # Knowledge Layer
     - portfolio-ingestor
     - portfolio-analyzer
     - achievement-extractor
@@ -38,11 +33,17 @@ pipeline:
     - signature-achievements-curator
     - signature-theme-miner
     - narrative-generator
+    # Runtime Layer
+    - opportunity-analyzer
+    # Coaching Layer
     - interview-strategy-generator
     - knowledge-gaps
+    # Projection Layer
+    - projection-registry
+    - resume-projection
+    - cover-letter-projection
+    - linkedin-projection
     - opportunity-alignment-view
     - executive-brief-view
     - playbook-assembler
-  run_knowledge_gaps: true
-  fail_on_severe_gaps: false
-
+    - projection-validator

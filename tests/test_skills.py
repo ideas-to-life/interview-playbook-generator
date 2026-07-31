@@ -14,11 +14,17 @@ def test_skills_exist():
         "signature-achievements-curator",
         "signature-theme-miner",
         "narrative-generator",
+        "opportunity-analyzer",
         "interview-strategy-generator",
         "knowledge-gaps",
+        "projection-registry",
+        "resume-projection",
+        "cover-letter-projection",
+        "linkedin-projection",
         "opportunity-alignment-view",
         "executive-brief-view",
         "playbook-assembler",
+        "projection-validator",
     ]
     skills_dir = "skills"
     for skill in expected_skills:
@@ -35,10 +41,10 @@ def test_config_example_valid():
     assert os.path.exists(config_path), "Missing config/config.example.yaml"
     with open(config_path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
-        assert "project" in data
-        assert "inputs" in data
+        assert data.get("pipeline_version") == "0.4"
+        assert "candidate" in data
         assert "target_opportunity" in data
-        assert "output" in data
+        assert "projections" in data
         assert "pipeline" in data
 
 
