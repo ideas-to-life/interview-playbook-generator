@@ -70,9 +70,9 @@ def test_executive_brief_word_count_within_budget():
 
 
 def test_oracle_full_test_suite():
-    """Run the entire test suite and verify no tests fail."""
+    """Run non-meta test suite and verify no tests fail."""
     result = subprocess.run(
-        [sys.executable, "-m", "pytest", "tests/", "-q"],
+        [sys.executable, "-m", "pytest", "tests/", "-q", "-k", "not test_oracle_full_test_suite"],
         capture_output=True, text=True
     )
     assert result.returncode == 0, f"Tests failed:\n{result.stdout}\n{result.stderr}"
