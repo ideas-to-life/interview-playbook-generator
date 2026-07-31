@@ -82,14 +82,25 @@ Every Skill's input set determines its output set. Re-running a Skill overwrites
 ## How the pipeline runs
 
 ```
-playbook-orchestrator
-  → portfolio-ingestor
-  → portfolio-analyzer
-  → achievement-extractor
-  → evidence-card-generator
-  → interview-strategy-generator
-  → knowledge-gaps              ← pre-assembly gate, warns but does not block
-  → playbook-assembler
+KNOWLEDGE LAYER (canonical; writes to okf/)
+  portfolio-ingestor
+  portfolio-analyzer
+  achievement-extractor
+  evidence-card-generator        ← extended (new fields + dup detection)
+  behaviour-profile-generator    ← new (canonical)
+  capability-extractor            ← new (canonical)
+  signature-achievements-curator  ← new (canonical)
+  signature-theme-miner
+  narrative-generator
+
+COACHING LAYER (derived; reads canonical + target opportunity)
+  interview-strategy-generator   ← extended (Opportunity Analysis + Story→Question mapping)
+  knowledge-gaps
+
+PROJECTION LAYER (views; reads canonical + coaching + target opportunity; writes to out/)
+  playbook-assembler
+  opportunity-alignment-view      ← new view Skill
+  executive-brief-view           ← new view Skill
 ```
 
 The user invokes each Skill manually inside Claude Code (or Antigravity). The orchestrator tells them which to invoke next. There is no code-driven orchestration in v0.1.
@@ -112,7 +123,7 @@ Reserved filenames: `index.md` (directory listing, no frontmatter except `okf_ve
 
 ### Project concept types
 
-The project extends OKF's open `type` vocabulary. v0.1 types: `Source`, `SourceIndex`, `PortfolioAnalysis`, `Achievement`, `EvidenceCard`, `InterviewStrategy`, `KnowledgeGap`. The full list with v0.2 additions lives in the design spec §5.2.
+The project extends OKF's open `type` vocabulary. v0.3 types: `Source`, `SourceIndex`, `PortfolioAnalysis`, `Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `InterviewStrategy`, `KnowledgeGap`. See the v0.3 design spec §5.3 for field additions on `EvidenceCard`.
 
 ### File layout
 

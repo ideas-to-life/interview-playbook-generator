@@ -6,12 +6,17 @@ High-level architecture of the Interview Playbook Generator. For the approved de
 
 A pipeline that turns raw candidate portfolio material (CV, LinkedIn export, slide decks, architecture docs, publications, JD, recruiter message) into a **structured knowledge graph** of the candidate's career, and from that graph produces a **human-readable Interview Playbook** tailored to a target opportunity.
 
+Sprint 3 (v0.3) introduces an explicit three-layer architecture:
+- **Knowledge Layer** (canonical; stored in `okf/`): Stores persistent canonical career knowledge (`Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `Theme`, `Narrative`).
+- **Coaching Layer** (derived; stored in `okf/`, regenerated every run): Computes opportunity-specific interpretation (`InterviewStrategy`, `KnowledgeGap`).
+- **Projection Layer** (views; stored in `out/`, gitignored): Generates presentation artefacts (`Playbook`, `OpportunityAlignment`, `ExecutiveBrief`). The load-bearing principle: the OKF bundle stores only canonical career knowledge. Opportunity-specific interpretation is computed at view time. See `docs/superpowers/specs/2026-07-30-sprint-3-design.md` §2.1.
+
 The two outputs are different artefacts:
 
 - **Knowledge graph** — an [OKF v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf) bundle, a directory of cross-linked `.md` files. Machine-parseable, persists across runs, supports multiple downstream views.
-- **Interview playbook** — a single Markdown document assembled by walking the graph. The primary user-facing artefact in v0.1.
+- **Interview playbook & views** — Markdown documents assembled by walking the graph. The primary user-facing artefacts in v0.3.
 
-The graph is the source of truth. The playbook is one view of it.
+The graph is the source of truth. The playbook and view files are views of it.
 
 ## System diagram
 

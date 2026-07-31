@@ -6,9 +6,9 @@ The `AGENTS.md` file holds the vendor-neutral operating instructions that also a
 
 ## Current state
 
-- **Status:** Planning complete; implementation not started.
-- **Approved artefacts:** `requirements-spec.md`, `spec-refinements.md`, `docs/superpowers/specs/2026-07-29-interview-playbook-generator-design.md`, `README.md`, `ARCHITECTURE.md`, `AGENTS.md`.
-- **Next step:** Write the implementation plan (via the `superpowers:writing-plans` skill), then ship the v0.1 thin slice.
+- **Status:** v0.3 (Sprint 3) implementation complete.
+- **Approved artefacts:** `requirements-spec.md`, `spec-refinements.md`, `docs/superpowers/specs/2026-07-29-interview-playbook-generator-design.md`, `docs/superpowers/specs/2026-07-30-sprint-3-design.md`, `docs/superpowers/plans/2026-07-30-sprint-3-implementation.md`, `README.md`, `ARCHITECTURE.md`, `AGENTS.md`.
+- **Next step:** Execute the Sprint 3 implementation plan at `docs/superpowers/plans/2026-07-30-sprint-3-implementation.md`.
 - **Branch:** `master`. No tags yet.
 
 ## Claude Code–specific context
