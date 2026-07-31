@@ -58,6 +58,50 @@ def lint_okf_concept_content(content: str) -> list[str]:
     return errors
 
 
+def lint_capability_content(content: str) -> list[str]:
+    """Validate a Capability concept: has Primary Evidence section, ≥1 primary entry, and Evidence strength."""
+    errors = []
+    if "type: Capability" not in content:
+        return errors
+    if "## Primary Evidence" not in content:
+        errors.append("Missing '## Primary Evidence' section")
+    if "## Evidence strength" not in content:
+        errors.append("Missing '## Evidence strength' section")
+    if "## Supporting Evidence" not in content:
+        errors.append("Missing '## Supporting Evidence' section")
+    if "## Additional Evidence" not in content:
+        errors.append("Missing '## Additional Evidence' section")
+    if "Opportunity relevance" in content:
+        errors.append("Capability must NOT contain 'Opportunity relevance' (use Evidence strength instead, R7)")
+    return errors
+
+
+def lint_executive_behaviour_profile_content(content: str) -> list[str]:
+    """Validate an ExecutiveBehaviourProfile: 4 core dimensions always present, optional marked insufficient is a violation."""
+    errors = []
+    if "type: ExecutiveBehaviourProfile" not in content:
+        return errors
+    for dim in ["Leadership Style", "Communication Style", "Decision Style", "Delivery Style"]:
+        if f"## {dim}" not in content:
+            errors.append(f"Core dimension '{dim}' missing")
+    if "(insufficient evidence)" in content:
+        errors.append("Optional dimensions must be omitted, not marked '(insufficient evidence)' (R5)")
+    return errors
+
+
+def lint_signature_achievements_content(content: str) -> list[str]:
+    """Validate a SignatureAchievements node: 5–12 numbered list entries, each with Why/Strategic/Capability."""
+    errors = []
+    if "type: SignatureAchievements" not in content:
+        return errors
+    entries = re.findall(r"^\d+\. \*\*", content, flags=re.MULTILINE)
+    if not (5 <= len(entries) <= 12):
+        errors.append(f"SignatureAchievements list length must be 5–12, found {len(entries)}")
+    if "Selection rationale" not in content:
+        errors.append("Missing 'Selection rationale' section")
+    return errors
+
+
 def test_lint_valid_concept():
     valid_markdown = """---
 type: Achievement
@@ -103,3 +147,77 @@ type: Achievement
     errors = lint_okf_concept_content(invalid_markdown)
     assert len(errors) == 1
     assert "missing [^source-id] footnote attribution" in errors[0]
+
+
+def test_capability_lint_accepts_valid_node():
+    valid = """---
+type: Capability
+title: "Enterprise Architecture"
+---
+
+# Definition
+[inference] Description.
+
+## Primary Evidence
+- [Evidence: Cloud Migration](cloud-migration.md) — [inference] Strongest demonstration.
+
+## Supporting Evidence
+- [Evidence: Architecture Patterns](architecture-patterns.md) — [inference] Reinforces.
+
+## Additional Evidence
+
+## Evidence strength
+[inference] High.
+"""
+    errors = lint_capability_content(valid)
+    assert errors == [], f"Expected zero lint errors, got: {errors}"
+
+
+def test_capability_lint_rejects_opportunity_relevance():
+    invalid = """---
+type: Capability
+---
+
+# Opportunity relevance
+[inference] Some text.
+"""
+    errors = lint_capability_content(invalid)
+    assert any("Opportunity relevance" in e for e in errors)
+
+
+def test_behaviour_profile_lint_rejects_insufficient_evidence_marker():
+    invalid = """---
+type: ExecutiveBehaviourProfile
+---
+
+## Leadership Style
+[evidence] Leadership x. [^cv]
+
+## Communication Style
+[evidence] Communication x. [^cv]
+
+## Decision Style
+(insufficient evidence)
+
+## Delivery Style
+[evidence] Delivery x. [^cv]
+"""
+    errors = lint_executive_behaviour_profile_content(invalid)
+    assert any("'(insufficient evidence)'" in e for e in errors)
+
+
+def test_signature_achievements_lint_rejects_short_list():
+    invalid = """---
+type: SignatureAchievements
+---
+
+# The list
+
+1. **[A](a.md)** — [inference] Why x. Strategic y. Capability z.
+
+# Selection rationale
+[inference] Rationale.
+"""
+    errors = lint_signature_achievements_content(invalid)
+    assert any("5–12" in e for e in errors)
+
