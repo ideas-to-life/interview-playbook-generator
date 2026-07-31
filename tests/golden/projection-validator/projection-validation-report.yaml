@@ -1,0 +1,56 @@
+version: "0.4"
+generated_at: "2026-07-31T08:00:00Z"
+overall_status: "PASSED"
+overall_quality_score: 96.5
+
+metrics:
+  evidence_traceability:
+    score: 98.0
+    status: "PASS"
+    details: "98% of claims trace back to canonical OKF evidence cards."
+
+  capability_alignment:
+    score: 100.0
+    status: "PASS"
+    details: "All 5 prioritized capabilities represented across projection suite."
+
+  ats_vocabulary_coverage:
+    mandatory_terms_matched: 4
+    mandatory_terms_total: 4
+    strong_terms_matched: 3
+    strong_terms_total: 3
+    coverage_percentage: 100.0
+    status: "PASS"
+
+  length_budget_compliance:
+    cover_letter_words: 310
+    cover_letter_budget: 500
+    executive_brief_words: 1850
+    executive_brief_budget: 2500
+    status: "PASS"
+
+evaluated_projections:
+  - name: "resume-executive"
+    file: "out/resume-executive.md"
+    status: "PASS"
+  - name: "resume-ats"
+    file: "out/resume-ats.md"
+    status: "PASS"
+  - name: "resume-recruiter"
+    file: "out/resume-recruiter.md"
+    status: "PASS"
+  - name: "cover-letter"
+    file: "out/cover-letter.md"
+    status: "PASS"
+  - name: "linkedin-profile"
+    file: "out/linkedin-profile.md"
+    status: "PASS"
+  - name: "executive-brief"
+    file: "out/executive-brief.md"
+    status: "PASS"
+  - name: "opportunity-alignment"
+    file: "out/opportunity-alignment.md"
+    status: "PASS"
+  - name: "playbook"
+    file: "out/playbook.md"
+    status: "PASS"
