@@ -17,6 +17,10 @@ The `playbook-orchestrator` is the primary entry point for generating the Career
 4. **Stop and Ask**: Pause and prompt when required inputs are missing or ambiguous.
 5. **Idempotent Re-runs**: Re-running a Skill overwrites its own output directory cleanly.
 
+## Mandatory File Refresh Requirement
+
+Every invocation of `playbook-orchestrator` **MUST perform physical file writes/overwrites** for all projection artifacts in `./out/`, `./out/runtime/`, and `./out/okf/log.md` with active ISO-8601 execution timestamps in frontmatter metadata (`generated.at`). Simply verifying pre-existing files on disk or running test suites is NOT a substitute for executing the write pass.
+
 ## Pipeline Execution Order (v0.5 Sprint 5)
 
 ```
