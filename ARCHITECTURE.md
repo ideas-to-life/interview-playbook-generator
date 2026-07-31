@@ -46,60 +46,102 @@ The load-bearing principle: introductory prose and executive voice are establish
 ## Architecture Diagram
 
 <!-- BEGIN AUTO-GENERATED ARCHITECTURE DIAGRAM -->
-### System Context & 4-Layer Pipeline Flow
+### System Architecture Overview
 
 ```mermaid
 flowchart TD
-    subgraph Inputs["📥 Portfolio & Role Inputs"]
-        CV["CV / LinkedIn / Portfolio Docs"]
-        JD["Target Job Description"]
+    classDef inputStyle fill:#0F172A,stroke:#38BDF8,stroke-width:2px,color:#F8FAFC
+    classDef knowledgeStyle fill:#0369A1,stroke:#38BDF8,stroke-width:2px,color:#F8FAFC
+    classDef runtimeStyle fill:#B45309,stroke:#FBBF24,stroke-width:2px,color:#F8FAFC
+    classDef coachingStyle fill:#6D28D9,stroke:#C084FC,stroke-width:2px,color:#F8FAFC
+    classDef projectionStyle fill:#15803D,stroke:#4ADE80,stroke-width:2px,color:#F8FAFC
+    classDef validateStyle fill:#334155,stroke:#94A3B8,stroke-width:2px,color:#F8FAFC
+
+    IN["📥 Candidate Portfolio & Target Role Spec"]:::inputStyle
+    KL["🧠 1. Knowledge Layer (okf/)<br/><i>Canonical Knowledge Graph & Executive Identity</i>"]:::knowledgeStyle
+    RL["⚡ 2. Runtime Layer (out/runtime/)<br/><i>Opportunity Context & Target Priorities</i>"]:::runtimeStyle
+    CL["🎯 3. Coaching Layer (okf/)<br/><i>Opportunity-Aware Strategy & Gap Analysis</i>"]:::coachingStyle
+    PL["📄 4. Projection Layer (out/)<br/><i>Resumes, Briefings, Cover Letter & Playbook</i>"]:::projectionStyle
+    VG["🛡️ Quality & Brand Validation Gates<br/><i>Projection & Brand Alignment Verification</i>"]:::validateStyle
+
+    IN --> KL
+    IN --> RL
+    KL --> RL
+    KL --> CL
+    RL --> CL
+    KL --> PL
+    RL --> PL
+    CL --> PL
+    PL --> VG
+```
+
+### Detailed 4-Layer Skill Data Flow
+
+```mermaid
+flowchart TD
+    subgraph S0["📥 Input Ingestion"]
+        direction LR
+        IN_CV["Portfolio Sources<br/>(CV, LinkedIn, Architecture Docs)"]
+        IN_JD["Target Opportunity Spec<br/>(Job Description / Recruiter Spec)"]
     end
 
-    subgraph KnowledgeLayer["🧠 1. Knowledge Layer (okf/)"]
-        PI["portfolio-ingestor"] --> PA["portfolio-analyzer"]
-        PA --> AE["achievement-extractor"]
-        AE --> ECG["evidence-card-generator"]
-        ECG --> BPG["behaviour-profile-generator"]
-        ECG --> CE["capability-extractor"]
-        ECG --> SAC["signature-achievements-curator"]
-        AE --> STM["signature-theme-miner"]
-        STM --> EIG["executive-identity-generator"]
-        EIG --> NE["narrative-engine"]
-        ECG --> SE["story-engine"]
+    subgraph S1["🧠 1. Knowledge Layer (Canonical Graph in okf/)"]
+        direction TB
+        S1_ING["portfolio-ingestor"] --> S1_ANA["portfolio-analyzer"]
+        S1_ANA --> S1_ACH["achievement-extractor"]
+        S1_ACH --> S1_EVD["evidence-card-generator"]
+        S1_EVD --> S1_CAP["capability-extractor & signature-curator"]
+        S1_ACH --> S1_THM["signature-theme-miner"]
+        S1_THM --> S1_IDN["executive-identity-generator"]
+        S1_IDN --> S1_NAR["narrative-engine & story-engine"]
     end
 
-    subgraph RuntimeLayer["⚡ 2. Runtime Layer (out/runtime/)"]
-        OA["opportunity-analyzer"]
+    subgraph S2["⚡ 2. Runtime Layer (Derived Context in out/runtime/)"]
+        S2_OPP["opportunity-analyzer<br/><i>Emits opportunity-analysis.yaml</i>"]
     end
 
-    subgraph CoachingLayer["🎯 3. Coaching Layer (okf/)"]
-        ISG["interview-strategy-generator"]
-        KG["knowledge-gaps (Pre-assembly Gate)"]
+    subgraph S3["🎯 3. Coaching Layer (Derived Strategy in okf/)"]
+        S3_STR["interview-strategy-generator"]
+        S3_GAP["knowledge-gaps (Pre-assembly Gate)"]
     end
 
-    subgraph ProjectionLayer["📄 4. Projection Layer (out/)"]
-        PR["projection-registry"]
-        PR --> RES["resume-projection"]
-        PR --> CL["cover-letter-projection"]
-        PR --> LI["linkedin-projection"]
-        PR --> OAV["opportunity-alignment-view"]
-        PR --> EBV["executive-brief-view"]
-        PR --> PBA["playbook-assembler"]
-        PV["projection-validator"]
-        BV["brand-validator"]
+    subgraph S4["📄 4. Projection Layer (Presentation Views in out/)"]
+        direction TB
+        S4_REG["projection-registry"]
+        subgraph S4_VIEWS["Projections & Presentation Suite"]
+            direction LR
+            V_RES["resume-projection<br/><i>(Executive, ATS, Recruiter)</i>"]
+            V_COV["cover-letter-projection"]
+            V_LKD["linkedin-projection"]
+            V_ALI["opportunity-alignment-view"]
+            V_BRF["executive-brief-view"]
+            V_PBK["playbook-assembler<br/><i>(Playbook & Cheat Sheet)</i>"]
+        end
+        S4_REG --> V_RES
+        S4_REG --> V_COV
+        S4_REG --> V_LKD
+        S4_REG --> V_ALI
+        S4_REG --> V_BRF
+        S4_REG --> V_PBK
     end
 
-    Inputs --> PI
-    JD --> OA
-    KnowledgeLayer --> OA
-    KnowledgeLayer --> ISG
-    RuntimeLayer --> ISG
-    KnowledgeLayer --> KG
-    RuntimeLayer --> KG
-    KnowledgeLayer --> ProjectionLayer
-    RuntimeLayer --> ProjectionLayer
-    ProjectionLayer --> PV
-    ProjectionLayer --> BV
+    subgraph S5["🛡️ Quality Validation Gates"]
+        S5_PV["projection-validator"]
+        S5_BV["brand-validator"]
+    end
+
+    IN_CV --> S1_ING
+    IN_JD --> S2_OPP
+    S1_NAR --> S2_OPP
+    S1_NAR --> S3_STR
+    S2_OPP --> S3_STR
+    S1_NAR --> S3_GAP
+    S2_OPP --> S3_GAP
+    S1_NAR --> S4_REG
+    S2_OPP --> S4_REG
+    S3_STR --> S4_REG
+    S4_VIEWS --> S5_PV
+    S4_VIEWS --> S5_BV
 ```
 
 ### OKF Knowledge Graph Schema

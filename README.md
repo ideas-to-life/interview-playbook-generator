@@ -3,58 +3,33 @@
 Generate high-quality executive communication artefacts (Resumes, Cover Letters, LinkedIn Profiles, Briefings, and Interview Playbooks) from a candidate's portfolio and career knowledge — grounded in evidence, adapted to the target opportunity, and structured as a reusable knowledge graph.
 
 <!-- BEGIN AUTO-GENERATED ARCHITECTURE DIAGRAM -->
+### System Architecture Overview
+
 ```mermaid
 flowchart TD
-    subgraph Inputs["📥 Portfolio & Role Inputs"]
-        CV["CV / LinkedIn / Portfolio Docs"]
-        JD["Target Job Description"]
-    end
+    classDef inputStyle fill:#0F172A,stroke:#38BDF8,stroke-width:2px,color:#F8FAFC
+    classDef knowledgeStyle fill:#0369A1,stroke:#38BDF8,stroke-width:2px,color:#F8FAFC
+    classDef runtimeStyle fill:#B45309,stroke:#FBBF24,stroke-width:2px,color:#F8FAFC
+    classDef coachingStyle fill:#6D28D9,stroke:#C084FC,stroke-width:2px,color:#F8FAFC
+    classDef projectionStyle fill:#15803D,stroke:#4ADE80,stroke-width:2px,color:#F8FAFC
+    classDef validateStyle fill:#334155,stroke:#94A3B8,stroke-width:2px,color:#F8FAFC
 
-    subgraph KnowledgeLayer["🧠 1. Knowledge Layer (okf/)"]
-        PI["portfolio-ingestor"] --> PA["portfolio-analyzer"]
-        PA --> AE["achievement-extractor"]
-        AE --> ECG["evidence-card-generator"]
-        ECG --> BPG["behaviour-profile-generator"]
-        ECG --> CE["capability-extractor"]
-        ECG --> SAC["signature-achievements-curator"]
-        AE --> STM["signature-theme-miner"]
-        STM --> EIG["executive-identity-generator"]
-        EIG --> NE["narrative-engine"]
-        ECG --> SE["story-engine"]
-    end
+    IN["📥 Candidate Portfolio & Target Role Spec"]:::inputStyle
+    KL["🧠 1. Knowledge Layer (okf/)<br/><i>Canonical Knowledge Graph & Executive Identity</i>"]:::knowledgeStyle
+    RL["⚡ 2. Runtime Layer (out/runtime/)<br/><i>Opportunity Context & Target Priorities</i>"]:::runtimeStyle
+    CL["🎯 3. Coaching Layer (okf/)<br/><i>Opportunity-Aware Strategy & Gap Analysis</i>"]:::coachingStyle
+    PL["📄 4. Projection Layer (out/)<br/><i>Resumes, Briefings, Cover Letter & Playbook</i>"]:::projectionStyle
+    VG["🛡️ Quality & Brand Validation Gates<br/><i>Projection & Brand Alignment Verification</i>"]:::validateStyle
 
-    subgraph RuntimeLayer["⚡ 2. Runtime Layer (out/runtime/)"]
-        OA["opportunity-analyzer"]
-    end
-
-    subgraph CoachingLayer["🎯 3. Coaching Layer (okf/)"]
-        ISG["interview-strategy-generator"]
-        KG["knowledge-gaps (Pre-assembly Gate)"]
-    end
-
-    subgraph ProjectionLayer["📄 4. Projection Layer (out/)"]
-        PR["projection-registry"]
-        PR --> RES["resume-projection"]
-        PR --> CL["cover-letter-projection"]
-        PR --> LI["linkedin-projection"]
-        PR --> OAV["opportunity-alignment-view"]
-        PR --> EBV["executive-brief-view"]
-        PR --> PBA["playbook-assembler"]
-        PV["projection-validator"]
-        BV["brand-validator"]
-    end
-
-    Inputs --> PI
-    JD --> OA
-    KnowledgeLayer --> OA
-    KnowledgeLayer --> ISG
-    RuntimeLayer --> ISG
-    KnowledgeLayer --> KG
-    RuntimeLayer --> KG
-    KnowledgeLayer --> ProjectionLayer
-    RuntimeLayer --> ProjectionLayer
-    ProjectionLayer --> PV
-    ProjectionLayer --> BV
+    IN --> KL
+    IN --> RL
+    KL --> RL
+    KL --> CL
+    RL --> CL
+    KL --> PL
+    RL --> PL
+    CL --> PL
+    PL --> VG
 ```
 <!-- END AUTO-GENERATED ARCHITECTURE DIAGRAM -->
 
