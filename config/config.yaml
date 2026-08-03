@@ -3,15 +3,15 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Head of AI / Enterprise AI Architect"
+  target_role: "Senior Architect"
   portfolio_dir: "evidence/"
 
 target_opportunity:
-  company: "Vervaunt"
-  role_title: "Head of AI"
-  industry: "E-Commerce & Digital Agency"
-  interviewer: "Senior Talent Acquisition Specialist"
-  source: "evidence/target-position/head-of-ai.md"
+  company: "Banking institution"
+  role_title: "Senior Archiect"
+  industry: "Financial industry"
+  interviewer: "Senior Delivery Consultant at Vallum Associates"
+  source: "evidence/target-position/senior-architect-vallum"
 
 projections:
   resume:

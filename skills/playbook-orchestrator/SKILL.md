@@ -19,7 +19,12 @@ The `playbook-orchestrator` is the primary entry point for generating the Career
 
 ## Mandatory File Refresh Requirement
 
-Every invocation of `playbook-orchestrator` **MUST perform physical file writes/overwrites** for all projection artifacts in `./out/`, `./out/runtime/`, and `./out/okf/log.md` with active ISO-8601 execution timestamps in frontmatter metadata (`generated.at`). Simply verifying pre-existing files on disk or running test suites is NOT a substitute for executing the write pass.
+Every invocation of `playbook-orchestrator` **MUST first parse `config/config.yaml`** to identify the active `target_opportunity.source` file. It must then:
+1. Execute `portfolio-ingestor` to purge obsolete target opportunity sources in `okf/sources/` and emit the new `Source` node.
+2. Execute `opportunity-analyzer` to overwrite `out/runtime/opportunity-analysis.yaml` with the new target role requirements.
+3. Perform physical file writes/overwrites for all projection artifacts in `./out/`, `./out/runtime/`, and `./out/okf/log.md` with active ISO-8601 execution timestamps in frontmatter metadata (`generated.at`).
+
+Simply verifying pre-existing files on disk or updating timestamps without re-reading `config/config.yaml` and re-analyzing the active target opportunity is strictly prohibited.
 
 ## Pipeline Execution Order (v0.5 Sprint 5)
 
