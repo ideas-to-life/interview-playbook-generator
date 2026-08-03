@@ -24,7 +24,7 @@ Every statement written into `okf/sources/*.md` must adhere to:
 
 ## Input & Output Contracts
 
-- **Inputs**: Read path declared in `inputs.portfolio` & `target_opportunity.source` in `config/config.yaml`.
+- **Inputs**: Read path declared in `candidate.portfolio_dir` & `target_opportunity.source` in `config/config.yaml`.
 - **Outputs**:
   - `okf/sources/index.md` (type: `SourceIndex`, `okf_version: "0.2"`)
   - `okf/sources/<slug>.md` (type: `Source`)
@@ -32,7 +32,7 @@ Every statement written into `okf/sources/*.md` must adhere to:
 
 ## Execution Instructions
 
-1. **Scan Files**: Enumerate all files in `inputs.portfolio` and the active target opportunity specified in `target_opportunity.source` of `config/config.yaml`. Remove any obsolete target opportunity source files in `okf/sources/` that do not match the active `target_opportunity.source`.
+1. **Scan Files**: Enumerate all files in `candidate.portfolio_dir` (defaulting to `evidence/` or `inputs/`) and the active target opportunity specified in `target_opportunity.source` of `config/config.yaml`. Remove any obsolete target opportunity source files in `okf/sources/` that do not match the active `target_opportunity.source`.
 2. **Create `Source` Concepts**: For each discovered file:
    - Extract title, author (default `human:alexandre.franco`), last_modified, and resource path.
    - Format concept frontmatter with `type: Source` and frontmatter `sources` list containing itself as `id`.

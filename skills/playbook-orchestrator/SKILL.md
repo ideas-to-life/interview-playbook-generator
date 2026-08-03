@@ -11,12 +11,25 @@ The `playbook-orchestrator` is the primary entry point for generating the Career
 
 Outputs are cleanly separated: canonical career knowledge is stored in `out/okf/`, while opportunity-specific runtime context, validation reports, and presentation views are written to `out/<target-slug>/` (derived from `target_opportunity.source` in `config/config.yaml`).
 
+## Pre-Flight Configuration & Validation Protocol
+
+Before executing pipeline steps, perform this Pre-Flight Check:
+
+1. **Locate Configuration**: Check for `config/config.yaml` in the workspace root.
+2. **Validate Required Fields**:
+   - `candidate.name`
+   - `candidate.portfolio_dir` (default: `evidence/` or `inputs/`)
+   - `target_opportunity.source` (path to target JD / position spec, e.g. `evidence/target-position/senior-architect-vallum`)
+3. **Execution Gate**:
+   - **IF `config/config.yaml` EXISTS AND `target_opportunity.source` IS SPECIFIED**: Immediately proceed through Step 1 to Step 17. **DO NOT ask the user any questions, DO NOT prompt to create config/config.yaml, and DO NOT ask for a job description file.**
+   - **ONLY IF `config/config.yaml` IS MISSING OR `target_opportunity.source` IS EMPTY**: Trigger the stop-and-ask protocol to request the target opportunity file path from the user.
+
 ## The Five Hard Rules
 
 1. **Never Fabricate**: Never invent projects, metrics, team sizes, budgets, technologies, responsibilities, or tenure.
 2. **Classify Every Claim**: Every non-empty non-heading line in concept bodies must start with `[evidence]`, `[inference]`, `[recommendation]`, or `[assumption]`.
 3. **Attribute Every Claim**: Every `[evidence]` line must carry a `[^source-id]` footnote pointing to a valid source in frontmatter.
-4. **Stop and Ask**: Pause and prompt when required inputs are missing or ambiguous.
+4. **Stop and Ask**: Pause and prompt ONLY when required inputs (`config/config.yaml` or `target_opportunity.source`) are missing or unparseable.
 5. **Idempotent Re-runs**: Re-running a Skill overwrites its own output directory cleanly.
 
 ## Pipeline Execution Order (v0.5 Sprint 5)
