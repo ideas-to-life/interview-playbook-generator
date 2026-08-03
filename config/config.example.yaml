@@ -5,6 +5,11 @@ candidate:
   name: "Alexandre Franco"
   target_role: "Head of AI / Enterprise AI Architect"
   portfolio_dir: "inputs/"
+  location: "London, United Kingdom"
+  phone: "+44 (0) 7304 093460"
+  email: "avfranco@hotmail.com"
+  linkedin: "https://linkedin.com/in/avfranco"
+  portfolio_url: "https://avfranco-br.github.io/portfolio/"
 
 target_opportunity:
   company: "Vervaunt"

@@ -1,17 +1,17 @@
 ---
 name: resume-projection
-description: Generates executive, ATS, and recruiter resume variants from canonical OKF knowledge, Executive Identity, and shared opportunity analysis.
+description: Generates full-length executive, ATS, and recruiter resume variants from canonical OKF knowledge, Executive Identity, and shared opportunity analysis.
 ---
 
 # Resume Projection
 
 ## Overview
 
-`resume-projection` is a Projection Layer Skill. It reads the canonical OKF bundle (`okf/`, including `okf/positioning-statements.md`), and the shared execution context at `out/runtime/opportunity-analysis.yaml` to generate tailored resume projection variants in `out/`:
+`resume-projection` is a Projection Layer Skill. It reads the canonical OKF bundle (`okf/`, including `okf/positioning-statements.md`, `okf/messaging-library.md`, and `okf/story-library.md`), candidate config (`config/config.yaml`), and the shared execution context at `out/runtime/opportunity-analysis.yaml` to generate complete, full-length, submission-ready resume projection variants in `out/`:
 
-1. **Executive Resume** (`out/resume-executive.md`): Strategic positioning, 2 pages, capability progression, high-impact leadership outcomes.
-2. **ATS Resume** (`out/resume-ats.md`): Structured standard headers, explicit ATS vocabulary keyword placement, clear reverse-chronological format.
-3. **Recruiter Resume** (`out/resume-recruiter.md`): 1-page high-density executive summary briefing for talent acquisition.
+1. **Executive Resume** (`out/resume-executive.md`): Complete 2-page strategic resume covering all 10 required sections, emphasizing leadership outcomes, capability progression, and signature initiatives.
+2. **ATS Resume** (`out/resume-ats.md`): Complete reverse-chronological resume incorporating explicit ATS keyword density (`mandatory` and `strong` terms from `out/runtime/opportunity-analysis.yaml`).
+3. **Recruiter Resume** (`out/resume-recruiter.md`): Complete 1-to-2 page recruiter-focused resume optimized for rapid 30-60 second scan, tailored to the target opportunity.
 
 By default, all three variants are generated. If `config/config.yaml` specifies `projections.resume.variant`, only the selected variant is generated.
 
@@ -23,15 +23,31 @@ NEVER FABRICATE:
 ```
 
 1. **Read-only**: Never modify any concept file in `okf/`.
-2. **Canonical Positioning**: Adapt introductory summary directly from `okf/positioning-statements.md` (`Executive Variant`). Do NOT generate independent positioning prose.
-3. **Evidence-backed**: Every achievement, role description, and metric must trace back to canonical OKF evidence cards or achievements.
+2. **Clean Presentation Output**: Presentation view files in `out/*.md` are submission-ready markdown files. Do NOT include YAML frontmatter blocks or internal classification tags (`[evidence]`, `[inference]`, `[recommendation]`, `[Evidence: ...]`).
+3. **Canonical Positioning**: Adapt introductory summary directly from `okf/positioning-statements.md` (`Executive Variant`) and `okf/messaging-library.md` (`Career Summary Block`). Do NOT generate independent positioning prose.
+4. **Full Document Scope**: Every generated resume variant MUST be complete and submission-ready, including all 10 standard executive sections.
+5. **Evidence-backed**: Every achievement, role description, and metric must trace back to canonical OKF evidence cards or achievements.
+
+## Required 10 Standard Sections
+
+Every generated resume variant MUST include the following 10 sections:
+
+1. **Contact Header**: Candidate name, title sub-headline, location, phone, email, LinkedIn URL, portfolio website URL.
+2. **Professional Headline**: Opportunity-tailored primary positioning headline.
+3. **Executive Summary**: 150-180 words adapted from canonical identity & messaging.
+4. **Enterprise AI Transformation Leadership**: Key bulleted transformation capabilities.
+5. **Enterprise Architecture Expertise**: Key bulleted architectural capabilities.
+6. **AI Platform, Data & Governance Expertise**: Key bulleted platform & governance capabilities.
+7. **Professional Experience**: Reverse-chronological career history (WPP Media, BBC Studios, British American Tobacco - R&D, BAT - Global, BAT - Americas) with signature achievements and opportunity-weighted bullets.
+8. **Selected Enterprise AI Initiatives**: Detailed descriptions of CAS (Architecture-as-Code), EA4ALL (AI Accessibility), and RAI (Observability).
+9. **Education & Professional Development**: MSc in Computer Science, TOGAF 9, SAFe, LeanIX.
+10. **Technical Skills**: Categorized by domain (Enterprise Architecture, AI Platforms & Governance, Architecture-as-Code, Data Architecture & Integration, Observability & Evaluation, Cloud & Enterprise Software, Programming Languages).
 
 ## Execution Instructions
 
-1. **Read `okf/positioning-statements.md`**: Adapt canonical `Executive Variant`.
-2. **Read `out/runtime/opportunity-analysis.yaml`**: Extract `capability_priorities`, `ats_vocabulary`, and `coverage_matrix`.
-3. **Walk Canonical Knowledge**: Read `okf/evidence/*.md`, `okf/achievements/*.md`, `okf/capabilities/*.md`, and `okf/behaviour-profile.md`.
-4. **Render Executive Resume (`out/resume-executive.md`)**.
-5. **Render ATS Resume (`out/resume-ats.md`)**.
-6. **Render Recruiter Resume (`out/resume-recruiter.md`)**.
-7. **Append Log**: `okf/log.md`.
+1. **Read Candidate Config & Opportunity Analysis**: Read `config/config.yaml` and `out/runtime/opportunity-analysis.yaml`.
+2. **Read Canonical OKF Knowledge**: Read `okf/positioning-statements.md`, `okf/messaging-library.md`, `okf/story-library.md`, `okf/evidence/*.md`, `okf/achievements/*.md`, `okf/capabilities/*.md`, and `okf/behaviour-profile.md`.
+3. **Render Executive Resume (`out/resume-executive.md`)**: Full submission-ready executive resume.
+4. **Render ATS Resume (`out/resume-ats.md`)**: Full ATS-optimized resume.
+5. **Render Recruiter Resume (`out/resume-recruiter.md`)**: Full recruiter summary resume.
+6. **Append Log**: `okf/log.md`.
