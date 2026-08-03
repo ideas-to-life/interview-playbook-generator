@@ -7,7 +7,7 @@ description: Generates LinkedIn profile optimization sections from canonical Exe
 
 ## Overview
 
-`linkedin-projection` is a Projection Layer Skill. It reads the canonical OKF bundle (`okf/`, including `okf/executive-identity.md`, `okf/voice-profile.md`, and `okf/positioning-statements.md`) and the shared execution context at `out/runtime/opportunity-analysis.yaml` to generate an optimized LinkedIn profile specification at `out/linkedin-profile.md`.
+`linkedin-projection` is a Projection Layer Skill. It reads the canonical OKF bundle (`okf/`, including `okf/executive-identity.md`, `okf/voice-profile.md`, and `okf/positioning-statements.md`) and the shared execution context at `out/<target-slug>/runtime/opportunity-analysis.yaml` to generate an optimized LinkedIn profile specification at `out/<target-slug>/linkedin-profile.md`.
 
 Unlike ATS resumes which prioritize exact keyword density for parsing engines, LinkedIn projections prioritize professional credibility, executive authority, and personal brand impact.
 
@@ -32,6 +32,6 @@ NEVER FABRICATE:
 ## Execution Instructions
 
 1. **Read `okf/executive-identity.md` & `okf/positioning-statements.md`**: Extract canonical positioning.
-2. **Read `out/runtime/opportunity-analysis.yaml`**: Extract capability priorities.
-3. **Render LinkedIn Profile Optimization (`out/linkedin-profile.md`)**.
+2. **Read `out/<target-slug>/runtime/opportunity-analysis.yaml`**: Extract capability priorities.
+3. **Render LinkedIn Profile Optimization (`out/<target-slug>/linkedin-profile.md`)**.
 4. **Append Log**: `okf/log.md`.

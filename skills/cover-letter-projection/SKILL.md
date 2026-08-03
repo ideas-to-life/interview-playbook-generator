@@ -7,7 +7,7 @@ description: Generates a 1-page executive cover letter from canonical OKF knowle
 
 ## Overview
 
-`cover-letter-projection` is a Projection Layer Skill. It reads the canonical OKF bundle (`okf/`, including `okf/messaging-library.md` and `okf/story-library.md`) and the shared execution context at `out/runtime/opportunity-analysis.yaml` to generate a 1-page executive cover letter at `out/cover-letter.md`.
+`cover-letter-projection` is a Projection Layer Skill. It reads the canonical OKF bundle (`okf/`, including `okf/messaging-library.md` and `okf/story-library.md`) and the shared execution context at `out/<target-slug>/runtime/opportunity-analysis.yaml` to generate a 1-page executive cover letter at `out/<target-slug>/cover-letter.md`.
 
 ## Hard Rules
 
@@ -32,6 +32,6 @@ NEVER FABRICATE:
 ## Execution Instructions
 
 1. **Read `okf/messaging-library.md` & `okf/story-library.md`**: Extract canonical 30s intro and executive story assets.
-2. **Read `out/runtime/opportunity-analysis.yaml`**: Extract company, role_title, hiring_goals, capability_priorities, and coverage_matrix.
-3. **Render Cover Letter (`out/cover-letter.md`)**.
+2. **Read `out/<target-slug>/runtime/opportunity-analysis.yaml`**: Extract company, role_title, hiring_goals, capability_priorities, and coverage_matrix.
+3. **Render Cover Letter (`out/<target-slug>/cover-letter.md`)**.
 4. **Append Log**: `okf/log.md`.

@@ -1,15 +1,15 @@
 ---
 name: brand-validator
-description: Evaluates cross-projection brand alignment, voice consistency, positioning statement reuse, and story traceability into out/runtime/brand-validation-report.yaml.
+description: Evaluates cross-projection brand alignment, voice consistency, positioning statement reuse, and story traceability into out/<target-slug>/runtime/brand-validation-report.yaml.
 ---
 
 # Brand Validator
 
 ## Overview
 
-`brand-validator` is a Runtime Layer Skill. It evaluates generated projection view files in `out/` against canonical identity concepts in `okf/` (`okf/executive-identity.md`, `okf/voice-profile.md`, `okf/positioning-statements.md`, `okf/narrative-library.md`, `okf/story-library.md`, `okf/messaging-library.md`).
+`brand-validator` is a Runtime Layer Skill. It evaluates generated projection view files in `out/<target-slug>/` against canonical identity concepts in `okf/` (`okf/executive-identity.md`, `okf/voice-profile.md`, `okf/positioning-statements.md`, `okf/narrative-library.md`, `okf/story-library.md`, `okf/messaging-library.md`).
 
-It emits a structured quality report at `out/runtime/brand-validation-report.yaml`.
+It emits a structured quality report at `out/<target-slug>/runtime/brand-validation-report.yaml`.
 
 ## Hard Rules
 
@@ -18,7 +18,7 @@ NEVER FABRICATE:
 - Projects, Metrics, Team sizes, Budgets, Technologies, Responsibilities, Tenure
 ```
 
-1. **Read-only**: Never modify any concept file in `okf/` or any generated projection view in `out/`.
+1. **Read-only**: Never modify any concept file in `okf/` or any generated projection view in `out/<target-slug>/`.
 2. **Brand Consistency Gate**: Verifies that introductory prose across all projections derives from `okf/positioning-statements.md` rather than being independently generated.
 
 ## Metrics Evaluated
@@ -31,12 +31,12 @@ NEVER FABRICATE:
 ## Execution Instructions
 
 1. **Read `okf/voice-profile.md` & `okf/positioning-statements.md`**: Load tone rules and canonical positioning statements.
-2. **Scan Projection Artefacts in `out/`**:
-   - `out/resume-executive.md`, `out/resume-ats.md`, `out/resume-recruiter.md`
-   - `out/cover-letter.md`
-   - `out/linkedin-profile.md`
-   - `out/executive-brief.md`
-   - `out/playbook.md`
+2. **Scan Projection Artefacts in `out/<target-slug>/`**:
+   - `out/<target-slug>/resume-executive.md`, `resume-ats.md`, `resume-recruiter.md`
+   - `out/<target-slug>/cover-letter.md`
+   - `out/<target-slug>/linkedin-profile.md`
+   - `out/<target-slug>/executive-brief.md`
+   - `out/<target-slug>/playbook.md`
 3. **Compute Brand Consistency Metrics**.
-4. **Write `out/runtime/brand-validation-report.yaml`**.
+4. **Write `out/<target-slug>/runtime/brand-validation-report.yaml`**.
 5. **Append Log**: `okf/log.md`.

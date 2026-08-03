@@ -7,11 +7,11 @@ description: Generates full-length executive, ATS, and recruiter resume variants
 
 ## Overview
 
-`resume-projection` is a Projection Layer Skill. It reads the canonical OKF bundle (`okf/`, including `okf/positioning-statements.md`, `okf/messaging-library.md`, and `okf/story-library.md`), candidate config (`config/config.yaml`), and the shared execution context at `out/runtime/opportunity-analysis.yaml` to generate complete, full-length, submission-ready resume projection variants in `out/`:
+`resume-projection` is a Projection Layer Skill. It reads the canonical OKF bundle (`okf/`, including `okf/positioning-statements.md`, `okf/messaging-library.md`, and `okf/story-library.md`), candidate config (`config/config.yaml`), and the shared execution context at `out/<target-slug>/runtime/opportunity-analysis.yaml` to generate complete, full-length, submission-ready resume projection variants in `out/<target-slug>/`:
 
-1. **Executive Resume** (`out/resume-executive.md`): Complete 2-page strategic resume covering all 10 required sections, emphasizing leadership outcomes, capability progression, and signature initiatives.
-2. **ATS Resume** (`out/resume-ats.md`): Complete reverse-chronological resume incorporating explicit ATS keyword density (`mandatory` and `strong` terms from `out/runtime/opportunity-analysis.yaml`).
-3. **Recruiter Resume** (`out/resume-recruiter.md`): Complete 1-to-2 page recruiter-focused resume optimized for rapid 30-60 second scan, tailored to the target opportunity.
+1. **Executive Resume** (`out/<target-slug>/resume-executive.md`): Complete 2-page strategic resume covering all 10 required sections, emphasizing leadership outcomes, capability progression, and signature initiatives.
+2. **ATS Resume** (`out/<target-slug>/resume-ats.md`): Complete reverse-chronological resume incorporating explicit ATS keyword density (`mandatory` and `strong` terms from `out/<target-slug>/runtime/opportunity-analysis.yaml`).
+3. **Recruiter Resume** (`out/<target-slug>/resume-recruiter.md`): Complete 1-to-2 page recruiter-focused resume optimized for rapid 30-60 second scan, tailored to the target opportunity.
 
 By default, all three variants are generated. If `config/config.yaml` specifies `projections.resume.variant`, only the selected variant is generated.
 
@@ -23,7 +23,7 @@ NEVER FABRICATE:
 ```
 
 1. **Read-only**: Never modify any concept file in `okf/`.
-2. **Clean Presentation Output**: Presentation view files in `out/*.md` are submission-ready markdown files. Do NOT include YAML frontmatter blocks or internal classification tags (`[evidence]`, `[inference]`, `[recommendation]`, `[Evidence: ...]`).
+2. **Clean Presentation Output**: Presentation view files in `out/<target-slug>/*.md` are submission-ready markdown files. Do NOT include YAML frontmatter blocks or internal classification tags (`[evidence]`, `[inference]`, `[recommendation]`, `[Evidence: ...]`).
 3. **Canonical Positioning**: Adapt introductory summary directly from `okf/positioning-statements.md` (`Executive Variant`) and `okf/messaging-library.md` (`Career Summary Block`). Do NOT generate independent positioning prose.
 4. **Full Document Scope**: Every generated resume variant MUST be complete and submission-ready, including all 10 standard executive sections.
 5. **Evidence-backed**: Every achievement, role description, and metric must trace back to canonical OKF evidence cards or achievements.
@@ -45,9 +45,9 @@ Every generated resume variant MUST include the following 10 sections:
 
 ## Execution Instructions
 
-1. **Read Candidate Config & Opportunity Analysis**: Read `config/config.yaml` and `out/runtime/opportunity-analysis.yaml`.
+1. **Read Candidate Config & Opportunity Analysis**: Read `config/config.yaml` and `out/<target-slug>/runtime/opportunity-analysis.yaml`.
 2. **Read Canonical OKF Knowledge**: Read `okf/positioning-statements.md`, `okf/messaging-library.md`, `okf/story-library.md`, `okf/evidence/*.md`, `okf/achievements/*.md`, `okf/capabilities/*.md`, and `okf/behaviour-profile.md`.
-3. **Render Executive Resume (`out/resume-executive.md`)**: Full submission-ready executive resume.
-4. **Render ATS Resume (`out/resume-ats.md`)**: Full ATS-optimized resume.
-5. **Render Recruiter Resume (`out/resume-recruiter.md`)**: Full recruiter summary resume.
+3. **Render Executive Resume (`out/<target-slug>/resume-executive.md`)**: Full submission-ready executive resume.
+4. **Render ATS Resume (`out/<target-slug>/resume-ats.md`)**: Full ATS-optimized resume.
+5. **Render Recruiter Resume (`out/<target-slug>/resume-recruiter.md`)**: Full recruiter summary resume.
 6. **Append Log**: `okf/log.md`.

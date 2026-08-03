@@ -1,15 +1,16 @@
 ---
 name: playbook-assembler
-description: Composes the coaching-oriented Interview Playbook (out/playbook.md) and 2-page quick reference (out/interview-cheatsheet.md).
+description: Composes the coaching-oriented Interview Playbook (out/<target-slug>/playbook.md) and 2-page quick reference (out/<target-slug>/interview-cheatsheet.md).
 ---
 
 # Playbook Assembler
 
 ## Overview
 
-`playbook-assembler` walks all nodes in the populated OKF graph to generate two human-readable coaching artefacts:
-1. `out/playbook.md` — The coaching-oriented Interview Playbook.
-2. `out/interview-cheatsheet.md` — The 2-page quick reference cheat sheet for immediate pre-interview review (< 10 minutes).
+`playbook-assembler` is a Projection Layer Skill. It reads canonical OKF knowledge, interview strategy (`okf/interview-strategy.md`), knowledge gaps (`okf/knowledge-gaps.md`), and opportunity analysis (`out/<target-slug>/runtime/opportunity-analysis.yaml`) to assemble:
+
+1. **Interview Playbook** (`out/<target-slug>/playbook.md`): Full executive interview coaching guide.
+2. **Interview Cheat Sheet** (`out/<target-slug>/interview-cheatsheet.md`): 2-page rapid-reference document for immediate use during live interviews.
 
 ## Hard Rules
 
@@ -18,36 +19,13 @@ NEVER FABRICATE:
 - Projects, Metrics, Team sizes, Budgets, Technologies, Responsibilities, Tenure
 ```
 
-- Avoid reproducing rigid CV wording (e.g., prefer "Enterprise Architect specialising in operationalising AI" over formal corporate job titles).
-- Render only Primary and Supporting stories in main text; STAR library moves to Appendix.
-- Trust badges (`[draft]`, `[machine-confirmed]`, `[human-reviewed]`) are rendered for every section header.
+1. **Read-only**: Never modify any concept file in `okf/`.
+2. **Evidence Grounded**: All coaching advice and story references link to canonical OKF nodes.
 
-## Input & Output Contracts
+## Execution Instructions
 
-- **Inputs**: Entire OKF bundle (`okf/portfolio.md`, `okf/signature-themes.md`, `okf/executive-narrative.md`, `okf/achievements/*`, `okf/evidence/*`, `okf/interview-strategy.md`, `okf/knowledge-gaps.md`).
-- **Outputs**:
-  - `out/playbook.md` (Coaching-oriented Interview Playbook)
-  - `out/interview-cheatsheet.md` (2-page Interview Cheat Sheet)
-  - `okf/log.md` (append entry)
-
-## Playbook Structure (v0.2 Coaching Order)
-
-1. Executive Summary [draft]
-2. 30-Second Pitch [draft]
-3. 2-Minute Career Story [draft]
-4. Why This Role & Strategic Fit [draft]
-5. Top Differentiators [draft]
-6. Top Three Stories to Remember [draft]
-7. Likely Recruiter Questions & Suggested Answers [draft]
-8. Questions to Ask the Interviewer [draft]
-9. Knowledge Gaps & Potential Red Flags [draft]
-10. Appendix: Primary & Supporting STAR Evidence Library [draft]
-
-## Interview Cheat Sheet Structure (Max 2 Pages)
-
-1. Elevator Pitch
-2. Top Five Core Messages
-3. Three Stories to Remember
-4. Likely Recruiter Questions & Suggested Answers
-5. Questions to Ask Us
-6. Red Flags / Things Not To Forget
+1. **Read `out/<target-slug>/runtime/opportunity-analysis.yaml`**: Extract target company, role, interviewer, and hiring goals.
+2. **Read Canonical OKF Knowledge**: Read `okf/story-library.md`, `okf/interview-strategy.md`, and `okf/knowledge-gaps.md`.
+3. **Render Playbook (`out/<target-slug>/playbook.md`)**.
+4. **Render Cheat Sheet (`out/<target-slug>/interview-cheatsheet.md`)**.
+5. **Append Log**: `okf/log.md`.
