@@ -6,8 +6,8 @@ The `AGENTS.md` file holds the vendor-neutral operating instructions that also a
 
 ## Current state
 
-- **Status:** v0.5 (Sprint 5) Executive Narrative & Personal Brand Engine implementation complete.
-- **Approved artefacts:** `requirements-spec.md`, `spec-refinements.md`, `docs/superpowers/specs/2026-07-29-interview-playbook-generator-design.md`, `docs/superpowers/specs/2026-07-30-sprint-3-design.md`, `docs/superpowers/specs/2026-07-31-sprint-4-design.md`, `docs/superpowers/specs/2026-07-31-sprint-5-design.md`, `docs/superpowers/plans/2026-07-31-sprint-5-implementation.md`, `README.md`, `ARCHITECTURE.md`, `AGENTS.md`.
+- **Status:** v0.5 (Sprint 5) Executive Narrative & Personal Brand Engine active with opportunity-scoped output directories (`out/<target-slug>/`).
+- **Approved artefacts:** `requirements-spec.md`, `spec-refinements.md`, `docs/superpowers/specs/2026-07-29-interview-playbook-generator-design.md`, `docs/superpowers/specs/2026-07-30-sprint-3-design.md`, `docs/superpowers/specs/2026-07-31-sprint-4-design.md`, `docs/superpowers/specs/2026-07-31-sprint-5-design.md`, `docs/superpowers/specs/2026-08-03-opportunity-scoped-outputs-design.md`, `README.md`, `ARCHITECTURE.md`, `AGENTS.md`.
 - **Branch:** `master`.
 
 ## Claude Code–specific context
@@ -21,9 +21,9 @@ This project's Skills do not call an LLM API. The user invokes each Skill as `/s
 When the user invokes a Skill, you:
 
 1. Read the Skill's `SKILL.md` carefully.
-2. Confirm the input set exists (config, upstream bundle nodes, or `out/runtime/opportunity-analysis.yaml`).
+2. Confirm the input set exists (config, upstream bundle nodes, or `out/<target-slug>/runtime/opportunity-analysis.yaml`).
 3. Run the lint pass on your output before writing.
-4. Write the output subtree per the Skill's contract.
+4. Write the output subtree per the Skill's contract (`out/okf/` for canonical nodes, `out/<target-slug>/` for opportunity-scoped context & views).
 5. Update `okf/log.md` with a one-line entry.
 
 ### Snapshot tests

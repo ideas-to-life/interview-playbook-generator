@@ -35,29 +35,19 @@ flowchart TD
 
 ## Status
 
-**v0.5 (Sprint 5) Executive Narrative & Personal Brand Engine Active.** All 25 Skills, canonical Executive Identity Layer (`okf/executive-identity.md`, `okf/voice-profile.md`, `okf/positioning-statements.md`, `okf/narrative-library.md`, `okf/story-library.md`, `okf/messaging-library.md`), Projection SDK & Registry, and Brand Validator (`out/runtime/brand-validation-report.yaml`) are tested and active.
+**v0.5 (Sprint 5) Executive Narrative & Personal Brand Engine Active with Opportunity-Scoped Output Subtrees (`out/<target-slug>/`).** All 25 Skills, canonical Executive Identity Layer (`okf/executive-identity.md`, `okf/voice-profile.md`, `okf/positioning-statements.md`, `okf/narrative-library.md`, `okf/story-library.md`, `okf/messaging-library.md`), Projection SDK & Registry, Brand Validator, and target opportunity slug scoping (`out/<target-slug>/`) are tested and active.
 
 ## How it works (one paragraph)
 
-A local-first pipeline of **Skills (Claude, Antigravity)** in this repo reads a YAML config plus raw portfolio sources (CV, LinkedIn, slide decks, architecture docs, etc.), runs Skills that progressively structure the candidate's career into an **OKF (Open Knowledge Format) v0.2** knowledge graph on disk (`okf/`), establishes a canonical Executive Identity Layer, runs an opportunity analyzer producing shared execution context (`out/runtime/opportunity-analysis.yaml`), and orchestrates registered projection Skills (`resume-projection`, `cover-letter-projection`, `linkedin-projection`, `executive-brief-view`, `opportunity-alignment-view`, `playbook-assembler`) to produce read-only presentation views in `out/`.
+A local-first pipeline of **Claude Skills** in this repo reads a YAML config plus raw portfolio sources (CV, LinkedIn, slide decks, architecture docs, etc.), runs Skills that progressively structure the candidate's career into an **OKF (Open Knowledge Format) v0.2** knowledge graph on disk (`okf/`), establishes a canonical Executive Identity Layer, runs an opportunity analyzer producing shared execution context (`out/<target-slug>/runtime/opportunity-analysis.yaml`), and orchestrates registered projection Skills (`resume-projection`, `cover-letter-projection`, `linkedin-projection`, `executive-brief-view`, `opportunity-alignment-view`, `playbook-assembler`) to produce read-only presentation views in `out/<target-slug>/`.
 
 ## Architecture at a glance
 
 - **Four explicit layers (v0.5):**
-  - *Knowledge Layer* (canonical, in `okf/`): persistent, immutable career concepts (`Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `ExecutiveIdentity`, `VoiceProfile`, `PositioningStatements`, `NarrativeLibrary`, `StoryLibrary`, `MessagingLibrary`, `Theme`, `Narrative`).
-  - *Runtime Layer* (derived execution context, in `out/runtime/`): shared opportunity analysis (`opportunity-analysis.yaml`), projection validation report (`projection-validation-report.yaml`), and brand validation report (`brand-validation-report.yaml`).
+  - *Knowledge Layer* (canonical, in `out/okf/`): persistent, immutable career concepts (`Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `ExecutiveIdentity`, `VoiceProfile`, `PositioningStatements`, `NarrativeLibrary`, `StoryLibrary`, `MessagingLibrary`, `Theme`, `Narrative`). Shared across all target opportunities.
+  - *Runtime Layer* (derived execution context, in `out/<target-slug>/runtime/`): shared opportunity analysis (`opportunity-analysis.yaml`), projection validation report (`projection-validation-report.yaml`), and brand validation report (`brand-validation-report.yaml`).
   - *Coaching Layer* (derived strategy, in `okf/`): opportunity-aware strategy & knowledge gaps.
-  - *Projection Layer* (presentation views, in `out/`): read-only executive communication projections (`resume-executive.md`, `resume-ats.md`, `resume-recruiter.md`, `cover-letter.md`, `linkedin-profile.md`, `playbook.md`, `interview-cheatsheet.md`, `executive-brief.md`, `opportunity-alignment.md`).
+  - *Projection Layer* (presentation views, in `out/<target-slug>/`): read-only executive communication projections (`resume-executive.md`, `resume-ats.md`, `resume-recruiter.md`, `cover-letter.md`, `linkedin-profile.md`, `playbook.md`, `interview-cheatsheet.md`, `executive-brief.md`, `opportunity-alignment.md`).
+- **Opportunity-Scoped Output Subtrees (`out/<target-slug>/`):** Opportunity-specific outputs (runtime context, validation reports, presentation projections) are saved under `out/<target-slug>/` (auto-derived from `target_opportunity.source` in `config/config.yaml`), persisting historic runs across different job opportunities without overwriting.
 - **Pluggable Projection SDK & Registry:** Projections implement a standardized contract and register with `projection-registry`.
 - **Quality discipline:** Every claim in the bundle is tagged `[evidence | inference | recommendation | assumption]`; every concept carries source attribution. The system never fabricates metrics, budgets, or responsibilities.
-
-## v0.5 (Sprint 5) — Executive Narrative & Personal Brand Engine
-
-Pure additive release over v0.4. Adds:
-
-- **Executive Identity Generator (`executive-identity-generator`)**: Synthesises `okf/executive-identity.md`, `okf/voice-profile.md`, and `okf/positioning-statements.md`.
-- **Narrative Engine (`narrative-engine`)**: Generates canonical `okf/narrative-library.md` and `okf/messaging-library.md`.
-- **Story Engine (`story-engine`)**: Formats Evidence Cards into a single consolidated `okf/story-library.md` (8-part story structure).
-- **Brand Validator (`brand-validator`)**: Evaluates cross-projection brand alignment, voice consistency, positioning statement reuse, and story traceability (`out/runtime/brand-validation-report.yaml`).
-
-See the [Sprint 5 design spec](docs/superpowers/specs/2026-07-31-sprint-5-design.md) for the full contract.
