@@ -1,0 +1,20 @@
+version: "6.0"
+generated_at: "2026-08-05T16:39:29Z"
+target_slug: "vervaunt-head-of-ai"
+prediction_evaluation:
+  predicted_archetype: "ai_automation_builder"
+  predicted_overall_fit: "Moderate"
+  actual_outcome: "paused"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "eCommerce domain gap correctly identified"
+    - "n8n/Zapier/Shopify tooling gap correctly identified"
+    - "Enterprise governance over-weighting risk correctly flagged"
+    - "Agency experience gap correctly identified"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 98.5
+    brand_consistency: 99.0
+    projection_quality: 98.2
+    opportunity_fit: 68.0
+    archetype_fit: 62.0

@@ -1,0 +1,16 @@
+target_opportunity:
+  company: "Vervaunt"
+  role_title: "Head of AI & Automation"
+  industry: "eCommerce Agency"
+  interviewer: "Managing Director"
+
+responsibilities:
+  - "Build practical, client-facing AI and workflow automation solutions for premier eCommerce brands."
+  - "Deploy hands-on automation flows using n8n, Zapier, Make, and the Shopify App / API ecosystem."
+  - "Manage client automation projects in a fast-paced digital agency environment."
+  - "Lead small agile developer teams to deliver custom AI bots and integration scripts."
+
+required_experience:
+  - "5+ years in digital agency or eCommerce consulting environments."
+  - "Proven hands-on experience building low-code/no-code workflows in n8n and Zapier."
+  - "Deep expertise in Shopify Plus, Klaviyo, and eCommerce tech stacks."

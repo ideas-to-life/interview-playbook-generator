@@ -1,0 +1,16 @@
+target_opportunity:
+  company: "Global Financial Enterprise"
+  role_title: "Enterprise AI CoE Architect"
+  industry: "Financial Services"
+  interviewer: "Group CTO"
+
+responsibilities:
+  - "Establish Group AI Center of Excellence governance, enterprise platforms, and architecture standards."
+  - "Define enterprise-wide agentic AI architecture blueprints and responsible AI policies."
+  - "Drive multi-million pound digital transformation across regulated business units."
+  - "Partner with executive C-suite stakeholders to prioritize enterprise AI investment portfolios."
+
+required_experience:
+  - "10+ years in Enterprise Architecture, TOGAF, and corporate IT leadership."
+  - "Proven track record governing AI platforms in regulated enterprise environments."
+  - "Deep expertise in programme-scale architecture, risk management, and executive alignment."

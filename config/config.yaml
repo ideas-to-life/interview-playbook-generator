@@ -3,24 +3,24 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Senior Architect"
+  target_role: "Head of AI"
   portfolio_dir: "evidence/"
   location: "London, United Kingdom"
-  phone: "+44 (0) 7304 093460"
+  phone: ""
   email: "alexandre.franco@mostelli.com"
   linkedin: "https://linkedin.com/in/avfranco"
-  portfolio_url: "https://avfranco-br.github.io/portfolio/"
+  portfolio_url: "https://alexandrefranco.dev"
 
 target_opportunity:
-  company: "Banking institution"
-  role_title: "Senior Architect"
-  industry: "Financial industry"
-  interviewer: "Senior Delivery Consultant at Vallum Associates"
-  source: "evidence/target-position/senior-architect-vallum"
+  company: "Vervaunt"
+  role_title: "Head of AI"
+  industry: "Digital Marketing Agency"
+  interviewer: "Recruiter"
+  source: "evidence/target-position/head-of-ai.md"
 
 projections:
   resume:
-    variant: "all"  # Options: all, executive, ats, recruiter
+    variant: "recruiter"  # Options: all, executive, ats, recruiter
   cover_letter:
     max_pages: 1
   linkedin:

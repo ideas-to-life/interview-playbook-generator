@@ -1,15 +1,15 @@
 ---
 name: playbook-orchestrator
-description: Primary entry point orchestrating the v0.5 Career Projection Platform pipeline across Knowledge, Runtime, Coaching, and Projection layers.
+description: Primary entry point orchestrating the v0.6 Career Projection Platform pipeline across Knowledge, Runtime, Coaching, Projection, and Evaluation layers.
 ---
 
 # Playbook Orchestrator
 
 ## Overview
 
-The `playbook-orchestrator` is the primary entry point for generating the Career Projection Platform suite (Executive Identity, Story Library, Resumes, Cover Letter, LinkedIn Profile, Interview Playbook, Executive Brief, Opportunity Alignment, Cheat Sheet, and Brand Validation Report). It reads configuration, validates inputs, guides execution across the four-layer pipeline, and ensures all hard rules are upheld.
+The `playbook-orchestrator` is the primary entry point for generating the Career Projection Platform suite (Executive Identity, Story Library, Resumes, Cover Letter, LinkedIn Profile, Interview Playbook, Executive Brief, Opportunity Alignment, Cheat Sheet, Projection Strategy, Opportunity Fit Report, and Validation Reports). It reads configuration, validates inputs, guides execution across the five-layer pipeline, and ensures all hard rules are upheld.
 
-Outputs are cleanly separated: canonical career knowledge is stored in `out/okf/`, while opportunity-specific runtime context, validation reports, and presentation views are written to `out/<target-slug>/` (derived from `target_opportunity.source` in `config/config.yaml`).
+Outputs are cleanly separated: canonical career knowledge is stored in `out/okf/`, while opportunity-specific runtime context, validation reports, and presentation views are written to `out/<target-slug>/` (derived from `target_opportunity.source` in `config/config.yaml`). Evaluation artifacts reside in `evaluation/opportunities/`.
 
 ## Pre-Flight Configuration & Validation Protocol
 
@@ -21,7 +21,7 @@ Before executing pipeline steps, perform this Pre-Flight Check:
    - `candidate.portfolio_dir` (default: `evidence/` or `inputs/`)
    - `target_opportunity.source` (path to target JD / position spec, e.g. `evidence/target-position/senior-architect-vallum`)
 3. **Execution Gate**:
-   - **IF `config/config.yaml` EXISTS AND `target_opportunity.source` IS SPECIFIED**: Immediately proceed through Step 1 to Step 17. **DO NOT ask the user any questions, DO NOT prompt to create config/config.yaml, and DO NOT ask for a job description file.**
+   - **IF `config/config.yaml` EXISTS AND `target_opportunity.source` IS SPECIFIED**: Immediately proceed through Step 1 to Step 22. **DO NOT ask the user any questions, DO NOT prompt to create config/config.yaml, and DO NOT ask for a job description file.**
    - **ONLY IF `config/config.yaml` IS MISSING OR `target_opportunity.source` IS EMPTY**: Trigger the stop-and-ask protocol to request the target opportunity file path from the user.
 
 ## The Five Hard Rules
@@ -32,7 +32,7 @@ Before executing pipeline steps, perform this Pre-Flight Check:
 4. **Stop and Ask**: Pause and prompt ONLY when required inputs (`config/config.yaml` or `target_opportunity.source`) are missing or unparseable.
 5. **Idempotent Re-runs**: Re-running a Skill overwrites its own output directory cleanly.
 
-## Pipeline Execution Order (v0.5 Sprint 5)
+## Pipeline Execution Order (v0.6 Sprint 6)
 
 ```
 KNOWLEDGE LAYER (canonical; writes to out/okf/)
@@ -48,23 +48,31 @@ KNOWLEDGE LAYER (canonical; writes to out/okf/)
 10. narrative-engine                (okf/narrative-library.md, messaging-library.md)
 11. story-engine                    (okf/story-library.md)
 
-RUNTIME LAYER (derived execution context; writes to out/<target-slug>/runtime/)
+RUNTIME INTELLIGENCE LAYER (derived execution context; writes to out/<target-slug>/runtime/)
 12. opportunity-analyzer            (out/<target-slug>/runtime/opportunity-analysis.yaml)
+13. archetype-classifier            (out/<target-slug>/runtime/archetype-analysis.yaml)
+14. gap-classifier                  (out/<target-slug>/runtime/gap-analysis.yaml)
+15. archetype-fit-evaluator         (out/<target-slug>/runtime/opportunity-fit-report.yaml)
+16. projection-strategy-generator   (out/<target-slug>/runtime/projection-strategy.yaml)
 
 COACHING LAYER (derived; reads canonical + opportunity-analysis)
-13. interview-strategy-generator
-14. knowledge-gaps              (Pre-assembly gate)
+17. interview-strategy-generator
+18. knowledge-gaps                  (Pre-assembly gate)
 
-PROJECTION LAYER (views; reads canonical + opportunity-analysis; writes to out/<target-slug>/)
-15. projection-registry             (Orchestrates registered projections)
+PROJECTION & VALIDATION LAYER (views & reports; writes to out/<target-slug>/)
+19. projection-registry             (Orchestrates registered projections)
     ├── resume-projection           (out/<target-slug>/resume-executive.md, resume-ats.md, resume-recruiter.md)
     ├── cover-letter-projection     (out/<target-slug>/cover-letter.md)
     ├── linkedin-projection         (out/<target-slug>/linkedin-profile.md)
     ├── opportunity-alignment-view  (out/<target-slug>/opportunity-alignment.md)
     ├── executive-brief-view         (out/<target-slug>/executive-brief.md)
     └── playbook-assembler          (out/<target-slug>/playbook.md & out/<target-slug>/interview-cheatsheet.md)
-16. projection-validator            (out/<target-slug>/runtime/projection-validation-report.yaml)
-17. brand-validator                 (out/<target-slug>/runtime/brand-validation-report.yaml)
+20. projection-validator            (out/<target-slug>/runtime/projection-validation-report.yaml)
+21. archetype-fit-validator        (out/<target-slug>/runtime/projection-validation-report.yaml overpositioning check)
+22. brand-validator                 (out/<target-slug>/runtime/brand-validation-report.yaml)
+
+EVALUATION LAYER (learning & feedback; writes to evaluation/opportunities/)
+23. market-feedback-evaluator      (evaluation/opportunities/<target-slug>-evaluation.yaml)
 ```
 
 ## Post-Execution Summary
@@ -72,18 +80,11 @@ PROJECTION LAYER (views; reads canonical + opportunity-analysis; writes to out/<
 Upon completion, present the final output summary:
 - OKF bundle path (`./out/okf/`)
 - Target Opportunity Output Subtree (`./out/<target-slug>/`)
-- Executive Identity path (`./out/okf/executive-identity.md`)
-- Story Library path (`./out/okf/story-library.md`)
-- Runtime analysis path (`./out/<target-slug>/runtime/opportunity-analysis.yaml`)
-- Executive Resume path (`./out/<target-slug>/resume-executive.md`)
-- ATS Resume path (`./out/<target-slug>/resume-ats.md`)
-- Recruiter Resume path (`./out/<target-slug>/resume-recruiter.md`)
-- Cover Letter path (`./out/<target-slug>/cover-letter.md`)
-- LinkedIn Profile path (`./out/<target-slug>/linkedin-profile.md`)
-- Playbook view path (`./out/<target-slug>/playbook.md`)
-- Executive Brief path (`./out/<target-slug>/executive-brief.md`)
-- Opportunity Alignment path (`./out/<target-slug>/opportunity-alignment.md`)
-- Interview cheat sheet path (`./out/<target-slug>/interview-cheatsheet.md`)
-- Projection Validation report (`./out/<target-slug>/runtime/projection-validation-report.yaml`)
-- Brand Validation report (`./out/<target-slug>/runtime/brand-validation-report.yaml`)
-- Unverified/Draft section count.
+- Archetype Analysis (`./out/<target-slug>/runtime/archetype-analysis.yaml`)
+- Gap Analysis (`./out/<target-slug>/runtime/gap-analysis.yaml`)
+- Opportunity Fit Report (`./out/<target-slug>/runtime/opportunity-fit-report.yaml`)
+- Projection Strategy (`./out/<target-slug>/runtime/projection-strategy.yaml`)
+- Resumes & Cover Letter (`./out/<target-slug>/`)
+- Playbook & Brief (`./out/<target-slug>/`)
+- Validation Reports (`./out/<target-slug>/runtime/`)
+- Market Evaluation (`./evaluation/opportunities/`)

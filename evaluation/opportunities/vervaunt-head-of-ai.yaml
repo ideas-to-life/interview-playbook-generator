@@ -1,0 +1,12 @@
+market_feedback:
+  opportunity: "vervaunt-head-of-ai"
+  stage: "recruiter_shortlist"
+  outcome: "paused"
+  positive:
+    - "profile_well_aligned"
+    - "strong_overall_experience"
+  concerns:
+    - "ecommerce_experience"
+    - "agency_experience"
+    - "n8n_zapier_shopify"
+    - "enterprise_governance_weighting"
