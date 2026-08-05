@@ -1,5 +1,5 @@
 version: "6.0"
-generated_at: "2026-08-05T16:39:28Z"
+generated_at: "2026-08-05T17:10:00+01:00"
 target_slug: "head-of-ai"
 prediction_evaluation:
   predicted_archetype: "ai_automation_builder"
@@ -10,7 +10,6 @@ prediction_evaluation:
     - "eCommerce domain gap correctly identified"
     - "n8n/Zapier/Shopify tooling gap correctly identified"
     - "Enterprise governance over-weighting risk correctly flagged"
-    - "Agency experience gap correctly identified"
   missed_signals: []
   external_validation_scores:
     evidence_integrity: 98.5

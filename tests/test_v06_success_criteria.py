@@ -1,5 +1,5 @@
 # tests/test_v06_success_criteria.py
-"""End-to-end success criteria verification for Sprint 6 (v0.6) Opportunity Archetype & Market-Fit Intelligence."""
+"""End-to-end success criteria verification for Sprint 6 (v0.6 & v6.1 Refinement) Opportunity Archetype & Market-Fit Intelligence."""
 import os
 import yaml
 import pytest
@@ -65,7 +65,6 @@ def test_enterprise_ai_coe_regression_golden_test():
 
 
 def test_projection_strategy_prohibits_unsupported_claims():
-    # Verify projection strategy structure format
     strategy_sample = {
         "projection_strategy": {
             "target_archetype": "ai_automation_builder",
@@ -79,6 +78,71 @@ def test_projection_strategy_prohibits_unsupported_claims():
     prohibited = strategy_sample["projection_strategy"]["prohibit_claims"]
     assert "ecommerce_expert" in prohibited
     assert "shopify_experience" in prohibited
+
+
+def test_v61_evidence_relationship_max_alignment_mapping():
+    # Verify default mapping rules: direct -> Strong, adjacent -> Moderate, transferable -> Transferable, absent -> Gap
+    mapping_rules = {
+        "direct": "Strong",
+        "adjacent": "Moderate",
+        "transferable": "Transferable",
+        "absent": "Gap",
+    }
+    assert mapping_rules["direct"] == "Strong"
+    assert mapping_rules["adjacent"] == "Moderate"
+    assert mapping_rules["transferable"] == "Transferable"
+    assert mapping_rules["absent"] == "Gap"
+
+
+def test_v61_projection_strategy_fit_constraints_authority():
+    strategy_sample = {
+        "projection_strategy": {
+            "target_archetype": "ai_automation_builder",
+            "fit_constraints": [
+                {
+                    "requirement": "engineering_automation",
+                    "relationship": "direct",
+                    "maximum_alignment": "Strong"
+                },
+                {
+                    "requirement": "low_code_workflow_automation",
+                    "relationship": "adjacent",
+                    "maximum_alignment": "Moderate"
+                },
+                {
+                    "requirement": "ecommerce_domain",
+                    "relationship": "absent",
+                    "maximum_alignment": "Gap"
+                }
+            ]
+        }
+    }
+    constraints = strategy_sample["projection_strategy"]["fit_constraints"]
+    assert len(constraints) == 3
+    adj_constraint = next(c for c in constraints if c["requirement"] == "low_code_workflow_automation")
+    assert adj_constraint["maximum_alignment"] == "Moderate"
+
+
+def test_v61_fit_consistency_validation_report_warnings():
+    report_sample = {
+        "fit_consistency": {
+            "status": "WARNING",
+            "findings": [
+                {
+                    "type": "alignment_inflation",
+                    "requirement": "low_code_workflow_automation",
+                    "runtime_alignment": "moderate",
+                    "projection_alignment": "strong",
+                    "source": "opportunity-alignment.md",
+                    "reason": "Projection classified requirement as Strong despite runtime max constraint of Moderate."
+                }
+            ]
+        }
+    }
+    fc = report_sample["fit_consistency"]
+    assert fc["status"] == "WARNING"
+    assert len(fc["findings"]) == 1
+    assert fc["findings"][0]["type"] == "alignment_inflation"
 
 
 def test_total_skills_registered_is_at_least_thirty_one():

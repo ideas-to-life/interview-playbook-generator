@@ -38,7 +38,7 @@ The target opportunity slug `<target-slug>` is derived as follows:
 ## Concept Schema & Structure (`out/<target-slug>/runtime/opportunity-analysis.yaml`)
 
 ```yaml
-version: "0.5"
+version: "6.1"
 generated_at: "<ISO-8601>"
 target_slug: "<target-slug>"
 target_opportunity:
@@ -81,9 +81,17 @@ coverage_matrix:
   - requirement: "<Requirement>"
     coverage: "<High | Medium | Low>"
     confidence: "<Strong | Moderate | Weak>"
+    evidence_relationship: "<direct | adjacent | transferable | absent>" # FR-1 v6.1
     primary_evidence: ["<slug-1>", "<slug-2>"]
     capabilities: ["<capability-slug>"]
 ```
+
+## Evidence Relationship Definitions (v6.1 FR-1)
+
+- `direct`: Canonical evidence demonstrates substantially the same capability, domain, tooling or operating context required.
+- `adjacent`: Canonical evidence demonstrates a closely related capability but not the requested experience itself (e.g. custom Python automation vs. low-code SaaS automation).
+- `transferable`: Evidence demonstrates underlying skills reasonably transferable to the requirement, while meaningful contextual differences remain (e.g. enterprise client management vs. agency account leadership).
+- `absent`: No credible canonical evidence supports the requirement.
 
 ## Execution Instructions
 
@@ -92,6 +100,6 @@ coverage_matrix:
 3. **Extract Hiring Goals & Positioning**: Formulate hiring goals and executive positioning.
 4. **Rank Capability Priorities**: Map capabilities from `okf/capabilities/` to target role importance.
 5. **Extract ATS Vocabulary**: Categorise key terminology into `mandatory`, `strong`, and `optional`.
-6. **Build Opportunity Coverage Matrix**: Map major hiring requirements to OKF evidence slugs and capabilities.
+6. **Build Opportunity Coverage Matrix**: Map major hiring requirements to OKF evidence slugs, capabilities, and explicitly classify `evidence_relationship` (`direct`, `adjacent`, `transferable`, or `absent`).
 7. **Write `out/<target-slug>/runtime/opportunity-analysis.yaml`**.
 8. **Append Log**: `okf/log.md`.
