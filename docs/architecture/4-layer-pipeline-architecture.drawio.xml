@@ -1,0 +1,246 @@
+<mxfile host="app.diagrams.net" agent="Antigravity" pages="2">
+  <diagram id="pipeline-architecture" name="4-Layer Pipeline Architecture">
+    <mxGraphModel dx="1843" dy="789" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1440" pageHeight="960" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1" value="Career Projection Platform v0.5: 4-Layer Pipeline Architecture" vertex="1">
+          <mxGeometry height="40" width="700" x="40" y="6" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=2;fontColor=#555555" value="Transforming candidate portfolios and target opportunities into OKF v0.2 knowledge graphs and tailored executive artefacts" vertex="1">
+          <mxGeometry height="25" width="800" x="40" y="41" as="geometry" />
+        </mxCell>
+        <mxCell id="boundary" parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=14;fontStyle=1;align=center;verticalAlign=top;spacingLeft=15;spacingTop=10;" value="System Boundary: Career Projection Platform Engine" vertex="1">
+          <mxGeometry height="640" width="980" x="230" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="input_portfolio" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;fontStyle=1;fontColor=#333333;" value="Candidate Portfolio&lt;br&gt;&lt;font style=&quot;font-size:11px;font-style:italic;&quot;&gt;inputs/ (CV, LinkedIn,&lt;br&gt;slide decks, docs)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="110" width="160" x="40" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="input_opportunity" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;fontStyle=1;fontColor=#333333;" value="Target Opportunity&lt;br&gt;&lt;font style=&quot;font-size:11px;font-style:italic;&quot;&gt;inputs/ (JD / recruiter&lt;br&gt;msg / role summary)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="110" width="160" x="40" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="layer1_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=13;fontStyle=1;align=center;verticalAlign=top;spacingTop=8;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="1. KNOWLEDGE LAYER (Canonical Node Extraction &amp; Synthesis)&lt;br&gt;&lt;font style=&quot;font-size:11px;font-weight:normal;&quot;&gt;Writes canonical knowledge nodes to out/okf/ (shared across all opportunities)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="150" width="930" x="250" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_ingest" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=12;fontStyle=0" value="Ingestion &amp;amp; Mining&lt;br&gt;&lt;font&gt;portfolio-ingestor&lt;br&gt;portfolio-analyzer&lt;br&gt;achievement-extractor&lt;/font&gt;" vertex="1">
+          <mxGeometry height="85" width="200" x="270" y="173" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_cards" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=12;fontStyle=0" value="Evidence &amp;amp; Capabilities&lt;br&gt;&lt;font&gt;evidence-card-generator&lt;br&gt;capability-extractor&lt;br&gt;signature-achievements-curator&lt;/font&gt;" vertex="1">
+          <mxGeometry height="85" width="220" x="490" y="173" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_identity" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=12;fontStyle=0" value="Executive Identity &amp;amp; Stories&lt;br&gt;&lt;font&gt;behaviour-profile-generator&lt;br&gt;executive-identity-generator&lt;br&gt;narrative-engine | story-engine&lt;/font&gt;" vertex="1">
+          <mxGeometry height="85" width="230" x="730" y="173" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_okf_store" parent="1" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;fontStyle=1" value="OKF Bundle&lt;br&gt;&lt;font&gt;out/okf/*.md&lt;/font&gt;" vertex="1">
+          <mxGeometry height="90" width="180" x="980" y="168" as="geometry" />
+        </mxCell>
+        <mxCell id="layer2_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=12;fontStyle=1;align=center;verticalAlign=top;spacingTop=8;" value="2. RUNTIME LAYER (Execution Context)&lt;br&gt;&lt;font style=&quot;font-size:10px;font-weight:normal;&quot;&gt;Writes to out/&lt;target-slug&gt;/runtime/&lt;/font&gt;" vertex="1">
+          <mxGeometry height="145" width="450" x="250" y="295" as="geometry" />
+        </mxCell>
+        <mxCell id="l2_analyzer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=12;fontStyle=0" value="opportunity-analyzer&lt;br&gt;&lt;font&gt;Parses JD &amp;amp; role requirements&lt;br&gt;emits opportunity-analysis.yaml&lt;/font&gt;" vertex="1">
+          <mxGeometry height="80" width="410" x="270" y="345" as="geometry" />
+        </mxCell>
+        <mxCell id="layer3_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=12;fontStyle=1;align=center;verticalAlign=top;spacingTop=8;" value="3. COACHING LAYER (Strategy &amp; Gap Analysis)&lt;br&gt;&lt;font style=&quot;font-size:10px;font-weight:normal;&quot;&gt;Evaluates canonical bundle against runtime context&lt;/font&gt;" vertex="1">
+          <mxGeometry height="145" width="450" x="730" y="295" as="geometry" />
+        </mxCell>
+        <mxCell id="l3_strategy" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;fontStyle=0" value="interview-strategy-generator&lt;br&gt;&lt;font&gt;Story ranking &amp;amp; objection handling&lt;/font&gt;" vertex="1">
+          <mxGeometry height="80" width="200" x="750" y="345" as="geometry" />
+        </mxCell>
+        <mxCell id="l3_gaps" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;fontStyle=0" value="knowledge-gaps&lt;br&gt;&lt;font&gt;Pre-assembly gate &amp;amp; severe gap report&lt;/font&gt;" vertex="1">
+          <mxGeometry height="80" width="195" x="965" y="345" as="geometry" />
+        </mxCell>
+        <mxCell id="layer4_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=13;fontStyle=1;align=center;verticalAlign=top;spacingTop=8;" value="4. PROJECTION &amp; VALIDATION LAYER (Executive Communications &amp; Verification)&lt;br&gt;&lt;font style=&quot;font-size:11px;font-weight:normal;&quot;&gt;Orchestrates view projections, builds playbook, and runs compliance validation gates into out/&lt;target-slug&gt;/&lt;/font&gt;" vertex="1">
+          <mxGeometry height="240" width="930" x="250" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="l4_registry" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=12;fontStyle=0" value="projection-registry&lt;br&gt;&lt;font&gt;Discovers &amp;amp; executes active projections&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="220" x="270" y="511" as="geometry" />
+        </mxCell>
+        <mxCell id="l4_projections" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=12;fontStyle=0" value="Projection Generators&lt;br&gt;&lt;font&gt;resume-projection (Executive/ATS/Recruiter)&lt;br&gt;cover-letter-projection | linkedin-projection&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="310" x="510" y="511" as="geometry" />
+        </mxCell>
+        <mxCell id="l4_views" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=12;fontStyle=0" value="Executive Views &amp;amp; Playbook&lt;br&gt;&lt;font&gt;opportunity-alignment-view&lt;br&gt;executive-brief-view | playbook-assembler&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="320" x="840" y="511" as="geometry" />
+        </mxCell>
+        <mxCell id="l4_validation" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontStyle=0" value="Validation &amp;amp; Quality Gates&lt;br&gt;&lt;font&gt;projection-validator &amp;amp; brand-validator (verifies claim tags [evidence]/[inference], ATS density, voice consistency)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="85" width="890" x="270" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="out_resumes" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;fontStyle=1;fontColor=#333333;" value="Executive Resumes &amp;amp;&lt;br&gt;Cover Letter&lt;br&gt;&lt;font style=&quot;font-size:10px;font-style:italic;&quot;&gt;resume-executive.md&lt;br&gt;cover-letter.md&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="170" x="1230" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="out_linkedin" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;fontStyle=1;fontColor=#333333;" value="LinkedIn Profile &amp;amp;&lt;br&gt;Executive Brief&lt;br&gt;&lt;font style=&quot;font-size:10px;font-style:italic;&quot;&gt;linkedin-profile.md&lt;br&gt;executive-brief.md&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="170" x="1230" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="out_playbook" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;fontStyle=1;fontColor=#333333;" value="Interview Playbook &amp;amp;&lt;br&gt;Cheatsheet&lt;br&gt;&lt;font style=&quot;font-size:10px;font-style:italic;&quot;&gt;playbook.md&lt;br&gt;interview-cheatsheet.md&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="170" x="1230" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="footer_note" parent="1" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;align=left;spacingLeft=10;" value="Execution Architecture Note: The AI Agent acts as the runtime executing SKILL.md instructions. State is persisted transparently on disk via OKF v0.2 markdown graphs and YAML runtime contexts with 0 fabrication and 100% claim attribution ([evidence], [inference], [recommendation], [assumption])." vertex="1">
+          <mxGeometry height="55" width="1360" x="40" y="745" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_portfolio_l1" edge="1" parent="1" source="input_portfolio" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6c8ebf;" target="layer1_box" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_opp_l1" edge="1" parent="1" source="input_opportunity" style="endArrow=block;html=1;rounded=0;strokeWidth=1;strokeColor=#6c8ebf;" target="layer1_box" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_opp_l2" edge="1" parent="1" source="input_opportunity" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6c8ebf;" target="layer2_box" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_l1_l2" edge="1" parent="1" source="layer1_box" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;strokeColor=#d6b656;" target="layer2_box" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_l1_l3" edge="1" parent="1" source="layer1_box" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;strokeColor=#d6b656;" target="layer3_box" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_l2_l3" edge="1" parent="1" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;strokeColor=#d79b00;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="372.5" as="sourcePoint" />
+            <mxPoint x="730" y="372.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_l1_l4" edge="1" parent="1" source="layer1_box" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;strokeColor=#d6b656;" target="layer4_box" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_l2_l4" edge="1" parent="1" source="layer2_box" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;strokeColor=#d79b00;" target="layer4_box" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_l3_l4" edge="1" parent="1" source="layer3_box" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;strokeColor=#82b366;" target="layer4_box" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_l4_resumes" edge="1" parent="1" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#9673a6;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1180" y="527.875" as="sourcePoint" />
+            <mxPoint x="1230" y="521.625" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_l4_linkedin" edge="1" parent="1" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#9673a6;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1180" y="593.75" as="sourcePoint" />
+            <mxPoint x="1230" y="594.5833333333333" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_l4_playbook" edge="1" parent="1" source="layer4_box" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#9673a6;" target="out_playbook" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Diagram for export" id="hpjQwBx8WWdbhR_e3kBl">
+    <mxGraphModel dx="1994" dy="846" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1440" pageHeight="960" math="0" shadow="0">
+      <root>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-0" />
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-1" parent="r4PNdbKAppfkwCEwi6-C-0" />
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-4" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=14;fontStyle=1;align=center;verticalAlign=top;spacingLeft=15;spacingTop=10;" value="System Boundary: Career Projection Platform Engine" vertex="1">
+          <mxGeometry height="640" width="980" x="200" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-5" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;fontStyle=1;fontColor=#333333;" value="Candidate Portfolio&lt;br&gt;&lt;font style=&quot;font-size:11px;font-style:italic;&quot;&gt;inputs/ (CV, LinkedIn,&lt;br&gt;slide decks, docs)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="110" width="160" x="10" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-6" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;fontStyle=1;fontColor=#333333;" value="Target Opportunity&lt;br&gt;&lt;font style=&quot;font-size:11px;font-style:italic;&quot;&gt;inputs/ (JD / recruiter&lt;br&gt;msg / role summary)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="110" width="160" x="10" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-7" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=13;fontStyle=1;align=center;verticalAlign=top;spacingTop=8;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="1. KNOWLEDGE LAYER (Canonical Node Extraction &amp; Synthesis)&lt;br&gt;&lt;font style=&quot;font-size:11px;font-weight:normal;&quot;&gt;Writes canonical knowledge nodes to out/okf/ (shared across all opportunities)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="150" width="930" x="220" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-8" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=12;fontStyle=0" value="Ingestion &amp;amp; Mining&lt;br&gt;&lt;font&gt;portfolio-ingestor&lt;br&gt;portfolio-analyzer&lt;br&gt;achievement-extractor&lt;/font&gt;" vertex="1">
+          <mxGeometry height="85" width="200" x="240" y="103" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-9" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=12;fontStyle=0" value="Evidence &amp;amp; Capabilities&lt;br&gt;&lt;font&gt;evidence-card-generator&lt;br&gt;capability-extractor&lt;br&gt;signature-achievements-curator&lt;/font&gt;" vertex="1">
+          <mxGeometry height="85" width="220" x="460" y="103" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-10" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=12;fontStyle=0" value="Executive Identity &amp;amp; Stories&lt;br&gt;&lt;font&gt;behaviour-profile-generator&lt;br&gt;executive-identity-generator&lt;br&gt;narrative-engine | story-engine&lt;/font&gt;" vertex="1">
+          <mxGeometry height="85" width="230" x="700" y="103" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-11" parent="r4PNdbKAppfkwCEwi6-C-1" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;fontStyle=1" value="OKF Bundle&lt;br&gt;&lt;font&gt;out/okf/*.md&lt;/font&gt;" vertex="1">
+          <mxGeometry height="90" width="180" x="950" y="98" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-12" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=12;fontStyle=1;align=center;verticalAlign=top;spacingTop=8;" value="2. RUNTIME LAYER (Execution Context)&lt;br&gt;&lt;font style=&quot;font-size:10px;font-weight:normal;&quot;&gt;Writes to out/&lt;target-slug&gt;/runtime/&lt;/font&gt;" vertex="1">
+          <mxGeometry height="145" width="450" x="220" y="225" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-13" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=12;fontStyle=0" value="opportunity-analyzer&lt;br&gt;&lt;font&gt;Parses JD &amp;amp; role requirements&lt;br&gt;emits opportunity-analysis.yaml&lt;/font&gt;" vertex="1">
+          <mxGeometry height="80" width="410" x="240" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-14" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=12;fontStyle=1;align=center;verticalAlign=top;spacingTop=8;" value="3. COACHING LAYER (Strategy &amp; Gap Analysis)&lt;br&gt;&lt;font style=&quot;font-size:10px;font-weight:normal;&quot;&gt;Evaluates canonical bundle against runtime context&lt;/font&gt;" vertex="1">
+          <mxGeometry height="145" width="450" x="700" y="225" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-15" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;fontStyle=0" value="interview-strategy-generator&lt;br&gt;&lt;font&gt;Story ranking &amp;amp; objection handling&lt;/font&gt;" vertex="1">
+          <mxGeometry height="80" width="200" x="720" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-16" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;fontStyle=0" value="knowledge-gaps&lt;br&gt;&lt;font&gt;Pre-assembly gate &amp;amp; severe gap report&lt;/font&gt;" vertex="1">
+          <mxGeometry height="80" width="195" x="935" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-17" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=13;fontStyle=1;align=center;verticalAlign=top;spacingTop=8;" value="4. PROJECTION &amp; VALIDATION LAYER (Executive Communications &amp; Verification)&lt;br&gt;&lt;font style=&quot;font-size:11px;font-weight:normal;&quot;&gt;Orchestrates view projections, builds playbook, and runs compliance validation gates into out/&lt;target-slug&gt;/&lt;/font&gt;" vertex="1">
+          <mxGeometry height="240" width="930" x="220" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-18" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=12;fontStyle=0" value="projection-registry&lt;br&gt;&lt;font&gt;Discovers &amp;amp; executes active projections&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="220" x="240" y="441" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-19" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=12;fontStyle=0" value="Projection Generators&lt;br&gt;&lt;font&gt;resume-projection (Executive/ATS/Recruiter)&lt;br&gt;cover-letter-projection | linkedin-projection&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="310" x="480" y="441" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-20" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=12;fontStyle=0" value="Executive Views &amp;amp; Playbook&lt;br&gt;&lt;font&gt;opportunity-alignment-view&lt;br&gt;executive-brief-view | playbook-assembler&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="320" x="810" y="441" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-21" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontStyle=0" value="Validation &amp;amp; Quality Gates&lt;br&gt;&lt;font&gt;projection-validator &amp;amp; brand-validator (verifies claim tags [evidence]/[inference], ATS density, voice consistency)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="85" width="890" x="240" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-22" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;fontStyle=1;fontColor=#333333;" value="Executive Resumes &amp;amp;&lt;br&gt;Cover Letter&lt;br&gt;&lt;font style=&quot;font-size:10px;font-style:italic;&quot;&gt;resume-executive.md&lt;br&gt;cover-letter.md&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="170" x="1200" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-23" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;fontStyle=1;fontColor=#333333;" value="LinkedIn Profile &amp;amp;&lt;br&gt;Executive Brief&lt;br&gt;&lt;font style=&quot;font-size:10px;font-style:italic;&quot;&gt;linkedin-profile.md&lt;br&gt;executive-brief.md&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="170" x="1200" y="485" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-24" parent="r4PNdbKAppfkwCEwi6-C-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;fontStyle=1;fontColor=#333333;" value="Interview Playbook &amp;amp;&lt;br&gt;Cheatsheet&lt;br&gt;&lt;font style=&quot;font-size:10px;font-style:italic;&quot;&gt;playbook.md&lt;br&gt;interview-cheatsheet.md&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="170" x="1200" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-25" parent="r4PNdbKAppfkwCEwi6-C-1" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;align=left;spacingLeft=10;" value="Execution Architecture Note: The AI Agent acts as the runtime executing SKILL.md instructions. State is persisted transparently on disk via OKF v0.2 markdown graphs and YAML runtime contexts with 0 fabrication and 100% claim attribution ([evidence], [inference], [recommendation], [assumption])." vertex="1">
+          <mxGeometry height="55" width="1360" x="10" y="675" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-26" edge="1" parent="r4PNdbKAppfkwCEwi6-C-1" source="r4PNdbKAppfkwCEwi6-C-5" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6c8ebf;" target="r4PNdbKAppfkwCEwi6-C-7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-27" edge="1" parent="r4PNdbKAppfkwCEwi6-C-1" source="r4PNdbKAppfkwCEwi6-C-6" style="endArrow=block;html=1;rounded=0;strokeWidth=1;strokeColor=#6c8ebf;" target="r4PNdbKAppfkwCEwi6-C-7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-28" edge="1" parent="r4PNdbKAppfkwCEwi6-C-1" source="r4PNdbKAppfkwCEwi6-C-6" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6c8ebf;" target="r4PNdbKAppfkwCEwi6-C-12" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-29" edge="1" parent="r4PNdbKAppfkwCEwi6-C-1" source="r4PNdbKAppfkwCEwi6-C-7" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;strokeColor=#d6b656;" target="r4PNdbKAppfkwCEwi6-C-12" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-30" edge="1" parent="r4PNdbKAppfkwCEwi6-C-1" source="r4PNdbKAppfkwCEwi6-C-7" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;strokeColor=#d6b656;" target="r4PNdbKAppfkwCEwi6-C-14" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-31" edge="1" parent="r4PNdbKAppfkwCEwi6-C-1" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;strokeColor=#d79b00;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="670" y="302.5" as="sourcePoint" />
+            <mxPoint x="700" y="302.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-32" edge="1" parent="r4PNdbKAppfkwCEwi6-C-1" source="r4PNdbKAppfkwCEwi6-C-7" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;strokeColor=#d6b656;" target="r4PNdbKAppfkwCEwi6-C-17" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-33" edge="1" parent="r4PNdbKAppfkwCEwi6-C-1" source="r4PNdbKAppfkwCEwi6-C-12" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;strokeColor=#d79b00;" target="r4PNdbKAppfkwCEwi6-C-17" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-34" edge="1" parent="r4PNdbKAppfkwCEwi6-C-1" source="r4PNdbKAppfkwCEwi6-C-14" style="endArrow=block;html=1;rounded=0;strokeWidth=1.5;strokeColor=#82b366;" target="r4PNdbKAppfkwCEwi6-C-17" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-35" edge="1" parent="r4PNdbKAppfkwCEwi6-C-1" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#9673a6;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1150" y="457.875" as="sourcePoint" />
+            <mxPoint x="1200" y="451.625" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-36" edge="1" parent="r4PNdbKAppfkwCEwi6-C-1" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#9673a6;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1150" y="523.75" as="sourcePoint" />
+            <mxPoint x="1200" y="524.5833333333333" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r4PNdbKAppfkwCEwi6-C-37" edge="1" parent="r4PNdbKAppfkwCEwi6-C-1" source="r4PNdbKAppfkwCEwi6-C-17" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#9673a6;" target="r4PNdbKAppfkwCEwi6-C-24" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

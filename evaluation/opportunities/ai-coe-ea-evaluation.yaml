@@ -1,0 +1,18 @@
+version: "6.0"
+generated_at: "2026-08-05T17:21:08Z"
+target_slug: "ai-coe-ea"
+prediction_evaluation:
+  predicted_archetype: "enterprise_ai_architect"
+  predicted_overall_fit: "High"
+  actual_outcome: "active_pipeline"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Enterprise AI architecture & CoE priorities correctly matched candidate track record"
+    - "Transferable regulatory governance from BAT & BBC Studios correctly positioned for financial services"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.0
+    projection_quality: 98.5
+    opportunity_fit: 92.0
+    archetype_fit: 95.0

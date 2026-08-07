@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Head of AI"
+  target_role: " SAP Business Transformation Management Portfolio Lead"
   portfolio_dir: "evidence/"
   location: "London, United Kingdom"
   phone: ""
@@ -12,11 +12,11 @@ candidate:
   portfolio_url: "https://alexandrefranco.dev"
 
 target_opportunity:
-  company: "Vervaunt"
-  role_title: "Head of AI"
-  industry: "Digital Marketing Agency"
+  company: "ATOS.net"
+  role_title: " SAP Business Transformation Management Portfolio Lead"
+  industry: "Global Technology Services"
   interviewer: "Recruiter"
-  source: "evidence/target-position/head-of-ai.md"
+  source: "evidence/target-position/sap-biz-transformation-portfolio-lead.md"
 
 projections:
   resume:

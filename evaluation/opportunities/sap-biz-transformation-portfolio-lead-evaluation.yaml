@@ -1,0 +1,18 @@
+version: "6.0"
+generated_at: "2026-08-06T23:45:00Z"
+target_slug: "sap-biz-transformation-portfolio-lead"
+prediction_evaluation:
+  predicted_archetype: "sap_portfolio_advisory_lead"
+  predicted_overall_fit: "Strong"
+  actual_outcome: "active_pipeline"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "LeanIX EA certification and enterprise repository management correctly matched target requirements"
+    - "Pre-sales enablement and GTM workshop history across global GEOs accurately aligned"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.0
+    projection_quality: 98.5
+    opportunity_fit: 94.0
+    archetype_fit: 96.0
