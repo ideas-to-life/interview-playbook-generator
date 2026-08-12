@@ -59,16 +59,29 @@ projection_strategy:
       maximum_alignment: "<Strong | Moderate | Transferable | Gap>"
 ```
 
-## Alignment Constraint Mapping Rules (v6.1 FR-2)
-
 | Evidence Relationship | Maximum Default Alignment |
 | :--- | :--- |
-| `direct` | `Strong` |
-| `adjacent` | `Moderate` |
-| `transferable` | `Transferable` |
-| `absent` | `Gap` |
+| `core` / `direct` | `Core` / `Strong` |
+| `strong` | `Strong` |
+| `relevant` | `Relevant` / `Moderate` |
+| `adjacent` | `Adjacent` / `Transferable` |
+| `gap` / `absent` | `Gap` |
 
-A downstream projection shall NOT classify adjacent or transferable evidence as `Strong` unless Runtime Intelligence explicitly provides an evidence-backed override.
+A downstream projection shall NOT classify adjacent or transferable evidence as `Strong` or `Core` unless Runtime Intelligence explicitly provides an evidence-backed override.
+
+## 5-Tier Capability Classification Rules
+
+Capabilities must be classified against canonical evidence into:
+- **CORE / STRONG**: May shape headline, form primary positioning, lead executive summary, anchor experience bullets.
+- **RELEVANT**: Strengthen target alignment, appear in executive summary, support selected experience bullets.
+- **ADJACENT**: Demonstrate transferable capability and context. MUST NOT automatically become primary identity, headline title, leadership title, or long-duration claim.
+- **GAP**: MUST NOT be represented as demonstrated experience.
+
+## Duration & Leadership Integrity Rules
+
+1. **Duration Integrity**: Target-role terminology MUST NEVER cause duration inference (e.g. "experience with CCoE governance" MUST NOT become "15+ years building CCoEs" unless explicitly evidenced in career history).
+2. **Leadership Integrity**: Distinguish between verb strengths: `led`, `established`, `designed`, `contributed to`, `advised`, `supported`, `operated within`. Target role language like "CCoE Leader" must NOT cause promotion of lower-strength evidence into a leadership claim.
+3. **Evidence Fidelity**: Never transform "relevant experience with X" into "expert in X", or "contributed to X" into "led X".
 
 ## Execution Instructions
 

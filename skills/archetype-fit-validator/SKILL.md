@@ -20,14 +20,15 @@ NEVER FABRICATE:
 
 Do NOT modify `okf/` canonical bundle. Output appends to `out/<target-slug>/runtime/projection-validation-report.yaml`.
 
-## Fit-Consistency Validation Checks (v6.1 FR-10, FR-11, FR-12)
+## Fit-Consistency & Identity-Drift Validation Checks (v6.1 FR-10, FR-11, FR-12)
 
-The validator evaluates projections against 4 key fit consistency axes:
+The validator evaluates projections against 5 key fit consistency & identity preservation axes:
 
 1. **Alignment Inflation**: Runtime specifies `maximum_alignment: Moderate` (or `Gap`), but projection classifies requirement as `Strong`.
 2. **Evidence Inflation**: Runtime classifies relationship as `adjacent` or `transferable`, but projection asserts or implies `direct` experience.
 3. **Gap Disappearance**: Runtime identifies a material gap, but projection omits or contradicts the gap in a section explicitly assessing that requirement.
-4. **Unsupported Equivalence**: Projection uses prohibited gap argumentation patterns (e.g., claiming custom Python Python multi-agent orchestration is equivalent to n8n/Zapier mastery).
+4. **Unsupported Equivalence**: Projection uses prohibited gap argumentation patterns (e.g., claiming custom Python multi-agent orchestration is equivalent to n8n/Zapier mastery).
+5. **Identity Drift / Over-Positioning**: Projected document makes candidate appear to have a materially different primary professional identity from canonical identity (e.g. headline dominated by target title displacing candidate archetype, target domain appearing as primary profession, unsupported leadership titles like "CCoE Leader", or unsupported duration claims like "15+ years building CCoEs").
 
 ## Validation Scope (FR-12)
 
@@ -47,14 +48,20 @@ version: "6.1"
 generated_at: "<ISO-8601>"
 target_slug: "<target-slug>"
 archetype_validation:
-  status: "<PASSED | WARNING>"
+  status: "<PASSED | WARNING | FAIL>"
   overpositioning_score: 95.0
-  findings: []
+  findings:
+    - type: "identity_drift"
+      signal: "<headline_drift | domain_displacement | unsupported_leadership_title | unsupported_duration_claim>"
+      target_element: "<headline | executive_summary | professional_experience>"
+      detected_claim: "<Claim text, e.g. 15+ years building Cloud Centre of Excellence operating models>"
+      canonical_baseline: "<Canonical archetype, e.g. Enterprise Architect / Transformation & AI Advisor>"
+      reason: "> Projected document makes candidate appear to have target archetype as primary profession."
 
 fit_consistency:
   status: "<PASSED | WARNING>"
   findings:
-    - type: "<alignment_inflation | evidence_inflation | gap_disappearance | unsupported_equivalence>"
+    - type: "<alignment_inflation | evidence_inflation | gap_disappearance | unsupported_equivalence | identity_drift>"
       requirement: "<requirement_slug>"
       runtime_alignment: "<moderate | gap>"
       projection_alignment: "<strong | direct>"
