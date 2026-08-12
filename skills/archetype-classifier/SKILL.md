@@ -18,11 +18,14 @@ NEVER FABRICATE:
 - Do NOT infer archetypes based on assumptions not supported by the JD text.
 ```
 
+1. **Canonical Identity Protection**: The target role archetype MUST NEVER automatically overwrite or replace the candidate's canonical primary professional archetype (from `okf/executive-identity.md`).
+2. **Explicit Archetype Triad**: Always distinguish `candidate_archetype`, `target_role_archetype`, and `projection_positioning`.
+
 Do NOT modify any files in `okf/` or `out/okf/`. Output lives exclusively in `out/<target-slug>/runtime/archetype-analysis.yaml`.
 
 ## Input & Output Contracts
 
-- **Inputs**: `config/config.yaml`, target opportunity JD / spec file, `out/<target-slug>/runtime/opportunity-analysis.yaml`.
+- **Inputs**: `config/config.yaml`, target opportunity JD / spec file, `okf/executive-identity.md`, `out/<target-slug>/runtime/opportunity-analysis.yaml`.
 - **Outputs**:
   - `out/<target-slug>/runtime/archetype-analysis.yaml`
   - `okf/log.md` (append entry)
@@ -31,6 +34,7 @@ Do NOT modify any files in `okf/` or `out/okf/`. Output lives exclusively in `ou
 
 Supported initial taxonomy (extensible):
 - `enterprise_architect`: Focus on broad enterprise IT architecture, TOGAF, legacy modernization.
+- `enterprise_cloud_architect`: Enterprise-wide cloud architecture, CCoE governance, cloud modernisation strategy.
 - `enterprise_ai_architect`: Enterprise-wide AI strategy, governance, platforms, regulated industries.
 - `ai_coe_architect`: Setting up AI Centers of Excellence, platform enablement, enterprise AI standards.
 - `ai_transformation_leader`: Large-scale organizational AI transformation and change management.
@@ -46,9 +50,13 @@ Supported initial taxonomy (extensible):
 ## Output Schema (`out/<target-slug>/runtime/archetype-analysis.yaml`)
 
 ```yaml
-version: "6.0"
+version: "6.1"
 generated_at: "<ISO-8601>"
 target_slug: "<target-slug>"
+archetype_alignment:
+  candidate_archetype: "<candidate_canonical_archetype, e.g. Enterprise Architect / Transformation & AI Advisor>"
+  target_role_archetype: "<target_role_archetype_slug, e.g. enterprise_cloud_architect>"
+  projection_positioning: "<Positioning adapting candidate archetype with target emphasis without identity substitution>"
 opportunity_archetype:
   primary: "<primary_archetype_slug>"
   secondary:

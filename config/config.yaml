@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: " SAP Business Transformation Management Portfolio Lead"
+  target_role: " Enterprise/Cloud Architect"
   portfolio_dir: "evidence/"
   location: "London, United Kingdom"
   phone: ""
@@ -12,11 +12,11 @@ candidate:
   portfolio_url: "https://alexandrefranco.dev"
 
 target_opportunity:
-  company: "ATOS.net"
-  role_title: " SAP Business Transformation Management Portfolio Lead"
-  industry: "Global Technology Services"
+  company: ""
+  role_title: "Enterprise/Cloud Architect"
+  industry: ""
   interviewer: "Recruiter"
-  source: "evidence/target-position/sap-biz-transformation-portfolio-lead.md"
+  source: "evidence/target-position/enterprise-cloud-architect.md"
 
 projections:
   resume:

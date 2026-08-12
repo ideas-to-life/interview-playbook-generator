@@ -22,11 +22,15 @@ NEVER FABRICATE:
 - Projects, Metrics, Team sizes, Budgets, Technologies, Responsibilities, Tenure
 ```
 
-1. **Read-only**: Never modify any concept file in `okf/`.
-2. **Clean Presentation Output**: Presentation view files in `out/<target-slug>/*.md` are submission-ready markdown files. Do NOT include YAML frontmatter blocks or internal classification tags (`[evidence]`, `[inference]`, `[recommendation]`, `[Evidence: ...]`).
-3. **Canonical Positioning**: Adapt introductory summary directly from `okf/positioning-statements.md` (`Executive Variant`) and `okf/messaging-library.md` (`Career Summary Block`). Do NOT generate independent positioning prose.
-4. **Full Document Scope**: Every generated resume variant MUST be complete and submission-ready, including all 10 standard executive sections.
-5. **Evidence-backed**: Every achievement, role description, and metric must trace back to canonical OKF evidence cards or achievements.
+6. **Headline Generation Priority**: The professional headline MUST prioritize:
+   1. Canonical professional identity (e.g. `Enterprise Architect`)
+   2. Strong target-relevant differentiators (e.g. `Transformation`, `Governance`, `AI`)
+   3. Relevant target terminology (e.g. `Cloud Modernisation`)
+   4. Role-specific keywords for discoverability
+   Target job titles may be incorporated ONLY where they remain truthful representations of candidate archetype (e.g., `Enterprise Architect | Cloud Transformation, Governance & AI` rather than `Enterprise & Cloud Architect | CCoE Leader`).
+7. **Executive Summary Hierarchy**: Executive summaries MUST preserve the candidate's career trajectory hierarchy:
+   `Enterprise Architecture` -> `Transformation & Governance` -> `Cloud Modernisation` -> `AI`
+   Target terminology MUST NOT displace the candidate's primary Enterprise Architecture foundation.
 
 ## Required 10 Standard Sections
 

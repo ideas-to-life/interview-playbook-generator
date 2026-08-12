@@ -79,6 +79,14 @@ Surface the question to the user; do not invent an answer.
 
 Every Skill's input set determines its output set. Re-running a Skill overwrites its own output directory cleanly. The `generated.at` timestamp updates on every write; `verified` is preserved if the body is unchanged.
 
+## Governing Principles
+
+1. **Tailor expression, not identity**: Tailor the expression of the candidate to the opportunity, never the identity of the candidate to the opportunity.
+2. **Evidence determining authority**: Evidence determines what Alexandre can credibly claim; canonical identity determines who Alexandre is; the target opportunity determines which of those truths should be emphasised.
+3. **Identity Preservation Invariant**:
+   `Projected Identity = Canonical Professional Identity + Target-Relevant Emphasis - Irrelevant Detail`
+   Target-role tailoring may change the emphasis of the candidate's canonical identity, but must never redefine the candidate's canonical professional identity.
+
 ## How the pipeline runs (v0.5)
 
 ```
