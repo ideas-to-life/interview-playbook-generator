@@ -86,6 +86,10 @@ Every Skill's input set determines its output set. Re-running a Skill overwrites
 3. **Identity Preservation Invariant**:
    `Projected Identity = Canonical Professional Identity + Target-Relevant Emphasis - Irrelevant Detail`
    Target-role tailoring may change the emphasis of the candidate's canonical identity, but must never redefine the candidate's canonical professional identity.
+4. **Evidence relevance does not imply evidence equivalence**: A claim may only be generated at the level of ownership, scope, specificity, duration and seniority explicitly supported by its evidence.
+5. **No inferred leadership from contribution**: When evidence supports contribution to a capability, the system must not infer leadership, ownership, establishment, or end-to-end responsibility for that capability.
+6. **Project relevance aggressively, project responsibility conservatively**:
+   Canonical identity determines who the candidate is $\rightarrow$ Evidence determines what the candidate has done $\rightarrow$ Claim-strength validation determines how strongly that experience may be stated $\rightarrow$ Target relevance determines what should be emphasised.
 
 ## How the pipeline runs (v0.5)
 

@@ -29,6 +29,8 @@ The validator evaluates projections against 5 key fit consistency & identity pre
 3. **Gap Disappearance**: Runtime identifies a material gap, but projection omits or contradicts the gap in a section explicitly assessing that requirement.
 4. **Unsupported Equivalence**: Projection uses prohibited gap argumentation patterns (e.g., claiming custom Python multi-agent orchestration is equivalent to n8n/Zapier mastery).
 5. **Identity Drift / Over-Positioning**: Projected document makes candidate appear to have a materially different primary professional identity from canonical identity (e.g. headline dominated by target title displacing candidate archetype, target domain appearing as primary profession, unsupported leadership titles like "CCoE Leader", or unsupported duration claims like "15+ years building CCoEs").
+6. **Claim Scope Vector Violation ($\text{ClaimScope} > \text{EvidenceScope}$)**: Projected claim exceeds evidence-supported Ownership, Scope, Domain, Specificity, Duration, or Seniority vector limits.
+7. **Unbacked High-Risk / "From Scratch" Claims**: Use of high-risk verbs (`Led`, `Owned`, `Established`, `Built`, `CCoE Leader`) or "from scratch" phrases (`from scratch`, `built from the ground up`, `established from inception`) without explicit establishment evidence. Emits `DOWNGRADE` or `REJECT` finding.
 
 ## Validation Scope (FR-12)
 

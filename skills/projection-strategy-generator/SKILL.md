@@ -83,6 +83,15 @@ Capabilities must be classified against canonical evidence into:
 2. **Leadership Integrity**: Distinguish between verb strengths: `led`, `established`, `designed`, `contributed to`, `advised`, `supported`, `operated within`. Target role language like "CCoE Leader" must NOT cause promotion of lower-strength evidence into a leadership claim.
 3. **Evidence Fidelity**: Never transform "relevant experience with X" into "expert in X", or "contributed to X" into "led X".
 
+## Claim Strength & Scope Vector Bounds
+
+Every generated strategy MUST enforce $\text{ClaimScope} \le \text{EvidenceScope}$ across 6 dimensions:
+- **Claim Strength Hierarchy**: $\text{CONTRIBUTED} \rightarrow \text{SUPPORTED} \rightarrow \text{ADVISED} \rightarrow \text{DESIGNED} \rightarrow \text{LED} \rightarrow \text{OWNED} \rightarrow \text{ESTABLISHED} / \text{TRANSFORMED}$
+- **Ownership Bound**: Claim ownership level cannot exceed evidence ownership level (e.g. contribution $\neq$ establishment).
+- **Scope Bound**: Project-level contribution MUST NOT become an enterprise-wide ownership claim without explicit evidence.
+- **Domain Transferability Bound**: Adjacent domain experience MUST be framed as *transferable experience*, never rewritten as target domain.
+- **Specificity & Duration Bounds**: Specificity and duration claims must be backed by evidence for that capability.
+
 ## Execution Instructions
 
 1. Parse target archetype, classified gaps, evidence relationships, and multidimensional fit assessment.
