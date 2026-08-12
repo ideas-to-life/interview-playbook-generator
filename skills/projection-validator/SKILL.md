@@ -24,8 +24,9 @@ NEVER FABRICATE:
 
 1. **Evidence Coverage Score**: % of claims in projections tracing to `okf/` evidence.
 2. **Capability Alignment Score**: Alignment of highlighted experience with target capability priorities.
-3. **ATS Vocabulary Density**: % of mandatory and strong ATS keywords present in `resume-ats.md`.
-4. **Readability & Word Count**: Word count budget compliance across projections.
+3. **Claim Scope & Strength Validation**: Verifies $\text{ClaimScope} \le \text{EvidenceScope}$ across Ownership, Scope, Domain, Specificity, Duration, and Seniority. Reports `PASS`, `DOWNGRADE`, or `REJECT` status for evaluated claims.
+4. **ATS Vocabulary Density**: % of mandatory and strong ATS keywords present in `resume-ats.md`.
+5. **Readability & Word Count**: Word count budget compliance across projections.
 
 ## Execution Instructions
 

@@ -31,6 +31,8 @@ NEVER FABRICATE:
 7. **Executive Summary Hierarchy**: Executive summaries MUST preserve the candidate's career trajectory hierarchy:
    `Enterprise Architecture` -> `Transformation & Governance` -> `Cloud Modernisation` -> `AI`
    Target terminology MUST NOT displace the candidate's primary Enterprise Architecture foundation.
+8. **Automatic Claim Verb Downgrading**: If a claim's verb strength exceeds evidence support (e.g. `Established` or `Led` when evidence supports `Contributed`), the generator MUST automatically down-level the verb to the evidence-supported level (e.g., "Contributed to CCoE governance" instead of "Established CCoE").
+9. **Transferable Domain Framing**: Evidence from an adjacent domain MUST be expressed as *transferable experience* (e.g., "Applied Enterprise Architecture governance experience to cloud and CCoE-related initiatives") rather than converting the adjacent domain into the target domain ("Established a Cloud Centre of Excellence").
 
 ## Required 10 Standard Sections
 
