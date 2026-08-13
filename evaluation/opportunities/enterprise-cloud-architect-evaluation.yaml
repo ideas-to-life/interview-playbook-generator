@@ -1,19 +1,19 @@
 version: "6.0"
-generated_at: "2026-08-12T17:25:29Z"
+generated_at: "2026-08-12T22:20:00Z"
 target_slug: "enterprise-cloud-architect"
 prediction_evaluation:
-  predicted_archetype: "enterprise_architect"
+  predicted_archetype: "enterprise_cloud_architect"
   predicted_overall_fit: "High"
-  actual_outcome: "active_pipeline"
+  actual_outcome: "active_application"
   prediction_accuracy: "High"
   confirmed_signals:
-    - "CCoE and EA operating model leadership aligned with enterprise requirements"
-    - "TOGAF 9 and LeanIX governance background verified as primary differentiator"
-    - "Azure native hands-on administration correctly classified as adjacent capability"
+    - "Enterprise Architecture operating model alignment correctly matched"
+    - "Legacy system modernisation experience strongly valued"
+    - "CCoE establishment identified as transferable strength from EA governance"
   missed_signals: []
   external_validation_scores:
-    evidence_integrity: 98.5
+    evidence_integrity: 99.5
     brand_consistency: 99.0
     projection_quality: 98.5
     opportunity_fit: 92.0
-    archetype_fit: 95.0
+    archetype_fit: 94.0

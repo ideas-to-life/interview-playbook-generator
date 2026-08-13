@@ -31,6 +31,7 @@ The validator evaluates projections against 5 key fit consistency & identity pre
 5. **Identity Drift / Over-Positioning**: Projected document makes candidate appear to have a materially different primary professional identity from canonical identity (e.g. headline dominated by target title displacing candidate archetype, target domain appearing as primary profession, unsupported leadership titles like "CCoE Leader", or unsupported duration claims like "15+ years building CCoEs").
 6. **Claim Scope Vector Violation ($\text{ClaimScope} > \text{EvidenceScope}$)**: Projected claim exceeds evidence-supported Ownership, Scope, Domain, Specificity, Duration, or Seniority vector limits.
 7. **Unbacked High-Risk / "From Scratch" Claims**: Use of high-risk verbs (`Led`, `Owned`, `Established`, `Built`, `CCoE Leader`) or "from scratch" phrases (`from scratch`, `built from the ground up`, `established from inception`) without explicit establishment evidence. Emits `DOWNGRADE` or `REJECT` finding.
+8. **Target Requirement Contamination in `lead_with`**: `lead_with` contains a target requirement (e.g. `ccoe_establishment`) that is not independently supported by canonical evidence (`DIRECT` / `STRONG_RELEVANT`). Emits `boundary_violation` finding.
 
 ## Validation Scope (FR-12)
 

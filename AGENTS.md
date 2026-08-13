@@ -90,6 +90,9 @@ Every Skill's input set determines its output set. Re-running a Skill overwrites
 5. **No inferred leadership from contribution**: When evidence supports contribution to a capability, the system must not infer leadership, ownership, establishment, or end-to-end responsibility for that capability.
 6. **Project relevance aggressively, project responsibility conservatively**:
    Canonical identity determines who the candidate is $\rightarrow$ Evidence determines what the candidate has done $\rightarrow$ Claim-strength validation determines how strongly that experience may be stated $\rightarrow$ Target relevance determines what should be emphasised.
+7. **Target requirements vs Candidate evidence**: Target requirements describe what the client needs; candidate evidence describes what the candidate has done. Target requirements must never become candidate evidence or candidate positioning unless independently supported by canonical evidence.
+8. **Transferable framing over domain substitution**: When target requirements are adjacent to, but not directly evidenced by, candidate experience, the projection must use explicit transferable framing rather than domain substitution.
+9. **Journey vs Destination Invariant**: The target defines the destination; the evidence defines the journey. Projection may explain why the candidate’s demonstrated experience makes the destination credible, but it must never rewrite the journey as though the candidate has already reached it.
 
 ## How the pipeline runs (v0.5)
 

@@ -28,7 +28,19 @@ Do NOT modify `okf/` canonical bundle. Output lives exclusively in `out/<target-
   - `out/<target-slug>/runtime/projection-strategy.yaml`
   - `okf/log.md` (append entry)
 
-## Output Schema (`out/<target-slug>/runtime/projection-strategy.yaml`)
+## Three-Layer Semantic Separation
+
+The strategy MUST explicitly separate:
+1. **Target Requirement**: What the organization needs (e.g. `ccoe_establishment`).
+2. **Candidate Evidence**: What the candidate has actually done (e.g. `enterprise_architecture_operating_model`).
+3. **Projection Positioning**: How demonstrated experience is framed (e.g. "Apply EA operating-model experience to CCoE mandate").
+
+## `lead_with` Restrictive Rule
+
+`lead_with` MUST ONLY contain candidate capabilities that are directly supported by canonical evidence (`DIRECT` or `STRONG_RELEVANT`).
+`lead_with` MUST NOT contain target requirements that are `TRANSFERABLE`, `ADJACENT`, or `GAP` (e.g., `ccoe_establishment` must NOT appear in `lead_with` if canonical evidence only supports EA operating models).
+
+## Extended Output Schema (`out/<target-slug>/runtime/projection-strategy.yaml`)
 
 ```yaml
 version: "6.1"
@@ -38,21 +50,22 @@ projection_strategy:
   target_archetype: "<primary_archetype_slug>"
   recommended_positioning: "<Positioning statement aligned with archetype without overclaiming>"
   lead_with:
-    - "<Strength or achievement 1 to lead with>"
-    - "<Strength or achievement 2 to lead with>"
+    - "<Candidate capability 1 directly supported by evidence, e.g. Enterprise Architecture Operating Models>"
+    - "<Candidate capability 2 directly supported by evidence, e.g. IT Governance Frameworks>"
   de_emphasise:
     - "<Area to de-emphasise, e.g. heavy enterprise governance when targeting lean agency>"
   bridge:
-    - requirement: "<Requirement slug>"
-      evidence: ["<evidence-slug-1>", "<evidence-slug-2>"]
-      relationship: "<adjacent | transferable>"
-      framing: "<Clear framing statement highlighting transferability without overclaiming>"
+    - target_capability: "<Target requirement slug, e.g. ccoe_establishment>"
+      candidate_evidence:
+        - "<Candidate evidence slug 1, e.g. enterprise_architecture_operating_model>"
+        - "<Candidate evidence slug 2, e.g. architecture_governance>"
+      relationship: "<transferable | adjacent>"
+      rationale: "<Detailed explanation of why candidate evidence provides credible transferability>"
+      framing: "<Explicit transferable framing statement, e.g. Applied EA operating-model and governance experience to cloud and CCoE-aligned initiatives>"
   prohibit_claims:
-    - "<Prohibited claim 1, e.g. eCommerce direct experience>"
-    - "<Prohibited claim 2, e.g. Shopify native developer>"
-    - "<Prohibited claim 3, e.g. n8n expert>"
+    - "<Prohibited claim 1, e.g. Established CCoE from scratch>"
+    - "<Prohibited claim 2, e.g. CCoE Leader>"
   
-  # Authoritative constraint contract (v6.1 FR-9)
   fit_constraints:
     - requirement: "<Requirement name/slug>"
       relationship: "<direct | adjacent | transferable | absent>"
