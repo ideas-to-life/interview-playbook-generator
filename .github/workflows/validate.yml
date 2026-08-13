@@ -20,7 +20,7 @@ jobs:
 
           required_files=(
             "README.md"
-            "AGENT.md"
+            "AGENTS.md"
             "ARCHITECTURE.md"
             "CLAUDE.md"
           )
