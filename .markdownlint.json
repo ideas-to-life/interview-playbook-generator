@@ -1,5 +1,11 @@
 {
-  "default": true,
+  "extends": "default",
+  "MD003": { "style": "consistent" },
+  "MD004": { "style": "consistent" },
   "MD013": false,
-  "MD033": false
+  "MD033": false,
+  "MD034": false,
+  "MD040": false,
+  "no-hard-tabs": false,
+  "blanks-around-lists": false
 }
