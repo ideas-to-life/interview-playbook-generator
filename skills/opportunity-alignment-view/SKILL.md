@@ -21,6 +21,7 @@ NEVER FABRICATE:
 1. **Read-only**: Never modify any concept file in `okf/`.
 2. **Canonical Links**: Every alignment section MUST link back to canonical OKF capability and evidence card nodes.
 3. **Respect Fit Constraints (v6.1 FR-2, FR-9)**: Alignment ratings in `opportunity-alignment.md` MUST NOT exceed the `maximum_alignment` specified in `projection-strategy.yaml`.
+4. **Immutable Employment Metadata**: Any employment headers or career history references in alignment tables must strictly match `okf/employment-records.yaml`.
 
 ## Requirement Decomposition Rules (v6.1 FR-8)
 

@@ -33,6 +33,7 @@ NEVER FABRICATE:
    Target terminology MUST NOT displace the candidate's primary Enterprise Architecture foundation.
 8. **Automatic Claim Verb Downgrading**: If a claim's verb strength exceeds evidence support (e.g. `Established` or `Led` when evidence supports `Contributed`), the generator MUST automatically down-level the verb to the evidence-supported level (e.g., "Contributed to CCoE governance" instead of "Established CCoE").
 9. **Transferable Domain Framing**: Evidence from an adjacent domain MUST be expressed as *transferable experience* (e.g., "Applied Enterprise Architecture governance experience to cloud and CCoE-related initiatives") rather than converting the adjacent domain into the target domain ("Established a Cloud Centre of Excellence").
+10. **Immutable Career History Metadata**: Professional Experience section headers (Employer, Job Title, Start Date, End Date, Location) MUST be rendered directly from canonical records in `okf/employment-records.yaml`. The generator MUST NOT alter dates, substitute job titles for target alignment, or reconstruct career chronologies.
 
 ## Required 10 Standard Sections
 

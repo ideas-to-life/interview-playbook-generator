@@ -77,7 +77,7 @@ Surface the question to the user; do not invent an answer.
 
 ### 5. Idempotent re-runs
 
-Every Skill's input set determines its output set. Re-running a Skill overwrites its own output directory cleanly. The `generated.at` timestamp updates on every write; `verified` is preserved if the body is unchanged.
+Every Skill's input set determines its output set. Re-running a Skill overwrites its own output directory cleanly. The `generated.at` timestamp updates on every write; `verified` is preserved if the body is unchanged. Agents executing a Skill MUST perform explicit disk write/touch operations on every run so that output files bear active modification timestamps. Reading existing files without executing disk writes is prohibited.
 
 ## Governing Principles
 
@@ -93,6 +93,7 @@ Every Skill's input set determines its output set. Re-running a Skill overwrites
 7. **Target requirements vs Candidate evidence**: Target requirements describe what the client needs; candidate evidence describes what the candidate has done. Target requirements must never become candidate evidence or candidate positioning unless independently supported by canonical evidence.
 8. **Transferable framing over domain substitution**: When target requirements are adjacent to, but not directly evidenced by, candidate experience, the projection must use explicit transferable framing rather than domain substitution.
 9. **Journey vs Destination Invariant**: The target defines the destination; the evidence defines the journey. Projection may explain why the candidate’s demonstrated experience makes the destination credible, but it must never rewrite the journey as though the candidate has already reached it.
+10. **Career History Evidence Integrity Invariant**: Employer names, employment dates, job titles, status, and locations are immutable evidence. Projection may tailor presentation and accomplishment emphasis around those facts, but must never alter, infer, normalize, approximate, reconstruct, split, merge, or fabricate employment-history facts.
 
 ## How the pipeline runs (v0.5)
 

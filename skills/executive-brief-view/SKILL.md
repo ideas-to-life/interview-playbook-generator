@@ -18,6 +18,7 @@ NEVER FABRICATE:
 
 1. **Read-only**: Never modify any concept file in `okf/`.
 2. **Word Budget**: Maximum 1,200 words total across 11 standard sections.
+3. **Immutable Career Timeline**: Any background career summary or timeline references to employer names, job titles, or employment dates must strictly match `okf/employment-records.yaml`.
 
 ## Execution Instructions
 

@@ -27,6 +27,7 @@ NEVER FABRICATE:
 3. **Claim Scope & Strength Validation**: Verifies $\text{ClaimScope} \le \text{EvidenceScope}$ across Ownership, Scope, Domain, Specificity, Duration, and Seniority. Reports `PASS`, `DOWNGRADE`, or `REJECT` status for evaluated claims.
 4. **ATS Vocabulary Density**: % of mandatory and strong ATS keywords present in `resume-ats.md`.
 5. **Readability & Word Count**: Word count budget compliance across projections.
+6. **Employment History Evidence Integrity**: Deterministically evaluates generated projection views against `okf/employment-records.yaml` using `scripts/employment_validator.py`. Reports `PASS` or `FAIL` status with explicit violation trace.
 
 ## Execution Instructions
 

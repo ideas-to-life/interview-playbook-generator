@@ -21,6 +21,7 @@ NEVER FABRICATE:
 
 1. **Read-only**: Never modify any concept file in `okf/`.
 2. **Evidence Grounded**: All coaching advice and story references link to canonical OKF nodes.
+3. **Immutable Employment References**: Background summaries, story origins, and career history references must match `okf/employment-records.yaml` exactly.
 
 ## Execution Instructions
 

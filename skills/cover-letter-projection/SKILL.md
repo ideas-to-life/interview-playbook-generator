@@ -20,6 +20,7 @@ NEVER FABRICATE:
 2. **Canonical Positioning**: Adapt opening paragraph from `okf/messaging-library.md` (`30-Second Introduction`). Do NOT generate independent positioning prose.
 3. **Length Constraint**: Strictly maximum 1 page (≤500 words).
 4. **Traceable**: Grounded in canonical OKF evidence cards and signature achievements.
+5. **Immutable Employment References**: Any references to current or former roles, employers, job titles, or dates must match canonical records in `okf/employment-records.yaml` exactly.
 
 ## Section Structure
 

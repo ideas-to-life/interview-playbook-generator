@@ -27,6 +27,7 @@ NEVER FABRICATE:
 2. **Positioning Statement Alignment**: Verifies that Executive, ATS, and Recruiter resumes and cover letters reuse canonical positioning statements.
 3. **Narrative & Messaging Reuse**: % reuse of canonical 30s/2m messaging blocks across projections.
 4. **Story Asset Traceability**: Verifies that executive stories used in interviews and briefs match `okf/story-library.md`.
+5. **Career History Metadata Integrity**: Verifies cross-artefact employment metadata consistency against `okf/employment-records.yaml`.
 
 ## Execution Instructions
 

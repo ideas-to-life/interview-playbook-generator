@@ -30,3 +30,11 @@ def test_golden_validation_report_schema():
     assert "capability_alignment" in metrics
     assert "ats_vocabulary_coverage" in metrics
     assert "length_budget_compliance" in metrics
+
+
+def test_employment_validation_integration():
+    from scripts.employment_validator import validate_employment_history
+    content = "### WPP Media\n**Senior Director, Agentic AI Systems Architecture**\n*Dec 2025 – Present*"
+    res = validate_employment_history(content)
+    assert res["status"] == "PASS"
+

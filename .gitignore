@@ -12,3 +12,11 @@ __pycache__/
 
 # knowlege base 
 evidence/
+
+# Aspire skills
+.agents/skills/aspire/
+.agents/skills/aspire-deployment
+.agents/skills/aspire-init
+.agents/skills/aspire-monitoring
+.agents/skills/aspire-orchestration
+

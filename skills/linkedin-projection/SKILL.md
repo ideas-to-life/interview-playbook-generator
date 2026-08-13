@@ -21,6 +21,7 @@ NEVER FABRICATE:
 1. **Read-only**: Never modify any concept file in `okf/`.
 2. **Canonical Positioning**: Adapt About Section directly from `okf/executive-identity.md` and `okf/positioning-statements.md`. Do NOT generate independent positioning prose.
 3. **Voice Consistency**: Follow tone rules in `okf/voice-profile.md`.
+4. **Immutable Experience Headers**: Experience section employer names, job titles, and employment dates must strictly match canonical records in `okf/employment-records.yaml`.
 
 ## Section Structure
 

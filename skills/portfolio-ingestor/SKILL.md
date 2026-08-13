@@ -28,6 +28,7 @@ Every statement written into `okf/sources/*.md` must adhere to:
 - **Outputs**:
   - `okf/sources/index.md` (type: `SourceIndex`, `okf_version: "0.2"`)
   - `okf/sources/<slug>.md` (type: `Source`)
+  - `okf/employment-records.yaml` (Authoritative Canonical Employment Records)
   - `okf/log.md` (append update entry)
 
 ## Execution Instructions
@@ -41,4 +42,5 @@ Every statement written into `okf/sources/*.md` must adhere to:
    - Frontmatter `okf_version: "0.2"`, `type: SourceIndex`.
    - Markdown list of all discovered sources with relative links (`[Title](<slug>.md)`).
    - Coverage summary detailing document types discovered.
-4. **Append Log**: Append ISO-8601 timestamped entry to `okf/log.md`.
+4. **Extract Employment Records**: Write `okf/employment-records.yaml` containing structured canonical employment history facts (`employer`, `title`, `start_date`, `end_date`, `status`, `location`, `sources`, and `approved_aliases`).
+5. **Append Log**: Append ISO-8601 timestamped entry to `okf/log.md`.

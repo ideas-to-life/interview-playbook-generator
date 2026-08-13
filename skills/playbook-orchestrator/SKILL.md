@@ -31,6 +31,7 @@ Before executing pipeline steps, perform this Pre-Flight Check:
 3. **Attribute Every Claim**: Every `[evidence]` line must carry a `[^source-id]` footnote pointing to a valid source in frontmatter.
 4. **Stop and Ask**: Pause and prompt ONLY when required inputs (`config/config.yaml` or `target_opportunity.source`) are missing or unparseable.
 5. **Idempotent Re-runs**: Re-running a Skill overwrites its own output directory cleanly.
+6. **Mandatory Disk Mutation**: Re-running `playbook-orchestrator` MUST perform explicit write/overwrite operations for all artifacts in `out/<target-slug>/` and `out/<target-slug>/runtime/`. Reading/viewing existing files without writing updated content to disk is strictly forbidden. All `generated_at` timestamps in YAML runtime files must reflect the active run time.
 
 ## Pipeline Execution Order (v0.6 Sprint 6)
 
@@ -75,7 +76,9 @@ EVALUATION LAYER (learning & feedback; writes to evaluation/opportunities/)
 23. market-feedback-evaluator      (evaluation/opportunities/<target-slug>-evaluation.yaml)
 ```
 
-## Post-Execution Summary
+## Post-Execution Summary & Verification
+
+Before presenting the final output summary, the agent MUST run `ls -la out/<target-slug>/` to verify that all output files bear the active execution timestamp.
 
 Upon completion, present the final output summary:
 - OKF bundle path (`./out/okf/`)

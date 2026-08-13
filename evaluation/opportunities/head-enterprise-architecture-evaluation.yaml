@@ -1,0 +1,19 @@
+version: "6.0"
+generated_at: "2026-08-13T14:00:00Z"
+target_slug: "head-enterprise-architecture"
+prediction_evaluation:
+  predicted_archetype: "enterprise_architect"
+  predicted_overall_fit: "High"
+  actual_outcome: "active_pipeline"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Ground-Up EA function establishment pedigree verified"
+    - "10 Years Scientific R&D EA domain alignment verified"
+    - "Salesforce/Oracle/Workday integration governance context correctly categorized"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 98.5
+    brand_consistency: 99.0
+    projection_quality: 98.0
+    opportunity_fit: 95.0
+    archetype_fit: 98.0
