@@ -42,4 +42,4 @@ fi
 
 echo "✅ Aspire Dashboard is running at http://localhost:18888"
 echo "💡 To apply OTEL settings to your current shell and launch the service, run:"
-echo "   source config/observability.sh && agy"
+echo "   source config/aspire-dashboard.sh && agy"

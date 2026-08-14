@@ -37,7 +37,7 @@ Before executing pipeline steps, perform this Pre-Flight Check:
 
 ```
 KNOWLEDGE LAYER (canonical; writes to out/okf/)
- 1. portfolio-ingestor
+ 1. portfolio-ingestor             (Executes python3 scripts/ingest_portfolio.py over candidate.portfolio_dir)
  2. portfolio-analyzer
  3. achievement-extractor
  4. evidence-card-generator        (6 fields + duplicate detection)
