@@ -1,5 +1,5 @@
 version: "6.0"
-generated_at: "2026-08-13T14:00:00Z"
+generated_at: "2026-08-14T14:24:00+01:00"
 target_slug: "head-enterprise-architecture"
 prediction_evaluation:
   predicted_archetype: "enterprise_architect"

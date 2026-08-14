@@ -4,7 +4,7 @@ pipeline_version: "0.5"
 candidate:
   name: "Alexandre Franco"
   target_role: " Head of Enterprise Architecture"
-  portfolio_dir: "evidence/"
+  portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: ""
   email: "alexandre.franco@mostelli.com"
@@ -20,7 +20,7 @@ target_opportunity:
 
 projections:
   resume:
-    variant: "recruiter"  # Options: all, executive, ats, recruiter
+    variant: "all"  # Options: all, executive, ats, recruiter
   cover_letter:
     max_pages: 1
   linkedin:

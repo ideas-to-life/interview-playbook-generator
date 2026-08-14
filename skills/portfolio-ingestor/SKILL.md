@@ -33,14 +33,15 @@ Every statement written into `okf/sources/*.md` must adhere to:
 
 ## Execution Instructions
 
-1. **Scan Files**: Enumerate all files in `candidate.portfolio_dir` (defaulting to `evidence/` or `inputs/`) and the active target opportunity specified in `target_opportunity.source` of `config/config.yaml`. Remove any obsolete target opportunity source files in `okf/sources/` that do not match the active `target_opportunity.source`.
+1. **Automated Ingestion Script**: Execute `python3 scripts/ingest_portfolio.py` to recursively scan `candidate.portfolio_dir` (e.g. `/Users/avfranco/GitHub/mind-palace/`) across all subdirectories (`articles/`, `learnings/`, `architecture-philosophy/`, `experiments/`, `standard-operational-procedure/`, `portfolio/`, `resume-profile/`, `narratives/`, `about/`).
 2. **Create `Source` Concepts**: For each discovered file:
    - Extract title, author (default `human:alexandre.franco`), last_modified, and resource path.
    - Format concept frontmatter with `type: Source` and frontmatter `sources` list containing itself as `id`.
-   - Write body with `[evidence]` line confirming file presence and `[inference]` classifying document type (e.g. CV, architecture doc, job description).
+   - Write body with `[evidence]` line confirming file presence and `[inference]` classifying document type (e.g. ArticleSource, LearningLogSource, PhilosophySource, PracticeSource).
 3. **Build `SourceIndex`**: Write `okf/sources/index.md` with:
    - Frontmatter `okf_version: "0.2"`, `type: SourceIndex`.
    - Markdown list of all discovered sources with relative links (`[Title](<slug>.md)`).
    - Coverage summary detailing document types discovered.
 4. **Extract Employment Records**: Write `okf/employment-records.yaml` containing structured canonical employment history facts (`employer`, `title`, `start_date`, `end_date`, `status`, `location`, `sources`, and `approved_aliases`).
 5. **Append Log**: Append ISO-8601 timestamped entry to `okf/log.md`.
+
