@@ -1,38 +1,45 @@
 # Architecture
 
-High-level architecture of the Career Projection Platform (Interview Playbook Generator v0.5). For approved design specs, see [`docs/superpowers/specs/`](docs/superpowers/specs/).
+High-level architecture of the Career Projection Platform (Interview Playbook Generator v0.6). For approved design specs, see [`docs/superpowers/specs/`](docs/superpowers/specs/).
 
 ## What this system is
 
-A pipeline that turns raw candidate portfolio material (CV, LinkedIn export, slide decks, architecture docs, publications, JD, recruiter message) into a **structured knowledge graph** of the candidate's career, and from that graph produces multiple tailored **executive communication projections** (Resumes, Cover Letters, LinkedIn Profiles, Briefings, Playbooks).
+A pipeline that turns raw candidate portfolio material (CV, LinkedIn export, slide decks, architecture docs, publications, Mind Palace repository, JD, recruiter message) into a **structured knowledge graph** of the candidate's career, and from that graph produces multiple tailored **executive communication projections** (Resumes, Cover Letters, LinkedIn Profiles, Briefings, Playbooks).
 
-Four-Layer Pipeline Architecture:
+Six-Layer Pipeline Architecture (v0.6):
 
 - **Knowledge Layer** (canonical; stored in `out/okf/`): Stores persistent canonical career knowledge (`Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `ExecutiveIdentity`, `VoiceProfile`, `PositioningStatements`, `NarrativeLibrary`, `StoryLibrary`, `MessagingLibrary`, `Theme`, `Narrative`). Never modified by projections and shared across all target opportunities.
-- **Runtime Layer** (execution context; stored in `out/<target-slug>/runtime/`): Stores derived opportunity analysis (`opportunity-analysis.yaml`), projection validation reports (`projection-validation-report.yaml`), and brand validation reports (`brand-validation-report.yaml`).
-- **Coaching Layer** (derived strategy; stored in `okf/`): Computes opportunity-specific interview strategy (`InterviewStrategy`) and gap analysis (`KnowledgeGap`).
+- **Runtime Intelligence Layer** (execution context; stored in `out/<target-slug>/runtime/`): Stores derived opportunity analysis (`opportunity-analysis.yaml`), archetype analysis (`archetype-analysis.yaml`), gap analysis (`gap-analysis.yaml`), opportunity fit report (`opportunity-fit-report.yaml`), and projection strategy (`projection-strategy.yaml`).
+- **Coaching Layer** (derived strategy; stored in `out/okf/`): Computes opportunity-specific interview strategy (`InterviewStrategy`) and gap analysis (`KnowledgeGap`).
 - **Projection Layer** (presentation views; stored in `out/<target-slug>/`): Generates read-only executive communication projections (`resume-executive.md`, `resume-ats.md`, `resume-recruiter.md`, `cover-letter.md`, `linkedin-profile.md`, `playbook.md`, `interview-cheatsheet.md`, `executive-brief.md`, `opportunity-alignment.md`).
+- **Validation Layer** (quality gates; stored in `out/<target-slug>/runtime/`): Evaluates projection evidence traceability (`projection-validation-report.yaml`) and brand consistency (`brand-validation-report.yaml`).
+- **Evaluation Layer** (learning & feedback; stored in `evaluation/opportunities/`): Evaluates market feedback and archetype prediction accuracy (`<target-slug>-evaluation.yaml`).
 
 The load-bearing principles:
 1. Introductory prose and executive voice are established canonically in `okf/` and adapted by projections rather than independently generated.
 2. Opportunity-specific execution context and views are scoped per target opportunity under `out/<target-slug>/` (derived from `target_opportunity.source`), preventing runs for different job opportunities from overwriting each other.
+3. Every claim is strictly grounded in canonical evidence with OKF v0.2 footnotes (`[^source-id]`) and line classification tags (`[evidence]`, `[inference]`, `[recommendation]`, `[assumption]`).
 
 ## Component responsibilities
 
 | Layer | Component | Purpose |
 |---|---|---|
-| **Knowledge** | `portfolio-ingestor` | Discovers and classifies portfolio source files. |
+| **Knowledge** | `portfolio-ingestor` | Executes `scripts/ingest_portfolio.py` over `candidate.portfolio_dir` and classifies source files into OKF Source nodes and `index.md`. |
 | **Knowledge** | `portfolio-analyzer` | Builds top-level coverage map and domain breakdown. |
-| **Knowledge** | `achievement-extractor` | Extracts evidence-grounded achievement nodes. |
-| **Knowledge** | `evidence-card-generator` | Converts achievements into STAR Evidence Cards. |
-| **Knowledge** | `behaviour-profile-generator` | Infers executive behaviour profile across core & optional dimensions. |
-| **Knowledge** | `capability-extractor` | Groups evidence cards into structured capability nodes. |
+| **Knowledge** | `achievement-extractor` | Extracts evidence-grounded achievement nodes into `okf/achievements/`. |
+| **Knowledge** | `evidence-card-generator` | Converts achievements into STAR Evidence Cards with duplicate detection. |
+| **Knowledge** | `behaviour-profile-generator` | Infers executive behaviour profile across core & optional dimensions (`okf/behaviour-profile.md`). |
+| **Knowledge** | `capability-extractor` | Groups evidence cards into structured capability nodes under `okf/capabilities/`. |
 | **Knowledge** | `signature-achievements-curator` | Curates signature achievements ranked on intrinsic properties. |
-| **Knowledge** | `signature-theme-miner` | Mines recurring executive themes across portfolio. |
+| **Knowledge** | `signature-theme-miner` | Mines recurring executive themes across portfolio into `okf/signature-themes.md`. |
 | **Knowledge** | `executive-identity-generator` | Synthesises canonical Executive Identity, Voice Profile, and Positioning Statements. |
 | **Knowledge** | `narrative-engine` | Generates canonical Narrative Library and Messaging Library. |
 | **Knowledge** | `story-engine` | Converts Evidence Cards into single consolidated `okf/story-library.md`. |
 | **Runtime** | `opportunity-analyzer` | Generates shared execution context at `out/<target-slug>/runtime/opportunity-analysis.yaml`. |
+| **Runtime** | `archetype-classifier` | Emits archetype classification context at `out/<target-slug>/runtime/archetype-analysis.yaml`. |
+| **Runtime** | `gap-classifier` | Emits classified gap context at `out/<target-slug>/runtime/gap-analysis.yaml`. |
+| **Runtime** | `archetype-fit-evaluator` | Evaluates opportunity fit at `out/<target-slug>/runtime/opportunity-fit-report.yaml`. |
+| **Runtime** | `projection-strategy-generator` | Synthesises projection strategy at `out/<target-slug>/runtime/projection-strategy.yaml`. |
 | **Coaching** | `interview-strategy-generator` | Computes opportunity strategy and story-to-question mapping. |
 | **Coaching** | `knowledge-gaps` | Pre-assembly evaluation gate assessing bundle against target role. |
 | **Projection**| `projection-registry` | Orchestrates pluggable projection contracts into `out/<target-slug>/`. |
@@ -42,8 +49,10 @@ The load-bearing principles:
 | **Projection**| `opportunity-alignment-view` | Generates requirement alignment view at `out/<target-slug>/opportunity-alignment.md`. |
 | **Projection**| `executive-brief-view` | Generates 10-minute briefing at `out/<target-slug>/executive-brief.md`. |
 | **Projection**| `playbook-assembler` | Generates `out/<target-slug>/playbook.md` and `out/<target-slug>/interview-cheatsheet.md`. |
-| **Runtime** | `projection-validator` | Evaluates evidence traceability & ATS coverage (`out/<target-slug>/runtime/projection-validation-report.yaml`). |
-| **Runtime** | `brand-validator` | Evaluates cross-projection brand alignment & voice consistency (`out/<target-slug>/runtime/brand-validation-report.yaml`). |
+| **Validation**| `projection-validator` | Evaluates evidence traceability & ATS coverage (`out/<target-slug>/runtime/projection-validation-report.yaml`). |
+| **Validation**| `archetype-fit-validator` | Evaluates archetype overpositioning and fit consistency. |
+| **Validation**| `brand-validator` | Evaluates cross-projection brand alignment & voice consistency (`out/<target-slug>/runtime/brand-validation-report.yaml`). |
+| **Evaluation**| `market-feedback-evaluator` | Records market feedback and prediction accuracy in `evaluation/opportunities/<target-slug>-evaluation.yaml`. |
 
 
 ## Architecture Diagram

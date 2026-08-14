@@ -4,7 +4,7 @@ Operating instructions for any AI agent (Claude Code, Antigravity, GitHub Copilo
 
 ## What this project is
 
-The Career Projection Platform (Interview Playbook Generator v0.5) turns a candidate's portfolio (CV, LinkedIn, slide decks, architecture docs, publications) and a target opportunity (JD / recruiter message / role summary) into a structured OKF v0.2 knowledge graph and multiple tailored executive communication artefacts (Resumes, Cover Letters, LinkedIn Profiles, Playbooks, Briefings). The pipeline runs as a sequence of Skills — each Skill is a `SKILL.md` file the user invokes; state passes between Skills as the OKF bundle and execution context on disk. There is no LLM code to run; the agent (you) *is* the runtime.
+The Career Projection Platform (Interview Playbook Generator v0.6) turns a candidate's portfolio (CV, LinkedIn, slide decks, architecture docs, publications, Mind Palace repository) and a target opportunity (JD / recruiter message / role summary) into a structured OKF v0.2 knowledge graph and multiple tailored executive communication artefacts (Resumes, Cover Letters, LinkedIn Profiles, Playbooks, Briefings). The pipeline runs as a sequence of Skills — each Skill is a `SKILL.md` file the user invokes; state passes between Skills as the OKF bundle and execution context on disk. There is no LLM code to run; the agent (you) *is* the runtime.
 
 ## The five hard rules
 
@@ -95,39 +95,47 @@ Every Skill's input set determines its output set. Re-running a Skill overwrites
 9. **Journey vs Destination Invariant**: The target defines the destination; the evidence defines the journey. Projection may explain why the candidate’s demonstrated experience makes the destination credible, but it must never rewrite the journey as though the candidate has already reached it.
 10. **Career History Evidence Integrity Invariant**: Employer names, employment dates, job titles, status, and locations are immutable evidence. Projection may tailor presentation and accomplishment emphasis around those facts, but must never alter, infer, normalize, approximate, reconstruct, split, merge, or fabricate employment-history facts.
 
-## How the pipeline runs (v0.5)
+## How the pipeline runs (v0.6 Sprint 6)
 
 ```
 KNOWLEDGE LAYER (canonical; writes to out/okf/)
-  portfolio-ingestor
-  portfolio-analyzer
-  achievement-extractor
-  evidence-card-generator        (Extended: 6 fields + dup detection)
-  behaviour-profile-generator    (Canonical: okf/behaviour-profile.md)
-  capability-extractor            (Canonical: okf/capabilities/)
-  signature-achievements-curator  (Canonical: okf/signature-achievements.md)
-  signature-theme-miner
-  executive-identity-generator    (okf/executive-identity.md, voice-profile.md, positioning-statements.md)
-  narrative-engine                (okf/narrative-library.md, messaging-library.md)
-  story-engine                    (okf/story-library.md)
+ 1. portfolio-ingestor             (Executes python3 scripts/ingest_portfolio.py over candidate.portfolio_dir)
+ 2. portfolio-analyzer
+ 3. achievement-extractor
+ 4. evidence-card-generator        (Extended: 6 fields + dup detection)
+ 5. behaviour-profile-generator    (okf/behaviour-profile.md)
+ 6. capability-extractor            (okf/capabilities/<slug>.md)
+ 7. signature-achievements-curator  (okf/signature-achievements.md)
+ 8. signature-theme-miner
+ 9. executive-identity-generator    (okf/executive-identity.md, voice-profile.md, positioning-statements.md)
+10. narrative-engine                (okf/narrative-library.md, messaging-library.md)
+11. story-engine                    (okf/story-library.md)
 
-RUNTIME LAYER (derived execution context; writes to out/<target-slug>/runtime/)
-  opportunity-analyzer            (out/<target-slug>/runtime/opportunity-analysis.yaml)
+RUNTIME INTELLIGENCE LAYER (derived execution context; writes to out/<target-slug>/runtime/)
+12. opportunity-analyzer            (out/<target-slug>/runtime/opportunity-analysis.yaml)
+13. archetype-classifier            (out/<target-slug>/runtime/archetype-analysis.yaml)
+14. gap-classifier                  (out/<target-slug>/runtime/gap-analysis.yaml)
+15. archetype-fit-evaluator         (out/<target-slug>/runtime/opportunity-fit-report.yaml)
+16. projection-strategy-generator   (out/<target-slug>/runtime/projection-strategy.yaml)
 
 COACHING LAYER (derived; reads canonical + opportunity-analysis)
-  interview-strategy-generator
-  knowledge-gaps
+17. interview-strategy-generator
+18. knowledge-gaps                  (Pre-assembly gate)
 
-PROJECTION LAYER (views; reads canonical + opportunity-analysis; writes to out/<target-slug>/)
-  projection-registry             (Orchestrates registered projections into out/<target-slug>/)
-  resume-projection               (out/<target-slug>/resume-executive.md, resume-ats.md, resume-recruiter.md)
-  cover-letter-projection         (out/<target-slug>/cover-letter.md)
-  linkedin-projection             (out/<target-slug>/linkedin-profile.md)
-  opportunity-alignment-view      (out/<target-slug>/opportunity-alignment.md)
-  executive-brief-view           (out/<target-slug>/executive-brief.md)
-  playbook-assembler              (out/<target-slug>/playbook.md & out/<target-slug>/interview-cheatsheet.md)
-  projection-validator            (out/<target-slug>/runtime/projection-validation-report.yaml)
-  brand-validator                 (out/<target-slug>/runtime/brand-validation-report.yaml)
+PROJECTION & VALIDATION LAYER (views & reports; writes to out/<target-slug>/)
+19. projection-registry             (Orchestrates registered projections)
+    ├── resume-projection           (out/<target-slug>/resume-executive.md, resume-ats.md, resume-recruiter.md)
+    ├── cover-letter-projection     (out/<target-slug>/cover-letter.md)
+    ├── linkedin-projection         (out/<target-slug>/linkedin-profile.md)
+    ├── opportunity-alignment-view  (out/<target-slug>/opportunity-alignment.md)
+    ├── executive-brief-view         (out/<target-slug>/executive-brief.md)
+    └── playbook-assembler          (out/<target-slug>/playbook.md & out/<target-slug>/interview-cheatsheet.md)
+20. projection-validator            (out/<target-slug>/runtime/projection-validation-report.yaml)
+21. archetype-fit-validator        (out/<target-slug>/runtime/projection-validation-report.yaml overpositioning check)
+22. brand-validator                 (out/<target-slug>/runtime/brand-validation-report.yaml)
+
+EVALUATION LAYER (learning & feedback; writes to evaluation/opportunities/)
+23. market-feedback-evaluator      (evaluation/opportunities/<target-slug>-evaluation.yaml)
 ```
 
 For an end-to-end run on the portfolio, the user runs:
@@ -144,18 +152,20 @@ Every concept document follows [`GoogleCloudPlatform/knowledge-catalog/okf/SPEC.
 
 ### Project concept types
 
-v0.5 types: `Source`, `SourceIndex`, `PortfolioAnalysis`, `Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `ExecutiveIdentity`, `VoiceProfile`, `PositioningStatements`, `NarrativeLibrary`, `StoryLibrary`, `MessagingLibrary`, `InterviewStrategy`, `KnowledgeGap`.
+v0.6 types: `Source`, `SourceIndex`, `PortfolioAnalysis`, `Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `ExecutiveIdentity`, `VoiceProfile`, `PositioningStatements`, `NarrativeLibrary`, `StoryLibrary`, `MessagingLibrary`, `InterviewStrategy`, `KnowledgeGap`.
 
 ### File layout
 
 - `skills/<name>/SKILL.md` — the Skill's instructions.
-- `config/config.example.yaml` — the YAML config template.
+- `scripts/ingest_portfolio.py` — Python portfolio ingestion script.
+- `config/config.yaml` — active YAML config.
 - `out/` — gitignored output directory.
   - `out/okf/` — canonical OKF bundle (shared across target opportunities).
-  - `out/<target-slug>/` — opportunity-scoped execution context & views (e.g. `out/senior-architect-vallum/`, `out/head-of-ai/`).
+  - `out/<target-slug>/` — opportunity-scoped execution context & views (e.g. `out/head-enterprise-architecture/`, `out/head-of-ai/`).
+- `evaluation/opportunities/` — market feedback and prediction evaluations.
 
 ## Testing
 
 1. **Snapshot per Skill.** Diff output against `tests/golden/<skill>/`.
-2. **End-to-end criteria.** `tests/test_v05_success_criteria.py`.
+2. **End-to-end criteria.** `tests/test_v06_success_criteria.py`.
 3. **Lint pass.** Every concept passes classification & attribution checks.
