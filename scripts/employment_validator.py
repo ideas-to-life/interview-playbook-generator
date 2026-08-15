@@ -22,14 +22,28 @@ def load_canonical_employment_records(path: str = None) -> list[dict]:
         # Fallback default canonical records for Alexandre Franco
         return [
             {
-                "id": "emp-wpp-2025",
-                "employer": "WPP Media",
-                "title": "Senior Director, Agentic AI Systems Architecture",
-                "start_date": "Dec 2025",
+                "id": "emp-mostelli-2026",
+                "employer": "Mostelli",
+                "title": "Enterprise Architect | AI Transformation Advisor",
+                "start_date": "Jul 2026",
                 "end_date": None,
                 "status": "current",
                 "location": "London, UK",
                 "approved_aliases": [
+                    "Enterprise Architect | AI Transformation Advisor",
+                    "Enterprise Architect & AI Transformation Advisor",
+                ],
+            },
+            {
+                "id": "emp-wpp-2025",
+                "employer": "WPP Media",
+                "title": "Senior Director, System Architect – Agentic AI",
+                "start_date": "Dec 2025",
+                "end_date": "Jul 2026",
+                "status": "former",
+                "location": "London, UK",
+                "approved_aliases": [
+                    "Senior Director, System Architect – Agentic AI",
                     "Senior Director, Agentic AI Systems Architecture",
                 ],
             },
@@ -37,12 +51,14 @@ def load_canonical_employment_records(path: str = None) -> list[dict]:
                 "id": "emp-bbc-2021",
                 "employer": "BBC Studios",
                 "title": "Lead Enterprise Architect",
-                "start_date": "Nov 2021",
+                "start_date": "Oct 2021",
                 "end_date": "Nov 2025",
                 "status": "former",
                 "location": "London, UK",
                 "approved_aliases": [
                     "Lead Enterprise Architect",
+                    "Lead Enterprise Architect - Technology Transformation Group",
+                    "Lead Enterprise Architect - Commercial System",
                     "Lead Enterprise Architect – Technology Transformation Group & Commercial",
                 ],
             },
@@ -50,14 +66,18 @@ def load_canonical_employment_records(path: str = None) -> list[dict]:
                 "id": "emp-bat-2011",
                 "employer": "British American Tobacco",
                 "title": "Enterprise Architect & Global Solution Architect",
-                "start_date": "2011",
-                "end_date": "2021",
+                "start_date": "Jul 2011",
+                "end_date": "Sep 2021",
                 "status": "former",
                 "location": "London, UK & São Paulo, Brazil",
                 "approved_aliases": [
                     "Enterprise Architect & Global Solution Architect",
+                    "Enterprise Architect Scientific Research and Development (SR&D)",
                     "Enterprise Architect — Scientific Research & Development",
                     "Enterprise Architect",
+                    "Global Solution Architect - Integration & Automation",
+                    "Regional Solution Architect",
+                    "BAT",
                 ],
             },
         ]
@@ -100,7 +120,6 @@ def validate_employment_history(artefact_content: str, canonical_records: list[d
         employer = rec["employer"]
         title = rec["title"]
         start_date = rec["start_date"]
-        end_date = rec.get("end_date") or "Present"
         aliases = rec.get("approved_aliases", [title])
 
         field_checks += 1
@@ -118,8 +137,8 @@ def validate_employment_history(artefact_content: str, canonical_records: list[d
                             "reason": f"Employer {employer} start date mutated from {start_date} to 2022.",
                         })
 
-                if "Nov 2021" in start_date:
-                    if "2020" in block and "Nov 2021" not in block:
+                if "Nov 2021" in start_date or "Oct 2021" in start_date:
+                    if "2020" in block and "2021" not in block:
                         violations.append({
                             "type": "date_mutation",
                             "employer": employer,

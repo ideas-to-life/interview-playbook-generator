@@ -34,7 +34,8 @@ def test_golden_validation_report_schema():
 
 def test_employment_validation_integration():
     from scripts.employment_validator import validate_employment_history
-    content = "### WPP Media\n**Senior Director, Agentic AI Systems Architecture**\n*Dec 2025 – Present*"
+    content = "### WPP Media\n**Senior Director, Agentic AI Systems Architecture**\n*Dec 2025 – Jul 2026*"
     res = validate_employment_history(content)
     assert res["status"] == "PASS"
+
 

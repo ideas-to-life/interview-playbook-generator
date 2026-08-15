@@ -22,14 +22,28 @@ def load_canonical_employment_records(path: str = None) -> list[dict]:
         # Fallback default canonical records for Alexandre Franco
         return [
             {
-                "id": "emp-wpp-2025",
-                "employer": "WPP Media",
-                "title": "Senior Director, Agentic AI Systems Architecture",
-                "start_date": "Dec 2025",
+                "id": "emp-mostelli-2026",
+                "employer": "Mostelli",
+                "title": "Enterprise Architect | AI Transformation Advisor",
+                "start_date": "Jul 2026",
                 "end_date": None,
                 "status": "current",
                 "location": "London, UK",
                 "approved_aliases": [
+                    "Enterprise Architect | AI Transformation Advisor",
+                    "Enterprise Architect & AI Transformation Advisor",
+                ],
+            },
+            {
+                "id": "emp-wpp-2025",
+                "employer": "WPP Media",
+                "title": "Senior Director, System Architect – Agentic AI",
+                "start_date": "Dec 2025",
+                "end_date": "Jul 2026",
+                "status": "former",
+                "location": "London, UK",
+                "approved_aliases": [
+                    "Senior Director, System Architect – Agentic AI",
                     "Senior Director, Agentic AI Systems Architecture",
                 ],
             },
@@ -37,12 +51,14 @@ def load_canonical_employment_records(path: str = None) -> list[dict]:
                 "id": "emp-bbc-2021",
                 "employer": "BBC Studios",
                 "title": "Lead Enterprise Architect",
-                "start_date": "Nov 2021",
+                "start_date": "Oct 2021",
                 "end_date": "Nov 2025",
                 "status": "former",
                 "location": "London, UK",
                 "approved_aliases": [
                     "Lead Enterprise Architect",
+                    "Lead Enterprise Architect - Technology Transformation Group",
+                    "Lead Enterprise Architect - Commercial System",
                     "Lead Enterprise Architect – Technology Transformation Group & Commercial",
                 ],
             },
@@ -50,14 +66,18 @@ def load_canonical_employment_records(path: str = None) -> list[dict]:
                 "id": "emp-bat-2011",
                 "employer": "British American Tobacco",
                 "title": "Enterprise Architect & Global Solution Architect",
-                "start_date": "2011",
-                "end_date": "2021",
+                "start_date": "Jul 2011",
+                "end_date": "Sep 2021",
                 "status": "former",
                 "location": "London, UK & São Paulo, Brazil",
                 "approved_aliases": [
                     "Enterprise Architect & Global Solution Architect",
+                    "Enterprise Architect Scientific Research and Development (SR&D)",
                     "Enterprise Architect — Scientific Research & Development",
                     "Enterprise Architect",
+                    "Global Solution Architect - Integration & Automation",
+                    "Regional Solution Architect",
+                    "BAT",
                 ],
             },
         ]
@@ -100,19 +120,15 @@ def validate_employment_history(artefact_content: str, canonical_records: list[d
         employer = rec["employer"]
         title = rec["title"]
         start_date = rec["start_date"]
-        end_date = rec.get("end_date") or "Present"
         aliases = rec.get("approved_aliases", [title])
 
         field_checks += 1
         # Check if employer is mentioned in experience section
         if employer in artefact_content:
             # Check for date presence if section header exists
-            # Search for context around employer name
             employer_blocks = re.findall(rf"{re.escape(employer)}.*?(?=\n###|\n##|\Z)", artefact_content, re.DOTALL)
             for block in employer_blocks:
                 field_checks += 2
-                # Check start date match (e.g. "Dec 2025" or "2011" or "Nov 2021")
-                # If start date is month-year (e.g. Dec 2025), forbid year-only approximation (e.g. 2022 or 2025)
                 if "Dec 2025" in start_date:
                     if "2022" in block and "Dec 2025" not in block:
                         violations.append({
@@ -121,19 +137,16 @@ def validate_employment_history(artefact_content: str, canonical_records: list[d
                             "reason": f"Employer {employer} start date mutated from {start_date} to 2022.",
                         })
 
-                if "Nov 2021" in start_date:
-                    if "2020" in block and "Nov 2021" not in block:
+                if "Nov 2021" in start_date or "Oct 2021" in start_date:
+                    if "2020" in block and "2021" not in block:
                         violations.append({
                             "type": "date_mutation",
                             "employer": employer,
                             "reason": f"Employer {employer} start date mutated from {start_date} to 2020.",
                         })
 
-                # Check job title validity in block
-                # Ensure at least one canonical title or approved alias appears in employer block
                 has_approved_title = any(alias in block for alias in aliases)
                 if not has_approved_title:
-                    # Check if there is a header title that isn't approved
                     title_match = re.search(r"^\*\*([^*]+)\*\*", block, re.MULTILINE)
                     if title_match:
                         detected_title = title_match.group(1).strip()

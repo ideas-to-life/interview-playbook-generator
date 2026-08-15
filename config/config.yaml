@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: " Head of Enterprise Architecture"
+  target_role: "Enterprise Architect – Governance, AI & Automation "
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: ""
@@ -13,10 +13,10 @@ candidate:
 
 target_opportunity:
   company: ""
-  role_title: "Head of Enterprise Architecture"
-  industry: "health and scientific discovery"
+  role_title: "Enterprise Architect – Governance, AI & Automation "
+  industry: "financial services business"
   interviewer: "Recruiter"
-  source: "evidence/target-position/head-enterprise-architecture.md"
+  source: "/Users/avfranco/GitHub/mind-palace/target-position/enterprise-architect-governance-ai-automation.md"
 
 projections:
   resume:

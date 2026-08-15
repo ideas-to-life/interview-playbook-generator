@@ -221,7 +221,59 @@ sources:
 """
     source_index_file.write_text(index_md, encoding='utf-8')
 
+    # Parse Positions.csv if present to update okf/employment-records.yaml
+    positions_csv = portfolio_dir / "resume-profile" / "Positions.csv"
+    if positions_csv.exists():
+        import csv
+        emp_records = []
+        with open(positions_csv, mode="r", encoding="utf-8") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for i, row in enumerate(reader):
+                company = row.get("Company Name", "").strip()
+                title = row.get("Title", "").strip()
+                location = row.get("Location", "").strip()
+                start_date = row.get("Started On", "").strip()
+                finished_on = row.get("Finished On", "").strip()
+                if not company or not title:
+                    continue
+                end_date = finished_on if finished_on else None
+                status = "former" if finished_on else "current"
+                emp_id = f"emp-{re.sub(r'[^a-z0-9]+', '-', company.lower()).strip('-')}-{i}"
+                aliases = [title]
+                if "Lead Enterprise Architect" in title:
+                    aliases.extend(["Lead Enterprise Architect", "Lead Enterprise Architect – Technology Transformation Group & Commercial"])
+                if "Agentic AI" in title:
+                    aliases.extend(["Senior Director, Agentic AI Systems Architecture", "Senior Director, System Architect – Agentic AI"])
+                if "Enterprise Architect" in title:
+                    aliases.append("Enterprise Architect")
+                if "Global Solution Architect" in title:
+                    aliases.append("Global Solution Architect")
+                if "BAT" in company or "British American Tobacco" in company:
+                    aliases.extend(["Enterprise Architect & Global Solution Architect", "Enterprise Architect Scientific Research and Development (SR&D)", "Global Solution Architect - Integration & Automation", "Regional Solution Architect", "Enterprise Architect"])
+                if "Mostelli" in company:
+                    aliases.extend(["Enterprise Architect | AI Transformation Advisor", "Enterprise Architect & AI Transformation Advisor"])
+
+
+                emp_records.append({
+                    "id": emp_id,
+                    "employer": company,
+                    "title": title,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "status": status,
+                    "location": location or "London, UK",
+                    "sources": ["positions-csv"],
+                    "approved_aliases": list(dict.fromkeys(aliases))
+                })
+
+        if emp_records:
+            emp_yaml_path = repo_root / "out" / "okf" / "employment-records.yaml"
+            with open(emp_yaml_path, "w", encoding="utf-8") as yf:
+                yaml.dump({"employment_records": emp_records}, yf, sort_keys=False, default_flow_style=False)
+            print(f"Updated {emp_yaml_path} with {len(emp_records)} employment records from Positions.csv")
+
     print(f"Successfully ingested {len(discovered_sources)} source documents into {out_sources_dir}")
 
 if __name__ == "__main__":
     main()
+

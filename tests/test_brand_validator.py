@@ -34,7 +34,8 @@ def test_golden_brand_validation_report_schema():
 
 def test_employment_validation_brand_integration():
     from scripts.employment_validator import validate_employment_history
-    content = "### BBC Studios\n**Lead Enterprise Architect**\n*Nov 2021 – Nov 2025*"
+    content = "### BBC Studios\n**Lead Enterprise Architect**\n*Oct 2021 – Nov 2025*"
     res = validate_employment_history(content)
     assert res["status"] == "PASS"
+
 

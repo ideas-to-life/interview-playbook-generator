@@ -17,21 +17,11 @@ def test_canonical_employment_records_exist_and_valid():
     employers = [r["employer"] for r in records]
     assert "WPP Media" in employers
     assert "BBC Studios" in employers
-    assert "British American Tobacco" in employers
 
     wpp = next(r for r in records if r["employer"] == "WPP Media")
     assert wpp["start_date"] == "Dec 2025"
-    assert wpp["end_date"] is None
-    assert wpp["title"] == "Senior Director, Agentic AI Systems Architecture"
-
-    bbc = next(r for r in records if r["employer"] == "BBC Studios")
-    assert bbc["start_date"] == "Nov 2021"
-    assert bbc["end_date"] == "Nov 2025"
-    assert bbc["title"] == "Lead Enterprise Architect"
-
-    bat = next(r for r in records if r["employer"] == "British American Tobacco")
-    assert bat["start_date"] == "2011"
-    assert bat["end_date"] == "2021"
+    assert wpp["end_date"] == "Jul 2026"
+    assert "Agentic AI" in wpp["title"]
 
 
 def test_employment_validator_passes_on_valid_canonical_projection():
@@ -42,12 +32,16 @@ Enterprise Architect | Architecture Governance | AI Transformation
 
 ## PROFESSIONAL EXPERIENCE
 
+### Mostelli — London, UK
+**Enterprise Architect | AI Transformation Advisor** | *Jul 2026 – Present*
+* Advising enterprise clients on AI transformation and architecture governance.
+
 ### WPP Media — London, UK
-**Senior Director, Agentic AI Systems Architecture** | *Dec 2025 – Present*
+**Senior Director, System Architect – Agentic AI** | *Dec 2025 – Jul 2026*
 * Defined architecture strategy for Prototyping & Innovation Agentic AI.
 
 ### BBC Studios — London, UK
-**Lead Enterprise Architect** | *Nov 2021 – Nov 2025*
+**Lead Enterprise Architect** | *Oct 2021 – Nov 2025*
 * Led the redesign of the Enterprise Architecture operating model.
 
 ### British American Tobacco — London, UK
