@@ -1,0 +1,19 @@
+version: "6.0"
+generated_at: "2026-08-17T12:44:00+01:00"
+target_slug: "principal-ea-celonis"
+prediction_evaluation:
+  predicted_archetype: "enterprise_ai_coe_architect"
+  predicted_overall_fit: "High"
+  actual_outcome: "active"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Enterprise modernization and capability mapping alignment validated"
+    - "Agentic AI and C-level executive advisory alignment validated"
+    - "Celonis OCPM tooling gap correctly identified as addressable learning path"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 99.0
+    brand_consistency: 99.0
+    projection_quality: 99.0
+    opportunity_fit: 92.0
+    archetype_fit: 95.0

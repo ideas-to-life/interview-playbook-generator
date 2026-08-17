@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Enterprise Architect – Governance, AI & Automation "
+  target_role: "Principal Enterprise Architect"
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: ""
@@ -12,11 +12,11 @@ candidate:
   portfolio_url: "https://alexandrefranco.dev"
 
 target_opportunity:
-  company: ""
-  role_title: "Enterprise Architect – Governance, AI & Automation "
-  industry: "financial services business"
+  company: "Celonis"
+  role_title: "Principal Enterprise Architect"
+  industry: "Process Intelligence"
   interviewer: "Recruiter"
-  source: "/Users/avfranco/GitHub/mind-palace/target-position/enterprise-architect-governance-ai-automation.md"
+  source: "/Users/avfranco/GitHub/mind-palace/target-position/principal-ea-celonis.md"
 
 projections:
   resume:

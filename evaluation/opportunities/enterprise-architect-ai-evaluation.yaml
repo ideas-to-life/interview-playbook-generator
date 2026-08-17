@@ -1,0 +1,21 @@
+version: "6.0"
+generated_at: "2026-08-16T11:22:30+01:00"
+target_slug: "enterprise-architect-ai"
+
+prediction_evaluation:
+  predicted_archetype: "enterprise_ai_architect"
+  predicted_overall_fit: "High"
+  actual_outcome: "active_pipeline"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Direct alignment on Enterprise AI Architecture and Governance"
+    - "Agentic AI and MCP multi-agent workflow requirement matched"
+    - "Architecture Review Board (ARB) leadership experience validated"
+    - "Financial services domain gap correctly identified as transferable via banking background"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.0
+    projection_quality: 98.5
+    opportunity_fit: 92.0
+    archetype_fit: 95.0

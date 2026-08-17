@@ -90,7 +90,7 @@ flowchart TD
 
     IN["📥 Candidate Portfolio & Target Role Spec"]:::inputStyle
     KL["🧠 1. Knowledge Layer (okf/)<br/><i>Canonical Knowledge Graph & Executive Identity</i>"]:::knowledgeStyle
-    RL["⚡ 2. Runtime Layer (out/runtime/)<br/><i>Opportunity Context & Target Priorities</i>"]:::runtimeStyle
+    RL["⚡ 2. Runtime Layer (out/<target-slug>/runtime/)<br/><i>Opportunity Context & Target Priorities</i>"]:::runtimeStyle
     CL["🎯 3. Coaching Layer (okf/)<br/><i>Opportunity-Aware Strategy & Gap Analysis</i>"]:::coachingStyle
     PL["📄 4. Projection Layer (out/)<br/><i>Resumes, Briefings, Cover Letter & Playbook</i>"]:::projectionStyle
     VG["🛡️ Quality & Brand Validation Gates<br/><i>Projection & Brand Alignment Verification</i>"]:::validateStyle
@@ -128,7 +128,7 @@ flowchart TD
         S1_IDN --> S1_NAR["narrative-engine & story-engine"]
     end
 
-    subgraph S2["⚡ 2. Runtime Layer (Derived Context in out/runtime/)"]
+    subgraph S2["⚡ 2. Runtime Layer (Derived Context in out/<target-slug>/runtime/)"]
         S2_OPP["opportunity-analyzer<br/><i>Emits opportunity-analysis.yaml</i>"]
     end
 
@@ -221,7 +221,7 @@ def build_pipeline_drawio_xml(skills):
     # 4 Layer Container Boxes
     layers = [
         ("Knowledge Layer (okf/)", "#E0F2FE", "#0284C7", 40, 80, 260, 680),
-        ("Runtime Layer (out/runtime/)", "#FEF3C7", "#D97706", 320, 80, 240, 680),
+        ("Runtime Layer (out/<target-slug>/runtime/)", "#FEF3C7", "#D97706", 320, 80, 240, 680),
         ("Coaching Layer (okf/)", "#F3E8FF", "#7C3AED", 580, 80, 240, 680),
         ("Projection Layer (out/)", "#DCFCE7", "#16A34A", 840, 80, 280, 680),
     ]

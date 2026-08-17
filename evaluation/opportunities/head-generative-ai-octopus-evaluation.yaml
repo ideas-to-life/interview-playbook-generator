@@ -1,0 +1,19 @@
+version: "6.0"
+generated_at: "2026-08-16T12:25:40+01:00"
+target_slug: "head-generative-ai-octopus"
+
+prediction_evaluation:
+  predicted_archetype: "head_of_ai_enterprise"
+  predicted_overall_fit: "Moderate-High"
+  actual_outcome: "in_progress"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Direct alignment on hands-on agentic building & LLMOps"
+    - "Transferable framing established for energy domain & Kraken platform integration"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 98.5
+    brand_consistency: 99.0
+    projection_quality: 97.5
+    opportunity_fit: 85.0
+    archetype_fit: 88.0

@@ -1,5 +1,5 @@
 version: "6.0"
-generated_at: "2026-08-15T15:06:00+01:00"
+generated_at: "2026-08-16T13:32:45+01:00"
 target_slug: "enterprise-architect-governance-ai-automation"
 prediction_evaluation:
   predicted_archetype: "enterprise_governance_architect"
@@ -7,13 +7,12 @@ prediction_evaluation:
   actual_outcome: "active_pipeline"
   prediction_accuracy: "High"
   confirmed_signals:
-    - "Strong EA governance capability alignment confirmed"
-    - "Policy-as-Code automation experience directly matched"
-    - "AI & Agentic Systems architecture relevance confirmed"
+    - "Strong Enterprise Architecture Governance & Policy-as-Code alignment"
+    - "Financial Services & Regulated Enterprise Architecture background confirmed"
   missed_signals: []
   external_validation_scores:
     evidence_integrity: 100.0
-    brand_consistency: 99.0
-    projection_quality: 98.5
+    brand_consistency: 99.5
+    projection_quality: 99.0
     opportunity_fit: 95.0
-    archetype_fit: 96.0
+    archetype_fit: 95.0

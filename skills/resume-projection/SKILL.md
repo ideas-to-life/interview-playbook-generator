@@ -46,7 +46,7 @@ Every generated resume variant MUST include the following 10 sections:
 5. **Enterprise Architecture Expertise**: Key bulleted architectural capabilities.
 6. **AI Platform, Data & Governance Expertise**: Key bulleted platform & governance capabilities.
 7. **Professional Experience**: Reverse-chronological career history (WPP Media, BBC Studios, British American Tobacco - R&D, BAT - Global, BAT - Americas) with signature achievements and opportunity-weighted bullets.
-8. **Selected Enterprise AI Initiatives**: Detailed descriptions of CAS (Architecture-as-Code), EA4ALL (AI Accessibility), and RAI (Observability).
+8. **Selected AI Initiatives**: Detailed descriptions of CAS (Architecture-as-Code) and EA4ALL (AI Accessibility).
 9. **Education & Professional Development**: MSc in Computer Science, TOGAF 9, SAFe, LeanIX.
 10. **Technical Skills**: Categorized by domain (Enterprise Architecture, AI Platforms & Governance, Architecture-as-Code, Data Architecture & Integration, Observability & Evaluation, Cloud & Enterprise Software, Programming Languages).
 
