@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Principal Enterprise Architect"
+  target_role: "Head of Solution Architecture – SAP"
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: ""
@@ -12,11 +12,11 @@ candidate:
   portfolio_url: "https://alexandrefranco.dev"
 
 target_opportunity:
-  company: "Celonis"
-  role_title: "Principal Enterprise Architect"
-  industry: "Process Intelligence"
+  company: "BBC"
+  role_title: "Head of Solution Architecture – SAP"
+  industry: "Media and Broadcasting"
   interviewer: "Recruiter"
-  source: "/Users/avfranco/GitHub/mind-palace/target-position/principal-ea-celonis.md"
+  source: "/Users/avfranco/GitHub/mind-palace/target-position/bbc-solution-architect-head.md"
 
 projections:
   resume:

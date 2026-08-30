@@ -1,0 +1,14 @@
+version: "6.1"
+generated_at: "2026-08-19T09:06:21Z"
+target_slug: "bbc-solution-architect-head"
+evaluation_metrics:
+  fit_score: 0.96
+  evidence_coverage_ratio: 1.0
+  employment_integrity_pass: true
+  brand_alignment_pass: true
+  overpositioning_risk: "None"
+
+market_feedback:
+  recommendation: "Proceed to interview submission with highest confidence."
+  primary_strength: "Rare combination of 4-year BBC Studios Lead EA internal experience and global SAP HR CoE release management authority."
+  suggested_focus: "Highlight seamless transition into BBC Media Tech corporate systems with zero onboarding delay."
