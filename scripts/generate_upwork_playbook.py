@@ -147,48 +147,93 @@ def generate_opportunity_analysis():
 
 def generate_upwork_qualification():
     data = {
-        "version": "1.0",
+        "version": "2.1",
         "generated_at": TIMESTAMP,
         "target_slug": TARGET_SLUG,
-        "decision": "APPLY",
-        "proposal_generation": "allowed",
+        "opportunity_title": "Senior Agentic AI Architect — Human + AI Workforce & Multi-Agent Orchestration",
+        "machine_recommendation": "EVIDENCE_GAPS",
+        "recommendation_rationale": "Direct, verified enterprise AI architecture and governance experience at WPP Media and BBC Studios. Production deployment verification for full multi-agent system remains an unresolved evidence gap.",
+        "proposal_content_mode": "HUMAN_REVIEW_REQUIRED",
+        "submission_readiness": "HUMAN_REVIEW_REQUIRED",
+        "user_decision_state": "APPLY",  # Human-controlled, user decision state
+        "decision": "APPLY",  # Backward compatibility
+        "proposal_generation": "allowed",  # Backward compatibility
         "confidence": "HIGH",
-        "overall_rationale": "Candidate possesses direct, verified production experience as Senior Director & System Architect - Agentic AI at WPP Media and Lead Enterprise Architect at BBC Studios, designing enterprise multi-agent platforms, LLM reasoning observability, agent guardrails, and human-in-the-loop governance.",
+        "overall_rationale": "Candidate possesses direct, verified production architecture and advisory experience as Senior Director & System Architect - Agentic AI at WPP Media and Lead Enterprise Architect at BBC Studios. Live production deployment details are unrecorded in canonical evidence and surfaced for human confirmation.",
         "client_buying_signals": [
             {"id": "signal-1", "signal": "Requires proven production experience building multi-agent systems for real operating companies.", "importance": "high"},
             {"id": "signal-2", "signal": "Rejects pure low-code / chatbot / prompt engineering applicants.", "importance": "high"},
             {"id": "signal-3", "signal": "Needs architectural roadmap and structured audit before major code changes.", "importance": "high"}
         ],
-        "hard_requirements": [
+        "requirement_assessments": [
             {
                 "requirement_id": "req-1",
-                "requirement": "Production multi-agent system implementation inside a real operating company",
-                "status": "met",
+                "requirement_text": "Production multi-agent system implementation inside a real operating company",
+                "classification": "PARTIALLY_SUPPORTED",
+                "is_dealbreaker": True,
                 "relationship": "direct",
                 "evidence_strength": "strong",
-                "production_status": "verified_production",
-                "evidence_sources": ["wpp-agentic-ai-platform", "cas-coding-agent-guardrails"],
-                "rationale": "Architected multi-agent platform and agentic AI guardrails at WPP Media."
+                "production_status": "unknown",
+                "missing_facts": ["production_deployment_verification"],
+                "established_facts": ["Multi-agent platform architecture at WPP Media", "GenAI governance framework at BBC Studios"],
+                "matched_evidence_ids": ["wpp-agentic-ai-platform", "cas-coding-agent-guardrails"],
+                "candidate_confirmation_questions": [
+                    {
+                        "question_id": "q-1",
+                        "question_text": "Was the WPP Media agentic AI platform deployed into live production for external clients?",
+                        "missing_fact": "production_deployment_verification",
+                        "impact": "Required to satisfy client production dealbreaker without qualification"
+                    }
+                ],
+                "rationale": "Architected multi-agent platform and agentic AI guardrails at WPP Media. Production deployment attestation is unrecorded in canonical evidence."
             },
             {
                 "requirement_id": "req-2",
-                "requirement": "Agent hierarchy, memory architecture, and durable state design",
-                "status": "met",
+                "requirement_text": "Agent hierarchy, memory architecture, and durable state design",
+                "classification": "SUPPORTED",
+                "is_dealbreaker": True,
                 "relationship": "direct",
                 "evidence_strength": "strong",
                 "production_status": "verified_production",
-                "evidence_sources": ["wpp-agentic-ai-platform", "rai-reasoning-observability"],
+                "missing_facts": [],
+                "established_facts": ["Designed durable state, memory isolation, and LLM reasoning observability at WPP Media"],
+                "matched_evidence_ids": ["wpp-agentic-ai-platform", "rai-reasoning-observability"],
+                "candidate_confirmation_questions": [],
                 "rationale": "Designed durable state, memory isolation, and LLM reasoning observability at WPP Media."
             },
             {
                 "requirement_id": "req-3",
-                "requirement": "Human approval gates and maker/checker governance controls",
-                "status": "met",
+                "requirement_text": "Human approval gates and maker/checker governance controls",
+                "classification": "SUPPORTED",
+                "is_dealbreaker": True,
                 "relationship": "direct",
                 "evidence_strength": "strong",
                 "production_status": "verified_production",
-                "evidence_sources": ["bbc-studios-genai-framework", "cas-coding-agent-guardrails"],
+                "missing_facts": [],
+                "established_facts": ["Established GenAI governance framework at BBC Studios", "Human approval guardrails in CAS"],
+                "matched_evidence_ids": ["bbc-studios-genai-framework", "cas-coding-agent-guardrails"],
+                "candidate_confirmation_questions": [],
                 "rationale": "Established GenAI governance framework at BBC Studios and human approval guardrails in CAS."
+            }
+        ],
+        "hard_requirements": [
+            {
+                "requirement_id": "req-1",
+                "requirement": "Production multi-agent system implementation inside a real operating company",
+                "status": "partially_met",
+                "relationship": "direct",
+                "evidence_strength": "strong",
+                "production_status": "unknown",
+                "evidence_sources": ["wpp-agentic-ai-platform", "cas-coding-agent-guardrails"],
+                "rationale": "Architected multi-agent platform at WPP Media; live production deployment is unrecorded."
+            }
+        ],
+        "evidence_gaps": [
+            {
+                "gap_id": "gap-1",
+                "requirement_id": "req-1",
+                "missing_fact": "production_deployment_verification",
+                "confirmation_question": "Was the WPP Media agentic AI platform deployed into live production for external clients?"
             }
         ],
         "preferred_requirements": [
@@ -219,7 +264,14 @@ def generate_upwork_qualification():
                 "relevance_summary": "Created corporate GenAI governance and risk assessment framework at BBC Studios."
             }
         ],
-        "open_conditions": [],
+        "open_conditions": [
+            {
+                "condition_id": "cond-1",
+                "fact_requiring_confirmation": "Live production deployment attestation for WPP agentic platform",
+                "impact": "Surfaced for candidate review in upwork-evidence-gaps.md",
+                "suggested_candidate_action": "Confirm production deployment status in canonical OKF evidence if verified"
+            }
+        ],
         "proposal_risks": [
             {
                 "risk_id": "risk-1",
@@ -231,6 +283,7 @@ def generate_upwork_qualification():
             {
                 "sample_id": "ws-1",
                 "title": "Agentic AI Platform Architecture & Multi-Agent Guardrails (WPP Media)",
+                "project_type": "client_production",
                 "supports_requirement": "Multi-agent orchestration & durable state",
                 "demonstrates_capability": "agentic-ai-architecture",
                 "evidence_source": "wpp-agentic-ai-platform"
@@ -238,6 +291,7 @@ def generate_upwork_qualification():
             {
                 "sample_id": "ws-2",
                 "title": "GenAI Governance & Human Approval Framework (BBC Studios)",
+                "project_type": "client_production",
                 "supports_requirement": "Human approval gates & maker/checker controls",
                 "demonstrates_capability": "enterprise-ai-governance",
                 "evidence_source": "bbc-studios-genai-framework"
@@ -245,6 +299,7 @@ def generate_upwork_qualification():
             {
                 "sample_id": "ws-3",
                 "title": "LLM Reasoning Observability & Evaluation System (RAI / CAS)",
+                "project_type": "personal_project",
                 "supports_requirement": "LLM observability, logging, and evaluation",
                 "demonstrates_capability": "observability-and-evals",
                 "evidence_source": "rai-reasoning-observability"
@@ -566,11 +621,29 @@ def generate_market_feedback_evaluator():
 
 # Document view generators
 
+def generate_upwork_evidence_gaps_md():
+    content = """# Upwork Evidence Gap Report: Senior Agentic AI Architect
+
+**Submission Readiness**: `HUMAN_REVIEW_REQUIRED`
+**Machine Recommendation**: `EVIDENCE_GAPS`
+
+## Requirement Evidence Gaps
+
+### 1. Production multi-agent system implementation inside a real operating company
+- **Status**: `PARTIALLY_SUPPORTED`
+- **Established Facts**: Architected enterprise multi-agent platform and reasoning observability infrastructure at WPP Media; established GenAI governance framework at BBC Studios.
+- **Missing Facts**: `production_deployment_verification` (Live production client deployment attestation is unrecorded in canonical OKF evidence).
+- **Candidate Confirmation Question**: Was the WPP Media agentic AI platform deployed into live production for external clients?
+"""
+    (OUT_DIR / "upwork-evidence-gaps.md").write_text(content, encoding="utf-8")
+
 def generate_upwork_proposal_md():
     content = """# Upwork Proposal: Senior Agentic AI Architect — Human + AI Workforce & Multi-Agent Orchestration
 
-**Qualification Status**: `APPLY`
-**Proposal Control State**: `allowed`
+**Submission Readiness**: `HUMAN_REVIEW_REQUIRED`
+**Machine Recommendation**: `EVIDENCE_GAPS`
+**User Decision State**: `APPLY` (Human-Owned)
+**Proposal Content Mode**: `HUMAN_REVIEW_REQUIRED`
 **Word Count**: 425 words (Target: 350-500 words)
 
 ---
@@ -820,6 +893,7 @@ def main():
     generate_market_feedback_evaluator()
     
     generate_upwork_proposal_md()
+    generate_upwork_evidence_gaps_md()
     generate_upwork_screening_answers_md()
     generate_upwork_work_samples_md()
     generate_resumes_and_views()
