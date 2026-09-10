@@ -1,5 +1,8 @@
 name: Auto-Generate Architecture Diagrams
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [ main, master ]
@@ -22,8 +25,29 @@ jobs:
   diagrams:
     runs-on: ubuntu-latest
     steps:
+      - name: Determine ref to checkout
+        id: ref
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "ref=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          else
+            echo "ref=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+          ref: ${{ steps.ref.outputs.ref }}
+
+      - name: Prevent loops (skip if last commit made by the bot)
+        run: |
+          LAST_AUTHOR="$(git log -1 --pretty=%an)"
+          if [ "$LAST_AUTHOR" = "github-actions[bot]" ]; then
+            echo "Last commit by github-actions[bot]; exiting to avoid workflow loop."
+            exit 0
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -40,8 +64,27 @@ jobs:
           python scripts/generate_architecture_diagrams.py
 
       - name: Verify Git Status (Check for uncommitted diagram changes)
+        id: gitstatus
         run: |
           git status --porcelain
           if [ -n "$(git status --porcelain)" ]; then
             echo "::warning title=Architecture Diagrams Out of Date::Architecture diagrams or documentation were updated by the generator."
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push generated diagrams back to branch
+        if: steps.gitstatus.outputs.changed == 'true'
+        env:
+          BRANCH: ${{ steps.ref.outputs.ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/architecture/*.drawio.xml ARCHITECTURE.md README.md || true
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "chore: auto-generate architecture diagrams [ci skip]" || true
+            git push origin HEAD:${BRANCH}
+          else
+            echo "No changes to commit"
           fi
