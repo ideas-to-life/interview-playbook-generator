@@ -1,8 +1,8 @@
-# Specification Quality Checklist: Upwork Qualification and Proposal Generator
+# Specification Quality Checklist: Evidence Integrity & Production Qualification Controls
 
-**Purpose**: Validate specification completeness and quality before proceeding to planning
-**Created**: 2026-09-10
-**Feature**: [specs/001-upwork-proposal-generator/spec.md](../spec.md)
+**Purpose**: Validate specification completeness and quality before proceeding to planning  
+**Created**: 2026-09-10  
+**Feature**: [spec.md](../spec.md)
 
 ## Content Quality
 
@@ -31,4 +31,5 @@
 
 ## Notes
 
-All specification quality validation items have passed.
+- Specification refined to V2 based on forensic defect analysis (`upwork-proposal-generator-refinement-spec.v2.md`).
+- Machine-readable evidence contract (FR-01 through FR-07), negative inference rules (FR-08), dealbreaker gates (FR-11), cross-organisation isolation (FR-15), cross-project isolation (FR-16), and 10 regression test scenarios (FR-23) fully specified.
