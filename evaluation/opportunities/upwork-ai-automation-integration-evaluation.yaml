@@ -1,0 +1,18 @@
+version: "6.0"
+generated_at: "2026-09-09T14:40:00+01:00"
+target_slug: "upwork-ai-automation-integration"
+prediction_evaluation:
+  predicted_archetype: "head_of_ai_automation"
+  predicted_overall_fit: "High"
+  actual_outcome: "active_proposal"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Client explicitly prioritised custom process auditing and API integration over basic low-code zaps."
+    - "Python microservices and multi-step agentic AI experience matched key buyer requirements."
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 98.5
+    brand_consistency: 99.0
+    projection_quality: 98.2
+    opportunity_fit: 95.0
+    archetype_fit: 96.0

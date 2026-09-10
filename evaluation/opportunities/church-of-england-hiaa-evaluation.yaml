@@ -1,0 +1,20 @@
+version: "6.0"
+generated_at: "2026-09-09T11:51:01+01:00"
+opportunity: "church-of-england-hiaa"
+company: "The Church of England"
+role_title: "Head of Innovation and Architecture"
+
+market_feedback:
+  outcome: "Active Pipeline Target"
+  archetype_alignment: "head_of_innovation_and_architecture"
+  concerns:
+    - "Ensuring commercial enterprise background translates to values-driven institutional stewardship."
+  strengths:
+    - "Strong EA operating model leadership and LeanIX track record."
+    - "Hands-on GenAI capability modeling and modern AI platform architecture."
+    - "Servant leadership and clear executive communication for non-technical stakeholders."
+
+prediction_accuracy:
+  overall_fit_predicted: "High"
+  actual_fit_observed: "High"
+  notes: "Pipeline projections accurately identified high capability alignment across innovation pipeline governance, enterprise architecture, and responsible AI adoption."

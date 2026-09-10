@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Head of Solution Architecture – SAP"
+  target_role: "AI Automation Expert for Business Process Automation and AI Integration"
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: ""
@@ -12,11 +12,11 @@ candidate:
   portfolio_url: "https://alexandrefranco.dev"
 
 target_opportunity:
-  company: "BBC"
-  role_title: "Head of Solution Architecture – SAP"
-  industry: "Media and Broadcasting"
+  company: ""
+  role_title: "AI Automation Expert for Business Process Automation and AI Integration"
+  industry: ""
   interviewer: "Recruiter"
-  source: "/Users/avfranco/GitHub/mind-palace/target-position/bbc-solution-architect-head.md"
+  source: "config/target-position/upwork-ai-automation-integration.md"
 
 projections:
   resume:
@@ -24,7 +24,7 @@ projections:
   cover_letter:
     max_pages: 1
   linkedin:
-    style: "executive"
+    style: "all"
 
 pipeline:
   skills:
