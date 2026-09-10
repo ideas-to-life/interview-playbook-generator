@@ -113,6 +113,7 @@ KNOWLEDGE LAYER (canonical; writes to out/okf/)
 
 RUNTIME LAYER (derived execution context; writes to out/<target-slug>/runtime/)
   opportunity-analyzer            (out/<target-slug>/runtime/opportunity-analysis.yaml)
+  upwork-qualification            (if target_type: upwork ➔ out/<target-slug>/runtime/upwork-qualification.yaml)
 
 COACHING LAYER (derived; reads canonical + opportunity-analysis)
   interview-strategy-generator
@@ -123,6 +124,7 @@ PROJECTION LAYER (views; reads canonical + opportunity-analysis; writes to out/<
   resume-projection               (out/<target-slug>/resume-executive.md, resume-ats.md, resume-recruiter.md)
   cover-letter-projection         (out/<target-slug>/cover-letter.md)
   linkedin-projection             (out/<target-slug>/linkedin-profile.md)
+  upwork-proposal                 (if target_type: upwork ➔ out/<target-slug>/upwork-qualification-report.md, upwork-screening-answers.md, upwork-work-samples.md)
   opportunity-alignment-view      (out/<target-slug>/opportunity-alignment.md)
   executive-brief-view           (out/<target-slug>/executive-brief.md)
   playbook-assembler              (out/<target-slug>/playbook.md & out/<target-slug>/interview-cheatsheet.md)

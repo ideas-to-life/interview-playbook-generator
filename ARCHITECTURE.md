@@ -33,9 +33,11 @@ The load-bearing principles:
 | **Knowledge** | `narrative-engine` | Generates canonical Narrative Library and Messaging Library. |
 | **Knowledge** | `story-engine` | Converts Evidence Cards into single consolidated `okf/story-library.md`. |
 | **Runtime** | `opportunity-analyzer` | Generates shared execution context at `out/<target-slug>/runtime/opportunity-analysis.yaml`. |
+| **Runtime** | `upwork-qualification` | Evaluates Upwork opportunity against Evidence Integrity V2.0 contract (`out/<target-slug>/runtime/upwork-qualification.yaml`). |
 | **Coaching** | `interview-strategy-generator` | Computes opportunity strategy and story-to-question mapping. |
 | **Coaching** | `knowledge-gaps` | Pre-assembly evaluation gate assessing bundle against target role. |
 | **Projection**| `projection-registry` | Orchestrates pluggable projection contracts into `out/<target-slug>/`. |
+| **Projection**| `upwork-proposal` | Generates proposal, screening answers, or Gate Report (`out/<target-slug>/upwork-qualification-report.md`). |
 | **Projection**| `resume-projection` | Generates Executive, ATS, and Recruiter resume variants in `out/<target-slug>/`. |
 | **Projection**| `cover-letter-projection` | Generates 1-page executive cover letter at `out/<target-slug>/cover-letter.md`. |
 | **Projection**| `linkedin-projection` | Generates LinkedIn profile optimization at `out/<target-slug>/linkedin-profile.md`. |

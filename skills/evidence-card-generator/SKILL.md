@@ -36,6 +36,26 @@ description: "<Summary>"
 tags: [<tags>]
 generated: { by: "evidence-card-generator", at: "<ISO-8601>" }
 status: draft
+
+# Machine-Readable Provenance & Identity Contract (v2.0)
+organisation:
+  id: "<employment-record-id | personal-cas>"
+  name: "<organisation-name>"
+  type: "enterprise_employer | advisory_client | personal_project | academic"
+
+project:
+  id: "<project-slug>"
+  name: "<project-name>"
+
+environment: "production | staging | prototype | lab | personal | unknown"
+production_verified: false # true | false (explicit attestation only; no inference from prose, repos, or metrics)
+production_evidence_type: "telemetry | release_notes | client_signoff | attested_claim | none"
+implementation_role: "lead_architect | sole_developer | contributor | advisor | evaluator | none"
+
+provenance:
+  primary_source_id: "<source-id>"
+  source_type: "production_telemetry | release_notes | client_signoff | repo_code | eval_harness | resume_claim"
+
 sources:
   - id: <source-id>
     resource: <resource-path>

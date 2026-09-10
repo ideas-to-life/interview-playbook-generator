@@ -1,0 +1,94 @@
+version: '2.0'
+generated_at: '2026-09-10T11:57:00+01:00'
+target_slug: upwork-senior-agentic-ai-architect
+decision: DO NOT APPLY
+proposal_generation: blocked
+confidence: HIGH
+overall_rationale: 'The target opportunity explicitly requires verified commercial
+  production deployment (''If you have not already done this in production, please
+  do not apply''). Canonical OKF evidence for WPP Media specifies environment: prototype
+  and production_verified: false. Under Evidence Integrity Contract V2.0, production
+  status remains UNKNOWN / prototype, evaluating to DO NOT APPLY (proposal_generation:
+  blocked).'
+client_buying_signals:
+- id: signal-1
+  signal: Requires proven production experience building multi-agent systems for real
+    operating companies.
+  importance: high
+- id: signal-2
+  signal: Rejects pure low-code / chatbot / prompt engineering applicants.
+  importance: high
+- id: signal-3
+  signal: Needs architectural roadmap and structured audit before major code changes.
+  importance: high
+hard_requirements:
+- requirement_id: req-1
+  requirement: Production multi-agent system implementation inside a real operating
+    company
+  status: not_met
+  relationship: direct
+  evidence_strength: weak
+  production_status: unknown
+  evidence_sources:
+  - wpp-agentic-ai-platform
+  rationale: 'Canonical EvidenceCard out/okf/evidence/wpp-agentic-ai-platform.md frontmatter
+    specifies environment: prototype and production_verified: false. Explicit client
+    dealbreaker requires verified commercial production deployment.'
+- requirement_id: req-2
+  requirement: Agent hierarchy, memory architecture, and durable state design
+  status: partially_met
+  relationship: direct
+  evidence_strength: moderate
+  production_status: verified_non_production
+  evidence_sources:
+  - wpp-agentic-ai-platform
+  - rai-reasoning-observability
+  rationale: Designed durable state, memory isolation, and LLM reasoning observability
+    in prototype and CAS R&D environments.
+- requirement_id: req-3
+  requirement: Human approval gates and maker/checker governance controls
+  status: met
+  relationship: direct
+  evidence_strength: strong
+  production_status: verified_production
+  evidence_sources:
+  - bbc-studios-genai-framework
+  rationale: Established corporate GenAI governance framework at BBC Studios with
+    explicit production verification.
+preferred_requirements:
+- requirement_id: pref-1
+  requirement: OpenAI Agents SDK / LangGraph / MCP / Vector DBs
+  relationship: direct
+  evidence_strength: strong
+  evidence_sources:
+  - wpp-agentic-ai-platform
+  - ea4all-architectural-intelligence
+- requirement_id: pref-2
+  requirement: Salesforce & Shopify API integrations
+  relationship: adjacent
+  evidence_strength: moderate
+  evidence_sources:
+  - bat-rd-governance-sap
+strongest_evidence_matches:
+- requirement_id: req-3
+  evidence_card_id: bbc-studios-genai-framework
+  relevance_summary: Created corporate GenAI governance and risk assessment framework
+    at BBC Studios.
+open_conditions: []
+proposal_risks:
+- risk_id: risk-1
+  claim_to_avoid_or_qualify: WPP Media production multi-agent deployment claim
+  reasoning: 'Canonical frontmatter explicitly specifies environment: prototype. Claiming
+    production deployment violates Zero Fabrication and Evidence Integrity Contract
+    V2.0.'
+recommended_work_samples: []
+claim_traceability:
+- claim: Formulated enterprise agentic AI platform strategy and prototype foundations
+    at WPP Media.
+  evidence_id: wpp-agentic-ai-platform
+  classification: evidence
+  source_reference: out/okf/evidence/wpp-agentic-ai-platform.md
+- claim: Established corporate GenAI governance framework at BBC Studios.
+  evidence_id: bbc-studios-genai-framework
+  classification: evidence
+  source_reference: out/okf/evidence/bbc-studios-genai-framework.md

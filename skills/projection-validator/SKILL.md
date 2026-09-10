@@ -28,9 +28,11 @@ NEVER FABRICATE:
 4. **ATS Vocabulary Density**: % of mandatory and strong ATS keywords present in `resume-ats.md`.
 5. **Readability & Word Count**: Word count budget compliance across projections.
 6. **Employment History Evidence Integrity**: Deterministically evaluates generated projection views against `okf/employment-records.yaml` using `scripts/employment_validator.py`. Reports `PASS` or `FAIL` status with explicit violation trace.
-7. **Upwork Proposal & Provenance Validation**:
-   - Inspect `out/<target-slug>/runtime/upwork-qualification.yaml` `claim_traceability` array to confirm 100% of claims map to canonical evidence cards (`[^source-id]`).
-   - Confirm client-facing `upwork-qualification-report.md` contains zero unparsed internal metadata tags (`[evidence]`, `[inference]`).
+7. **Upwork Proposal & Machine-Readable Provenance Validation (v2.0)**:
+   - Cross-verify `out/<target-slug>/runtime/upwork-qualification.yaml` `claim_traceability` entries against canonical OKF `EvidenceCard` frontmatter metadata (`organisation.id`, `project.id`, `environment`, `production_verified`, `implementation_role`).
+   - Flag any production claim in proposal prose that is not backed by `environment: "production"` and `production_verified: true` in canonical OKF `EvidenceCard` frontmatter metadata.
+   - Detect and flag any cross-organisation evidence bleeding (`C_1.organisation.id != C_2.organisation.id`) or cross-project isolation breaches (`C_1.project.id != C_2.project.id`) for production requirements.
+   - Confirm client-facing `upwork-qualification-report.md` contains zero unparsed internal metadata tags (`[evidence]`, `[inference]`, `[^source-id]`).
    - Validate word count budget compliance (350–500 words for `APPLY`).
    - Verify `DO NOT APPLY` state (`proposal_generation: blocked`) prevents submission-ready proposal output and outputs a valid Gate Report.
    - Verify `CONDITIONAL` state (`proposal_generation: allowed_with_conditions`) includes explicit `[OPEN CONDITION: <fact>]` markers.

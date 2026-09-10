@@ -16,15 +16,43 @@ The qualification gate evaluates whether an opportunity can be pursed credibly w
 1. **Five Hard Rules Compliance**:
    - Never fabricate projects, metrics, team sizes, budgets, technologies, responsibilities, or tenure.
    - Preserves 4-layer architectural boundaries.
-2. **Production Evidence Integrity**:
-   - Personal projects, prototypes, labs, architecture exercises, proof-of-concepts, or innovation work MUST NOT satisfy explicit client requirements for production implementation inside a real company.
-   - Production status MUST distinguish `verified_production`, `verified_non_production`, `unknown`, `not_applicable`.
-3. **Control Boundary Enforcement**:
-   - Output includes `proposal_generation` control semantics:
-     - `APPLY` → `proposal_generation: allowed`
-     - `CONDITIONAL` → `proposal_generation: allowed_with_conditions`
-     - `DO NOT APPLY` → `proposal_generation: blocked`
-4. **Zero Proposal Generation**:
+2. **Production Evidence Integrity & Contract V2.0 Predicate**:
+   - Qualification MUST evaluate candidate evidence using the deterministic `PERSONAL_PRODUCTION_IMPLEMENTATION_EXPERIENCE` predicate:
+     $$\text{PERSONAL\_PRODUCTION\_IMPLEMENTATION\_EXPERIENCE}(E, R) \iff$$
+     $$\big(E.\text{organisation.id} = R.\text{target\_organisation\_id} \lor R.\text{organisation\_bound} = \text{ANY}\big)$$
+     $$\land \big(E.\text{project.id} = R.\text{target\_project\_id} \lor R.\text{project\_bound} = \text{ANY}\big)$$
+     $$\land \big(E.\text{environment} = \text{production} \land E.\text{production\_verified} = \text{true}\big)$$
+     $$\land \big(E.\text{implementation\_role} \in \{\text{lead\_architect}, \text{sole\_developer}, \text{contributor}\}\big)$$
+   - Both matching `organisation.id` AND matching `project.id` are MANDATORY for system/project-specific production implementation requirements.
+   - Personal projects (`organisation.id: personal-cas`), prototypes, labs, architecture exercises, or unverified resume claims MUST NOT satisfy explicit client requirements for production implementation inside a commercial enterprise.
+3. **15 Prohibited Inference Rules (Negative Constraints)**:
+   The engine MUST NOT infer `production_verified = true` from any of:
+   1. Employment relationship or title
+   2. Employer name
+   3. Repository name (e.g. `pca-productionagents-a2a`)
+   4. Directory/folder name
+   5. "production" in free-text prose
+   6. "deployed" in free-text prose
+   7. "operational" in free-text prose
+   8. Technology selection
+   9. Evaluation metrics
+   10. High success rate
+   11. Low latency benchmarks
+   12. CI/CD or architecture diagrams
+   13. Case study slide decks
+   14. Personal CAS project evidence
+   15. Unverified resume claims
+4. **Cross-Organisation & Cross-Project Isolation**:
+   - Evidence from Company B cannot satisfy Company A production requirements.
+   - Evidence from Project X cannot satisfy Project Y requirements, even within the same organisation.
+5. **Dealbreaker Hard Gate & Control Semantics**:
+   - Explicit dealbreaker requirement ("If you have not already done this in production, do not apply") + `UNKNOWN` or `VERIFIED_NON_PRODUCTION` status $\rightarrow$ `decision: DO NOT APPLY` (`proposal_generation: blocked`).
+   - `UNKNOWN` status for an explicit dealbreaker requirement MUST NEVER evaluate to `CONDITIONAL` or `APPLY`.
+   - Control semantics:
+     - `APPLY` $\rightarrow$ `proposal_generation: allowed`
+     - `CONDITIONAL` $\rightarrow$ `proposal_generation: allowed_with_conditions`
+     - `DO NOT APPLY` $\rightarrow$ `proposal_generation: blocked`
+6. **Zero Proposal Generation**:
    - `upwork-qualification` MUST NOT generate client-facing proposal prose markdown files (`upwork-qualification-report.md`).
 
 ## Taxonomy & Schema
@@ -37,7 +65,7 @@ Requirements are classified as:
 ## Output Schema (`out/<target-slug>/runtime/upwork-qualification.yaml`)
 
 ```yaml
-version: "1.0"
+version: "2.0"
 generated_at: "<ISO-8601>"
 target_slug: "<target-slug>"
 decision: "APPLY | CONDITIONAL | DO NOT APPLY"

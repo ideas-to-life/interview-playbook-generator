@@ -147,13 +147,13 @@ def generate_opportunity_analysis():
 
 def generate_upwork_qualification():
     data = {
-        "version": "1.0",
+        "version": "2.0",
         "generated_at": TIMESTAMP,
         "target_slug": TARGET_SLUG,
-        "decision": "APPLY",
-        "proposal_generation": "allowed",
+        "decision": "DO NOT APPLY",
+        "proposal_generation": "blocked",
         "confidence": "HIGH",
-        "overall_rationale": "Candidate possesses direct, verified production experience as Senior Director & System Architect - Agentic AI at WPP Media and Lead Enterprise Architect at BBC Studios, designing enterprise multi-agent platforms, LLM reasoning observability, agent guardrails, and human-in-the-loop governance.",
+        "overall_rationale": "The target opportunity explicitly requires verified commercial production deployment ('If you have not already done this in production, please do not apply'). Canonical OKF evidence for WPP Media specifies environment: prototype and production_verified: false. Under Evidence Integrity Contract V2.0, production status remains UNKNOWN / prototype, evaluating to DO NOT APPLY (proposal_generation: blocked).",
         "client_buying_signals": [
             {"id": "signal-1", "signal": "Requires proven production experience building multi-agent systems for real operating companies.", "importance": "high"},
             {"id": "signal-2", "signal": "Rejects pure low-code / chatbot / prompt engineering applicants.", "importance": "high"},
@@ -163,22 +163,22 @@ def generate_upwork_qualification():
             {
                 "requirement_id": "req-1",
                 "requirement": "Production multi-agent system implementation inside a real operating company",
-                "status": "met",
+                "status": "not_met",
                 "relationship": "direct",
-                "evidence_strength": "strong",
-                "production_status": "verified_production",
-                "evidence_sources": ["wpp-agentic-ai-platform", "cas-coding-agent-guardrails"],
-                "rationale": "Architected multi-agent platform and agentic AI guardrails at WPP Media."
+                "evidence_strength": "weak",
+                "production_status": "unknown",
+                "evidence_sources": ["wpp-agentic-ai-platform"],
+                "rationale": "Canonical EvidenceCard out/okf/evidence/wpp-agentic-ai-platform.md frontmatter specifies environment: prototype and production_verified: false. Explicit client dealbreaker requires verified commercial production deployment."
             },
             {
                 "requirement_id": "req-2",
                 "requirement": "Agent hierarchy, memory architecture, and durable state design",
-                "status": "met",
+                "status": "partially_met",
                 "relationship": "direct",
-                "evidence_strength": "strong",
-                "production_status": "verified_production",
+                "evidence_strength": "moderate",
+                "production_status": "verified_non_production",
                 "evidence_sources": ["wpp-agentic-ai-platform", "rai-reasoning-observability"],
-                "rationale": "Designed durable state, memory isolation, and LLM reasoning observability at WPP Media."
+                "rationale": "Designed durable state, memory isolation, and LLM reasoning observability in prototype and CAS R&D environments."
             },
             {
                 "requirement_id": "req-3",
@@ -187,8 +187,8 @@ def generate_upwork_qualification():
                 "relationship": "direct",
                 "evidence_strength": "strong",
                 "production_status": "verified_production",
-                "evidence_sources": ["bbc-studios-genai-framework", "cas-coding-agent-guardrails"],
-                "rationale": "Established GenAI governance framework at BBC Studios and human approval guardrails in CAS."
+                "evidence_sources": ["bbc-studios-genai-framework"],
+                "rationale": "Established corporate GenAI governance framework at BBC Studios with explicit production verification."
             }
         ],
         "preferred_requirements": [
@@ -209,11 +209,6 @@ def generate_upwork_qualification():
         ],
         "strongest_evidence_matches": [
             {
-                "requirement_id": "req-1",
-                "evidence_card_id": "wpp-agentic-ai-platform",
-                "relevance_summary": "Architected enterprise agentic AI platform and multi-agent coordination at WPP Media."
-            },
-            {
                 "requirement_id": "req-3",
                 "evidence_card_id": "bbc-studios-genai-framework",
                 "relevance_summary": "Created corporate GenAI governance and risk assessment framework at BBC Studios."
@@ -223,36 +218,14 @@ def generate_upwork_qualification():
         "proposal_risks": [
             {
                 "risk_id": "risk-1",
-                "claim_to_avoid_or_qualify": "Native Shopify / Salesforce SDK mastery",
-                "reasoning": "Candidate experience is in enterprise API architecture and SAP/WPP platforms; frame as custom REST/GraphQL API integration strength."
+                "claim_to_avoid_or_qualify": "WPP Media production multi-agent deployment claim",
+                "reasoning": "Canonical frontmatter explicitly specifies environment: prototype. Claiming production deployment violates Zero Fabrication and Evidence Integrity Contract V2.0."
             }
         ],
-        "recommended_work_samples": [
-            {
-                "sample_id": "ws-1",
-                "title": "Agentic AI Platform Architecture & Multi-Agent Guardrails (WPP Media)",
-                "supports_requirement": "Multi-agent orchestration & durable state",
-                "demonstrates_capability": "agentic-ai-architecture",
-                "evidence_source": "wpp-agentic-ai-platform"
-            },
-            {
-                "sample_id": "ws-2",
-                "title": "GenAI Governance & Human Approval Framework (BBC Studios)",
-                "supports_requirement": "Human approval gates & maker/checker controls",
-                "demonstrates_capability": "enterprise-ai-governance",
-                "evidence_source": "bbc-studios-genai-framework"
-            },
-            {
-                "sample_id": "ws-3",
-                "title": "LLM Reasoning Observability & Evaluation System (RAI / CAS)",
-                "supports_requirement": "LLM observability, logging, and evaluation",
-                "demonstrates_capability": "observability-and-evals",
-                "evidence_source": "rai-reasoning-observability"
-            }
-        ],
+        "recommended_work_samples": [],
         "claim_traceability": [
             {
-                "claim": "Architected multi-agent platform and reasoning observability at WPP Media.",
+                "claim": "Formulated enterprise agentic AI platform strategy and prototype foundations at WPP Media.",
                 "evidence_id": "wpp-agentic-ai-platform",
                 "classification": "evidence",
                 "source_reference": "out/okf/evidence/wpp-agentic-ai-platform.md"
@@ -506,7 +479,7 @@ def generate_projection_validation_report():
             },
             "upwork_validation": {
                 "status": "PASS",
-                "gate_state": "allowed",
+                "gate_state": "blocked",
                 "clean_prose_verified": True,
                 "traceability_100_percent": True
             }
@@ -554,11 +527,10 @@ def generate_market_feedback_evaluator():
         "generated_at": TIMESTAMP,
         "market_feedback": {
             "opportunity": TARGET_SLUG,
-            "decision": "APPLY",
-            "concerns": [],
+            "decision": "DO NOT APPLY",
+            "concerns": ["Unverified WPP production deployment attestation for explicit dealbreaker requirement"],
             "outcomes": [
-                "Strong alignment on production multi-agent system architecture at WPP Media.",
-                "Direct applicability of 10-point audit and workforce transition plan."
+                "Gate report emitted; submission blocked per Evidence Integrity Contract V2.0."
             ]
         }
     }
@@ -567,108 +539,52 @@ def generate_market_feedback_evaluator():
 # Document view generators
 
 def generate_upwork_proposal_md():
-    content = """# Upwork Proposal: Senior Agentic AI Architect — Human + AI Workforce & Multi-Agent Orchestration
+    content = """# Upwork Qualification Report: Senior Agentic AI Architect
 
-**Qualification Status**: `APPLY`
-**Proposal Control State**: `allowed`
-**Word Count**: 425 words (Target: 350-500 words)
+**Qualification Status**: `DO NOT APPLY`
+**Proposal Control State**: `blocked`
 
 ---
 
-### MULTI-AGENT ARCHITECT
+## GATE REPORT: APPLICATION BLOCKED
 
-I have personally architected and implemented production multi-agent systems inside complex, real operating companies—most recently as Senior Director & System Architect for Agentic AI at WPP Media, and previously as Lead Enterprise Architect at BBC Studios.
+### Decision Summary
+The qualification engine has evaluated this opportunity as **DO NOT APPLY** (`proposal_generation: blocked`). No client-facing proposal prose markdown has been generated for marketplace submission.
 
-Building a durable, company-wide AI operating system across Sales, Operations, Finance, and Customer Service requires much more than low-code automation tools or standard chatbots. It requires a resilient master orchestration layer, explicit agent hierarchies, isolated state management, robust maker/checker approval gates, and comprehensive LLM reasoning observability.
+### Blocking Requirements
+- **Requirement**: Production multi-agent system implementation inside a real operating company
+- **Client Constraint**: "Requires proven production experience building multi-agent systems for real operating companies. If you have not already done this in production, please do not apply."
+- **Current Evidence Status**: `UNKNOWN` / `environment: prototype` (WPP Media Agentic AI Platform)
 
-### 1. Proof of Production Experience
-At WPP Media, I led the architectural design of an enterprise multi-agent platform and reasoning observability infrastructure. The system coordinated autonomous agents executing multi-step workflows while enforcing strict state persistence, agent-to-agent communication protocols, and deterministic failure recovery. 
+### Evidence Gap Analysis
+- Canonical EvidenceCard `out/okf/evidence/wpp-agentic-ai-platform.md` specifies `environment: prototype` and `production_verified: false`.
+- Under Evidence Integrity Contract V2.0, production status cannot be inferred from enterprise employer names, repo path names (`pca-productionagents-a2a`), or evaluation metrics.
 
-At BBC Studios, I established the corporate GenAI Governance Framework, defining maker/checker approval controls, risk classification, and human escalation gates for operational AI deployment.
+### Decision Rationale
+The opportunity explicitly specifies production implementation in a real operating company as a strict dealbreaker. Without explicit production attestation metadata in canonical OKF evidence frontmatter, the requirement evaluates to `UNKNOWN`, which triggers the mandatory hard gate (`DO NOT APPLY`).
 
-### 2. Proposed Approach for Your AI Operating System
-If engaged, I will execute a structured, 4-phase rollout:
-
-1. **Current-State Audit & Risk Assessment**: Audit your existing AI integrations (OpenAI, Supabase, Dialpad, Salesforce, Shopify, Google Workspace) before changing line items.
-2. **Master Orchestration & Governance Design**: Define the agent hierarchy, role-based memory boundaries (shared vs. agent-isolated), and multi-agent consensus protocols to prevent duplicate or conflicting actions.
-3. **Durable State & Human Approval Gates**: Implement durable workflow state (Temporal / Trigger.dev / queue-based retries) and explicit human approval gates so AI operates under human supervision before autonomy increases.
-4. **Human + AI Workforce Transition Plan**: Establish empirical performance metrics to determine when a workflow is safe to transition from AI-assisted to supervised execution, allowing your 50-person team to progressively evolve into high-value approvers and specialists.
-
-### 3. Key Technical Capabilities
-* **Frameworks & SDKs**: OpenAI Agents SDK, LangGraph, Model Context Protocol (MCP), Python, PostgreSQL / Supabase, Redis queues.
-* **Governance & Evals**: LLM reasoning observability, automated eval pipelines, maker/checker controls, audit logging.
-* **Integrations**: REST/GraphQL API architecture across Salesforce, Shopify, Dialpad, and Google Workspace.
-
-### 4. Next Steps
-I am available for an initial scoping discussion to review your current architecture and outline the Phase 1 audit roadmap.
-
-Best regards,  
-Alexandre Franco  
-Senior Agentic AI Architect & AI Transformation Advisor
+### What Would Change This Decision
+Candidate or source owner must provide explicit machine-readable evidence attesting live production deployment at WPP Media (`environment: production`, `production_verified: true`, `production_evidence_type: telemetry | release_notes | client_signoff`) with a compatible implementation role (`lead_architect`, `sole_developer`, or `contributor`).
 """
     (OUT_DIR / "upwork-qualification-report.md").write_text(content, encoding="utf-8")
 
 def generate_upwork_screening_answers_md():
     content = """# Upwork Screening Answers: Senior Agentic AI Architect
 
-## Question 1: What real company have you personally helped implement a production multi-agent or AI workforce system for?
-**Status**: `ANSWERED`
-**Answer**: I personally served as Senior Director & System Architect – Agentic AI at WPP Media (Dec 2025 – Jul 2026), where I architected the enterprise multi-agent platform and LLM reasoning observability infrastructure. Prior to that, as Lead Enterprise Architect at BBC Studios (2021–2025), I created the enterprise GenAI governance framework governing operational AI adoption.
+**Qualification Status**: `DO NOT APPLY`
+**Proposal Control State**: `blocked`
 
-## Question 2: How many agents or automated workflows were involved?
-**Status**: `ANSWERED`
-**Answer**: At WPP Media, the platform coordinated dozens of specialized AI agents across media planning, content analysis, and automated research workflows, integrated into an enterprise-wide agentic framework with central governance and shared memory boundaries.
-
-## Question 3: What parts of the company were affected?
-**Status**: `ANSWERED`
-**Answer**: The multi-agent platform transformed commercial operations, media planning, campaign execution, and research teams at WPP, bridging technical engineering with day-to-day business operations.
-
-## Question 4: What measurable business result did the system produce?
-**Status**: `ANSWERED`
-**Answer**: The platform dramatically reduced cycle time for multi-step research and media analysis, established full auditability for agent decision-making via LLM reasoning observability, and eliminated ungoverned AI experiments.
-
-## Question 5: How would you coordinate 50 AI agents with shared company knowledge but different permissions?
-**Status**: `ANSWERED`
-**Answer**: I implement a hub-and-spoke architecture using Model Context Protocol (MCP) and role-based access control (RBAC). Shared company knowledge is stored in a centralized vector/RAG layer with row-level security (RLS in Supabase/Postgres), while each agent receives explicit tool permission scopes and JWT-based context tokens ensuring it can only query data authorized for its role.
-
-## Question 6: How would you prevent conflicting or duplicate agent actions?
-**Status**: `ANSWERED`
-**Answer**: Conflict prevention requires a centralized state lock and orchestration registry (e.g., Redis locks or Temporal workflow singletons). Before an agent executes an action (such as updating a CRM record or sending a Dialpad message), it must acquire an idempotent execution lease. Maker/checker patterns guarantee that high-impact actions require explicit human or supervisor agent confirmation before commit.
-
-## Question 7: How would you safely recover a partially completed workflow after a failure?
-**Status**: `ANSWERED`
-**Answer**: I design workflows using durable execution engines (Temporal, Trigger.dev, or durable state machines in Postgres/Redis) with checkpointing at every state transition. Each step is built to be idempotent. On failure, the system rehydrates the agent's memory snapshot from the last validated checkpoint without re-running completed external API calls.
-
-## Question 8: How would you determine what to automate first, what to keep human, and when staffing can safely be reduced?
-**Status**: `ANSWERED`
-**Answer**: I apply a 4-tier process framework based on Volume, Complexity, and Reversibility:
-1. **Automate First**: High-volume, low-complexity, reversible tasks (e.g., routine data enrichment, initial CS triage).
-2. **Keep Human**: High-stake strategic relationships, novel exception handling, and irreversible financial/legal approvals.
-3. **Reliability Gating**: Transition a process from human-executed -> AI-assisted -> human-approved -> autonomous only when automated evals achieve >99.5% accuracy over a 30-day baseline.
-4. **Staffing Transition**: Staffing is never reduced abruptly; roles evolve as throughput per human manager increases by 3-5x through agent delegation.
+> **APPLICATION BLOCKED**: Proposal generation is blocked due to unverified production deployment attestation for explicit client dealbreaker requirement. Screening answers draft suppressed per Evidence Integrity Contract V2.0.
 """
     (OUT_DIR / "upwork-screening-answers.md").write_text(content, encoding="utf-8")
 
 def generate_upwork_work_samples_md():
     content = """# Recommended Work Samples: Senior Agentic AI Architect
 
-## 1. Agentic AI Platform Architecture & Multi-Agent Guardrails (WPP Media)
-- **Supports Requirement**: Master multi-agent orchestration, agent hierarchy, and durable state
-- **Demonstrated Capability**: agentic-ai-architecture
-- **Evidence Source**: wpp-agentic-ai-platform
-- **Summary**: Designed and architected WPP Open / Agentic AI platform, implementing multi-agent coordination, state isolation, reasoning observability, and automated LLM evals.
+**Qualification Status**: `DO NOT APPLY`
+**Proposal Control State**: `blocked`
 
-## 2. Enterprise GenAI Governance & Human Approval Framework (BBC Studios)
-- **Supports Requirement**: Human approval gates, maker/checker controls, and operational risk boundaries
-- **Demonstrated Capability**: enterprise-ai-governance
-- **Evidence Source**: bbc-studios-genai-framework
-- **Summary**: Authored and established the corporate GenAI governance framework at BBC Studios, setting up approval controls, risk evaluation matrix, and enterprise AI guardrails.
-
-## 3. Reasoning Observability & Evaluation System (RAI / CAS Framework)
-- **Supports Requirement**: LLM observability, logging, audit trails, and failure recovery
-- **Demonstrated Capability**: observability-and-evals
-- **Evidence Source**: rai-reasoning-observability
-- **Summary**: Developed deep reasoning observability, automated eval traces, and state recovery patterns for autonomous AI agents.
+> **APPLICATION BLOCKED**: Proposal generation is blocked. Recommended work samples suppressed per Evidence Integrity Contract V2.0.
 """
     (OUT_DIR / "upwork-work-samples.md").write_text(content, encoding="utf-8")
 

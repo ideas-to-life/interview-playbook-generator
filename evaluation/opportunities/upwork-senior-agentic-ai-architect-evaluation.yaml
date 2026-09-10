@@ -2,8 +2,8 @@ version: '6.0'
 generated_at: '2026-09-10T11:57:00+01:00'
 market_feedback:
   opportunity: upwork-senior-agentic-ai-architect
-  decision: APPLY
-  concerns: []
+  decision: DO NOT APPLY
+  concerns:
+  - Unverified WPP production deployment attestation for explicit dealbreaker requirement
   outcomes:
-  - Strong alignment on production multi-agent system architecture at WPP Media.
-  - Direct applicability of 10-point audit and workforce transition plan.
+  - Gate report emitted; submission blocked per Evidence Integrity Contract V2.0.
