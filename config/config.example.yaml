@@ -17,6 +17,7 @@ target_opportunity:
   industry: "E-Commerce & Digital Agency"
   interviewer: "Senior Talent Acquisition Specialist"
   source: "inputs/target_opportunity.pdf"
+  target_type: "upwork"  # Options: employment (default), upwork
 
 projections:
   resume:
@@ -25,6 +26,10 @@ projections:
     max_pages: 1
   linkedin:
     style: "executive"
+  upwork:
+    word_count_target:
+      min: 350
+      max: 500
 
 pipeline:
   skills:
@@ -42,6 +47,7 @@ pipeline:
     - story-engine
     # Runtime Layer
     - opportunity-analyzer
+    - upwork-qualification
     # Coaching Layer
     - interview-strategy-generator
     - knowledge-gaps
@@ -52,6 +58,7 @@ pipeline:
     - linkedin-projection
     - opportunity-alignment-view
     - executive-brief-view
+    - upwork-proposal
     - playbook-assembler
     - projection-validator
     - brand-validator

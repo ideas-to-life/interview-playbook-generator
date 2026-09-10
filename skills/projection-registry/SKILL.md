@@ -48,6 +48,7 @@ Every registered projection Skill implements:
    - `linkedin-projection` ➔ `out/<target-slug>/linkedin-profile.md`
    - `opportunity-alignment-view` ➔ `out/<target-slug>/opportunity-alignment.md`
    - `executive-brief-view` ➔ `out/<target-slug>/executive-brief.md`
+   - `upwork-proposal` (if `target_type: upwork`) ➔ `out/<target-slug>/upwork-proposal.md`, `out/<target-slug>/upwork-screening-answers.md`, `out/<target-slug>/upwork-work-samples.md`
    - `playbook-assembler` ➔ `out/<target-slug>/playbook.md`, `out/<target-slug>/interview-cheatsheet.md`
 4. **Log State**: Write registration log to `out/<target-slug>/runtime/projection-registry.yaml`.
 5. **Append Log**: `okf/log.md`.
