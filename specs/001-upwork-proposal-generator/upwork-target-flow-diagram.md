@@ -1,95 +1,88 @@
 # Upwork Target Flow Architecture
 
-This diagram visualizes the end-to-end processing pipeline for an Upwork opportunity across the platform's 4 architectural layers, control gate boundaries, and human review interface.
+This diagram visualizes the end-to-end processing pipeline for an Upwork opportunity across the platform's 4 architectural layers, qualification control boundary, validation gate, and human review boundary.
 
 ```mermaid
 flowchart TD
-    subgraph Inputs["1. INPUTS & CONFIGURATION"]
+    subgraph Inputs["INPUTS & CONFIGURATION"]
         JobDesc["Upwork Job Description\n(inputs/upwork-jd.md)"]
         TargetConfig["Target Configuration\n(target_type: upwork)"]
     end
-
-    subgraph KnowledgeLayer["2. KNOWLEDGE LAYER (out/okf/)"]
-        OKF["Canonical Career Evidence\n• Evidence Cards\n• Signature Achievements\n• Capabilities\n• Story Library"]
+    subgraph KnowledgeLayer["1. KNOWLEDGE LAYER (out/okf/)"]
+        OKF["Canonical Career Evidence\n• Evidence Cards\n• Signature Achievements\n• Capabilities\n• Story Library\n• Executive Identity\n• Messaging / Narrative"]
     end
-
-    subgraph RuntimeLayer["3. RUNTIME LAYER (out/<target-slug>/runtime/)"]
-        OppAnalyzer["opportunity-analyzer"]
+    subgraph RuntimeLayer["2. RUNTIME LAYER (out/<target-slug>/runtime/)"]
+        OppAnalyzer["opportunity-analyzer\n(existing)"]
         OppAnalysisYaml["opportunity-analysis.yaml"]
-        
-        QualSkill["upwork-qualification\n(skills/upwork-qualification/)"]
-        QualYaml["upwork-qualification.yaml\n• decision: APPLY | CONDITIONAL | DO NOT APPLY\n• proposal_generation: allowed | allowed_with_conditions | blocked\n• claim_traceability: [...]"]
+        QualSkill["upwork-qualification\n(runtime capability)"]
+        QualYaml["upwork-qualification.yaml\n• decision\n• proposal_generation\n• requirement assessment\n• evidence / claim traceability\n• production status\n• rationale"]
     end
-
-    subgraph GateDecision["4. QUALIFICATION CONTROL GATE"]
-        Gate{"Decision & Control State"}
+    subgraph QualificationGate["QUALIFICATION CONTROL BOUNDARY"]
+        Gate{"Qualification Decision"}
     end
-
-    subgraph GateOutcomes["Gate Outcomes"]
-        DoNotApply["DO NOT APPLY\n(proposal_generation: blocked)"]
-        Conditional["CONDITIONAL\n(proposal_generation: allowed_with_conditions)"]
-        Apply["APPLY\n(proposal_generation: allowed)"]
+    subgraph CoachingLayer["3. COACHING LAYER"]
+        Coaching["Opportunity-Aware Strategy\n(existing capabilities where applicable)\n• Positioning\n• Emphasis Areas\n• Gap Awareness\n• Proposal Strategy (internal)"]
     end
-
-    subgraph ProjectionLayer["5. PROJECTION LAYER (out/<target-slug>/)"]
-        GateReport["Gate Report\n(upwork-proposal.md)\n• Blocking Requirement\n• Evidence Gap\n• What Would Change Decision"]
-        
-        ProjRegistry["projection-registry\n(skills/projection-registry/)"]
-        ProposalSkill["upwork-proposal\n(skills/upwork-proposal/)"]
-        
-        CleanProposal["upwork-proposal.md\n(Clean submission-ready prose,\n350-500 words)"]
-        ScreeningAnswers["upwork-screening-answers.md\n(Direct answers + evidence;\n[OPEN CONDITION] tags if conditional)"]
-        WorkSamples["upwork-work-samples.md\n(Max 3 evidence-backed samples)"]
+    subgraph ProjectionLayer["4. PROJECTION LAYER (out/<target-slug>/)"]
+        ProjRegistry["projection-registry\n(existing)"]
+        ProposalSkill["upwork-proposal\n(projection capability)"]
+        CleanProposal["upwork-proposal.md\nClean client-facing prose\n350–500 words target"]
+        ScreeningAnswers["upwork-screening-answers.md\nDirect answers + evidence\nExplicit open conditions if conditional"]
+        WorkSamples["upwork-work-samples.md\nMaximum 3 relevant samples\nEvidence-backed + externally suitable"]
+        GateReport["upwork-qualification-report.md\n• Blocking Requirement\n• Evidence Gap\n• Decision Rationale\n• What Would Change Decision"]
     end
-
-    subgraph EvaluationLayer["6. EVALUATION LAYER"]
-        Validator["projection-validator\n(skills/projection-validator/)"]
-        ValReport["projection-validation-report.yaml\n• Claim Traceability Check\n• Zero Fabrication Audit\n• Word Count Compliance"]
+    subgraph ValidationGate["VALIDATION & QUALITY GATE"]
+        Validator["projection-validator\n(existing, extended)"]
+        ValReport["projection-validation-report.yaml\n• Qualification Gate Compliance\n• Evidence Integrity\n• Claim Traceability\n• Structure / Constraint Checks\n• Screening Coverage\n• Work-Sample Validation"]
+        ValidationDecision{"Validation Passed?"}
     end
-
-    subgraph HumanBoundary["7. HUMAN APPROVAL BOUNDARY"]
-        HumanReview["Human Candidate Review\n• Verify Open Conditions\n• Final Copywriting & Strategy Check"]
-        HumanSubmit["Human Upwork Submission\n(External Action)"]
+    subgraph HumanBoundary["HUMAN REVIEW BOUNDARY"]
+        HumanReview["Human Candidate Review\n• Review Generated Artifacts\n• Verify Open Conditions\n• Assess Evidence / Positioning\n• Final Copy & Strategy Check"]
+        HumanSubmit["Human Upwork Submission\nExternal Action\nManual — no automation in V1"]
     end
-
-    %% Data Flow Connections
+    %% Input and Knowledge Flow
     JobDesc --> OppAnalyzer
     TargetConfig --> OppAnalyzer
     OppAnalyzer --> OppAnalysisYaml
-    
+    OKF -->|Governed, relevant evidence| QualSkill
     OppAnalysisYaml --> QualSkill
-    OKF --> QualSkill
     QualSkill --> QualYaml
     QualYaml --> Gate
-    
-    Gate -->|Blocked| DoNotApply
-    Gate -->|Unverified Facts| Conditional
-    Gate -->|Fully Supported| Apply
-    
+    %% Qualification Decision Paths
+    Gate -->|DO NOT APPLY| DoNotApply["DO NOT APPLY\nproposal_generation: blocked"]
+    Gate -->|CONDITIONAL| Conditional["CONDITIONAL\nproposal_generation: allowed_with_conditions"]
+    Gate -->|APPLY| Apply["APPLY\nproposal_generation: allowed"]
+    %% Blocked Path
     DoNotApply --> GateReport
+    GateReport --> HumanReview
+    %% Qualified Paths
     Conditional --> ProjRegistry
     Apply --> ProjRegistry
-    
+    %% Coaching / Strategy
+    QualYaml --> Coaching
+    OppAnalysisYaml --> Coaching
+    OKF --> Coaching
+    Coaching --> ProposalSkill
     ProjRegistry --> ProposalSkill
-    OKF --> ProposalSkill
-    QualYaml --> ProposalSkill
-    
+    OKF -->|Approved evidence boundary| ProposalSkill
+    QualYaml -->|Qualification boundary| ProposalSkill
+    %% Projection Outputs
     ProposalSkill --> CleanProposal
     ProposalSkill --> ScreeningAnswers
     ProposalSkill --> WorkSamples
-    
+    %% All projection artifacts enter validation
     CleanProposal --> Validator
     ScreeningAnswers --> Validator
+    WorkSamples --> Validator
     QualYaml --> Validator
     Validator --> ValReport
-    
-    CleanProposal --> HumanReview
-    ScreeningAnswers --> HumanReview
-    WorkSamples --> HumanReview
-    GateReport --> HumanReview
-    
+    ValReport --> ValidationDecision
+    %% Validation Gate
+    ValidationDecision -->|PASS| HumanReview
+    ValidationDecision -->|FAIL| Correction["Correction / Regeneration\nWithin governed evidence boundary"]
+    Correction --> ProposalSkill
+    %% Human Boundary
     HumanReview --> HumanSubmit
-
     %% Styling
     classDef inputStyle fill:#e1f5fe,stroke:#0288d1,stroke-width:1px;
     classDef okfStyle fill:#fff3e0,stroke:#f57c00,stroke-width:1px;
@@ -97,24 +90,41 @@ flowchart TD
     classDef gateStyle fill:#fffde7,stroke:#fbc02d,stroke-width:2px;
     classDef blockStyle fill:#ffebee,stroke:#d32f2f,stroke-width:2px;
     classDef applyStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef conditionalStyle fill:#fff8e1,stroke:#f9a825,stroke-width:2px;
+    classDef coachingStyle fill:#fff3e0,stroke:#ef6c00,stroke-width:1px;
     classDef projStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:1px;
     classDef evalStyle fill:#ede7f6,stroke:#512da8,stroke-width:1px;
+    classDef validationGateStyle fill:#f5f0ff,stroke:#6a1b9a,stroke-width:2px;
     classDef humanStyle fill:#e0f2f1,stroke:#00796b,stroke-width:2px;
-
+    classDef correctionStyle fill:#fff3e0,stroke:#e65100,stroke-width:1px;
     class JobDesc,TargetConfig inputStyle;
     class OKF okfStyle;
     class OppAnalyzer,OppAnalysisYaml,QualSkill,QualYaml runtimeStyle;
     class Gate gateStyle;
     class DoNotApply blockStyle;
-    class Apply,Conditional applyStyle;
+    class Apply applyStyle;
+    class Conditional conditionalStyle;
+    class Coaching coachingStyle;
     class ProjRegistry,ProposalSkill,CleanProposal,ScreeningAnswers,WorkSamples,GateReport projStyle;
     class Validator,ValReport evalStyle;
+    class ValidationDecision validationGateStyle;
     class HumanReview,HumanSubmit humanStyle;
+    class Correction correctionStyle;
 ```
 
 ## Key Architectural Invariants
 
-1. **Qualification Control Gate**: Proposal generation CANNOT override qualification. If qualification evaluates to `DO NOT APPLY`, proposal generation is blocked and renders a Gate Report instead of a submission-ready application.
-2. **Clean Client Prose**: `upwork-proposal.md` is rendered as clean professional prose ready for marketplace copy-pasting, while full claim-to-evidence provenance is preserved in `out/<target-slug>/runtime/upwork-qualification.yaml`.
-3. **Automated Provenance Audit**: `projection-validator` verifies claim traceability internally by matching generated claims against the `claim_traceability` array in runtime context.
-4. **Human Review Boundary**: The system ends at human-reviewable artifacts. No automated Upwork browser interaction or proposal submission is performed.
+1. Four-Layer Architecture: Upwork processing conforms to the existing Knowledge, Runtime, Coaching, and Projection layers. Validation is a cross-cutting quality gate, not a fifth architectural layer.
+2. Qualification Control Boundary: Qualification is a hard downstream control. Proposal projection cannot override the qualification result:
+    * DO NOT APPLY → proposal_generation: blocked
+    * CONDITIONAL → proposal_generation: allowed_with_conditions
+    * APPLY → proposal_generation: allowed
+3. Qualification Evidence vs Projection Evidence: Qualification determines whether the opportunity can legitimately be pursued. Projection selects persuasive evidence only within the evidence boundary established by qualification.
+4. Production Evidence Integrity: Production experience, prototype/innovation experience, personal projects, and theoretical knowledge remain explicitly distinct. The system must never infer production status from technical similarity or sophistication.
+5. Single Source of Career Evidence: Canonical career evidence remains in the OKF Knowledge Layer. The Upwork feature does not create a second career or evidence repository.
+6. Clean Client Prose: upwork-proposal.md contains natural, professional client-facing prose. Internal provenance, evidence relationships, validation metadata, and qualification state remain in structured/runtime context rather than being exposed as machine-readable tags in the proposal.
+7. DO NOT APPLY Is Not a Failure: A blocked opportunity produces a qualification/gate report, not a submission-ready proposal. The gate report is deliberately separate from upwork-proposal.md.
+8. Validation Is a Quality Gate: All projection artifacts—including the proposal, screening answers, and work-sample recommendations—pass through projection-validator before reaching human review.
+9. Validation Failure Does Not Bypass Governance: Failed outputs return for correction/regeneration within the same qualification and evidence boundaries. Validation cannot expand the evidence boundary or change the qualification decision.
+10. Human Review Boundary: The system ends with human-reviewable artifacts. Final submission to Upwork remains a human action. No automated browser interaction, scraping, or proposal submission is performed in V1.
+11. CAS / SLDC Governance: Processing is bounded, evidence-grounded, traceable, deterministic where applicable, and integrated with the existing repository lifecycle and validation mechanisms.
