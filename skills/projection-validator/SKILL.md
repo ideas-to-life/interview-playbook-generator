@@ -28,11 +28,17 @@ NEVER FABRICATE:
 4. **ATS Vocabulary Density**: % of mandatory and strong ATS keywords present in `resume-ats.md`.
 5. **Readability & Word Count**: Word count budget compliance across projections.
 6. **Employment History Evidence Integrity**: Deterministically evaluates generated projection views against `okf/employment-records.yaml` using `scripts/employment_validator.py`. Reports `PASS` or `FAIL` status with explicit violation trace.
+7. **Upwork Proposal & Provenance Validation**:
+   - Inspect `out/<target-slug>/runtime/upwork-qualification.yaml` `claim_traceability` array to confirm 100% of claims map to canonical evidence cards (`[^source-id]`).
+   - Confirm client-facing `upwork-qualification-report.md` contains zero unparsed internal metadata tags (`[evidence]`, `[inference]`).
+   - Validate word count budget compliance (350–500 words for `APPLY`).
+   - Verify `DO NOT APPLY` state (`proposal_generation: blocked`) prevents submission-ready proposal output and outputs a valid Gate Report.
+   - Verify `CONDITIONAL` state (`proposal_generation: allowed_with_conditions`) includes explicit `[OPEN CONDITION: <fact>]` markers.
 
 ## Execution Instructions
 
 1. **Read `out/<target-slug>/runtime/opportunity-analysis.yaml`**.
-2. **Scan Projection Artefacts in `out/<target-slug>/`**.
-3. **Compute Quality Metrics**.
+2. **Scan Projection Artefacts in `out/<target-slug>/`** (including `upwork-qualification-report.md`, `upwork-screening-answers.md`, `upwork-work-samples.md` when present).
+3. **Compute Quality Metrics** (including Upwork internal provenance and gate compliance).
 4. **Write `out/<target-slug>/runtime/projection-validation-report.yaml`**.
 5. **Append Log**: `okf/log.md`.

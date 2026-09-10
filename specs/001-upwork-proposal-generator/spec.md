@@ -17,6 +17,7 @@ Primary objective: Add Upwork proposal generation as a governed projection of th
 - Q: How should screening answers be generated when the qualification gate returns a CONDITIONAL decision? → A: Option A - Generate screening answers with explicit `[OPEN CONDITION: <fact>]` markers for any response dependent on unverified information.
 - Q: Should the qualification gate output be stored as machine-readable YAML in runtime context while proposal outputs are generated as Markdown documents? → A: Option A - Machine-readable YAML at `out/<target-slug>/runtime/upwork-qualification.yaml` and Markdown files (`upwork-qualification-report.md`, `upwork-screening-answers.md`, `upwork-work-samples.md`) in `out/<target-slug>/`.
 - Q: Should the existing projection-validator skill be extended to evaluate Upwork proposals and screening answers as part of the standard evaluation layer? → A: Option A - Extend existing `projection-validator` to parse and validate Upwork proposal artifacts and record validation results in `out/<target-slug>/runtime/projection-validation-report.yaml`.
+- Q: Should client-facing proposal text (`upwork-qualification-report.md`) be generated cleanly without visible inline evidence tags or footnotes, storing claim traceability in runtime YAML context for automated validation? → A: Option A - Render `upwork-qualification-report.md` clean of visible inline tags/footnotes for direct submission, storing claim traceability in `out/<target-slug>/runtime/upwork-qualification.yaml` and internal frontmatter for `projection-validator`.
 
 ⸻
 
@@ -602,6 +603,7 @@ Minimum conceptual schema:
 version: "1.0"
 target:
 decision: "APPLY | CONDITIONAL | DO NOT APPLY"
+proposal_generation: "blocked | allowed_with_conditions | allowed"
 confidence: "HIGH | MEDIUM | LOW"
 client_buying_signals:
   - ...
@@ -624,9 +626,15 @@ proposal_risks:
   - ...
 missing_evidence:
   - ...
+open_conditions:
+  - ...
 recommended_work_samples:
   - ...
-rationale:
+claim_traceability:
+  - claim: "string"
+    evidence_id: "string"
+    classification: "evidence | inference | recommendation"
+rationale: "string"
 
 The coding agent must determine whether an existing repository contract should be extended rather than creating a duplicate schema.
 
