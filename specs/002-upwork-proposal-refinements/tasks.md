@@ -10,8 +10,8 @@
 
 **Purpose**: Verify baseline repository state and initialize feature environment.
 
-- [ ] T001 Setup feature specification and design baseline in `specs/002-upwork-proposal-refinements/`
-- [ ] T002 [P] Verify environment and test suite baseline via `pytest tests/test_upwork_proposal_generator.py`
+- [x] T001 Setup feature specification and design baseline in `specs/002-upwork-proposal-refinements/`
+- [x] T002 [P] Verify environment and test suite baseline via `pytest tests/test_upwork_proposal_generator.py`
 
 ---
 
@@ -19,8 +19,8 @@
 
 **Purpose**: Core schema and data model updates required before implementing user stories.
 
-- [ ] T003 Update V2.1 data structures and schema definitions in `skills/upwork-qualification/SKILL.md` for 4-tier requirement assessment (`SUPPORTED`, `PARTIALLY_SUPPORTED`, `UNKNOWN`, `CONTRADICTED`)
-- [ ] T004 [P] Define V2.1 artifact header and `submission_readiness` schema (`SUBMISSION_READY`, `HUMAN_REVIEW_REQUIRED`) in `skills/upwork-proposal/SKILL.md`
+- [x] T003 Update V2.1 data structures and schema definitions in `skills/upwork-qualification/SKILL.md` for 4-tier requirement assessment (`SUPPORTED`, `PARTIALLY_SUPPORTED`, `UNKNOWN`, `CONTRADICTED`)
+- [x] T004 [P] Define V2.1 artifact header and `submission_readiness` schema (`SUBMISSION_READY`, `HUMAN_REVIEW_REQUIRED`) in `skills/upwork-proposal/SKILL.md`
 
 ---
 
@@ -32,16 +32,16 @@
 
 ### Tests for User Story 1
 
-- [ ] T005 [P] [US1] Write test cases for incomplete evidence & dealbreaker gap handling in `tests/test_upwork_proposal_generator.py`
+- [x] T005 [P] [US1] Write test cases for incomplete evidence & dealbreaker gap handling in `tests/test_upwork_proposal_generator.py`
 
 ### Implementation for User Story 1
 
-- [ ] T006 [US1] Implement 4-tier requirement evaluation and missing-fact extraction in `skills/upwork-qualification/SKILL.md`
-- [ ] T007 [US1] Implement candidate confirmation question generator for `UNKNOWN` and `PARTIALLY_SUPPORTED` requirements in `skills/upwork-qualification/SKILL.md`
-- [ ] T008 [US1] Implement clean client-facing proposal prose renderer (with `PARTIALLY_SUPPORTED` qualification rules) in `skills/upwork-proposal/SKILL.md`
-- [ ] T009 [US1] Implement companion Evidence Gap Report (`upwork-evidence-gaps.md`) renderer in `skills/upwork-proposal/SKILL.md`
-- [ ] T010 [US1] Implement evidence-safe screening answer generator (qualifying unresolved questions without fabricated yes/no answers) in `skills/upwork-proposal/SKILL.md`
-- [ ] T011 [US1] Update work sample selector to retain explicit project type labels (`personal_project`, `prototype_innovation`, `client_production`) in `skills/upwork-proposal/SKILL.md`
+- [x] T006 [US1] Implement 4-tier requirement evaluation and missing-fact extraction in `skills/upwork-qualification/SKILL.md`
+- [x] T007 [US1] Implement candidate confirmation question generator for `UNKNOWN` and `PARTIALLY_SUPPORTED` requirements in `skills/upwork-qualification/SKILL.md`
+- [x] T008 [US1] Implement clean client-facing proposal prose renderer (with `PARTIALLY_SUPPORTED` qualification rules) in `skills/upwork-proposal/SKILL.md`
+- [x] T009 [US1] Implement companion Evidence Gap Report (`upwork-evidence-gaps.md`) renderer in `skills/upwork-proposal/SKILL.md`
+- [x] T010 [US1] Implement evidence-safe screening answer generator (qualifying unresolved questions without fabricated yes/no answers) in `skills/upwork-proposal/SKILL.md`
+- [x] T011 [US1] Update work sample selector to retain explicit project type labels (`personal_project`, `prototype_innovation`, `client_production`) in `skills/upwork-proposal/SKILL.md`
 
 **Checkpoint**: User Story 1 (MVP) complete and testable independently.
 
@@ -55,12 +55,12 @@
 
 ### Tests for User Story 2
 
-- [ ] T012 [P] [US2] Write test cases for decoupled machine recommendation vs human decision state in `tests/test_upwork_proposal_generator.py`
+- [x] T012 [P] [US2] Write test cases for decoupled machine recommendation vs human decision state in `tests/test_upwork_proposal_generator.py`
 
 ### Implementation for User Story 2
 
-- [ ] T013 [US2] Implement machine fit recommendation logic (`STRONG_FIT`, `POTENTIAL_FIT`, `EVIDENCE_GAPS`, `WEAK_FIT`, `CLEAR_MISMATCH`) in `skills/upwork-qualification/SKILL.md`
-- [ ] T014 [US2] Update `upwork-qualification.yaml` schema and header rendering to record unforced `user_decision_state` (`APPLY`, `DO_NOT_APPLY`, `HOLD_FOR_EVIDENCE`) in `skills/upwork-proposal/SKILL.md`
+- [x] T013 [US2] Implement machine fit recommendation logic (`STRONG_FIT`, `POTENTIAL_FIT`, `EVIDENCE_GAPS`, `WEAK_FIT`, `CLEAR_MISMATCH`) in `skills/upwork-qualification/SKILL.md`
+- [x] T014 [US2] Update `upwork-qualification.yaml` schema and header rendering to record unforced `user_decision_state` (`APPLY`, `DO_NOT_APPLY`, `HOLD_FOR_EVIDENCE`) in `skills/upwork-proposal/SKILL.md`
 
 **Checkpoint**: User Story 2 complete and testable independently.
 
@@ -74,12 +74,12 @@
 
 ### Tests for User Story 3
 
-- [ ] T015 [P] [US3] Write test cases for evidence improvement loop & `projection-validator` rules in `tests/test_upwork_proposal_generator.py`
+- [x] T015 [P] [US3] Write test cases for evidence improvement loop & `projection-validator` rules in `tests/test_upwork_proposal_generator.py`
 
 ### Implementation for User Story 3
 
-- [ ] T016 [US3] Implement deterministic proposal re-evaluation and readiness upgrade in `skills/upwork-proposal/SKILL.md`
-- [ ] T017 [US3] Extend automated validation rules in `skills/projection-validator/SKILL.md` for claim traceability, zero fabrication, clean prose, and readiness alignment
+- [x] T016 [US3] Implement deterministic proposal re-evaluation and readiness upgrade in `skills/upwork-proposal/SKILL.md`
+- [x] T017 [US3] Extend automated validation rules in `skills/projection-validator/SKILL.md` for claim traceability, zero fabrication, clean prose, and readiness alignment
 
 **Checkpoint**: User Story 3 complete and testable independently.
 
@@ -87,8 +87,8 @@
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T018 [P] Update pipeline orchestrator integration in `skills/playbook-orchestrator/SKILL.md`
-- [ ] T019 Run full Pytest regression suite (`tests/test_upwork_proposal_generator.py`) and quickstart validation guide (`specs/002-upwork-proposal-refinements/quickstart.md`)
+- [x] T018 [P] Update pipeline orchestrator integration in `skills/playbook-orchestrator/SKILL.md`
+- [x] T019 Run full Pytest regression suite (`tests/test_upwork_proposal_generator.py`) and quickstart validation guide (`specs/002-upwork-proposal-refinements/quickstart.md`)
 
 ---
 
