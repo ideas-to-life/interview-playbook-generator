@@ -8,7 +8,7 @@ description: Generates clean executive proposal prose, screening answers, and wo
 ## Overview
 
 `upwork-proposal` is a Projection Layer Skill registered in `skills/projection-registry/SKILL.md`. It consumes runtime qualification context (`out/<target-slug>/runtime/upwork-qualification.yaml`) and canonical OKF evidence to project client-facing artifacts:
-- `out/<target-slug>/upwork-proposal.md`
+- `out/<target-slug>/upwork-qualification-report.md`
 - `out/<target-slug>/upwork-screening-answers.md`
 - `out/<target-slug>/upwork-work-samples.md`
 
@@ -16,16 +16,16 @@ description: Generates clean executive proposal prose, screening answers, and wo
 
 1. **Gate Compliance (`proposal_generation`)**:
    - `proposal_generation: blocked` (`DO NOT APPLY`):
-     - `upwork-proposal.md` MUST NOT contain a submission-ready application proposal.
-     - `upwork-proposal.md` MUST render a concise **Gate Report** displaying: Decision (`DO NOT APPLY`), Blocking Requirement(s), Available Evidence, Evidence Gap, Decision Rationale, and What Would Change Decision.
+     - `upwork-qualification-report.md` MUST NOT contain a submission-ready application proposal.
+     - `upwork-qualification-report.md` MUST render a concise **Gate Report** displaying: Decision (`DO NOT APPLY`), Blocking Requirement(s), Available Evidence, Evidence Gap, Decision Rationale, and What Would Change Decision.
      - `upwork-screening-answers.md` MUST NOT be generated as an application draft.
    - `proposal_generation: allowed_with_conditions` (`CONDITIONAL`):
-     - `upwork-proposal.md` renders a proposal draft with a prominent `[OPEN CONDITION: <fact>]` banner listing facts requiring candidate confirmation.
+     - `upwork-qualification-report.md` renders a proposal draft with a prominent `[OPEN CONDITION: <fact>]` banner listing facts requiring candidate confirmation.
      - `upwork-screening-answers.md` attaches explicit `[OPEN CONDITION: <fact>]` tags to affected questions.
    - `proposal_generation: allowed` (`APPLY`):
-     - Renders submission-ready `upwork-proposal.md` (350-500 words target).
+     - Renders submission-ready `upwork-qualification-report.md` (350-500 words target).
 2. **Clean Client-Facing Proposal Prose**:
-   - `upwork-proposal.md` MUST read as clean, natural professional proposal prose free of visible `[evidence]` tags or `[^source-id]` footnotes in the output text, making it directly copy-pasteable into Upwork.
+   - `upwork-qualification-report.md` MUST read as clean, natural professional proposal prose free of visible `[evidence]` tags or `[^source-id]` footnotes in the output text, making it directly copy-pasteable into Upwork.
    - Traceability metadata is maintained in `upwork-qualification.yaml` `claim_traceability` array for validation by `projection-validator`.
 3. **Screening Answers Rules**:
    - Answer every client question directly first, followed by supporting evidence proof.
@@ -37,7 +37,7 @@ description: Generates clean executive proposal prose, screening answers, and wo
 
 ## Generated Artifact Formats
 
-### 1. Proposal Artifact (`out/<target-slug>/upwork-proposal.md`)
+### 1. Proposal Artifact (`out/<target-slug>/upwork-qualification-report.md`)
 
 ```markdown
 # Upwork Proposal: [Target Opportunity Title]
@@ -83,8 +83,8 @@ description: Generates clean executive proposal prose, screening answers, and wo
 ## Execution Instructions
 
 1. **Read Qualification Runtime Context**: Load `out/<target-slug>/runtime/upwork-qualification.yaml` and check `proposal_generation` control state.
-2. **Handle `proposal_generation: blocked`**: Generate Gate Report in `upwork-proposal.md` and exit.
+2. **Handle `proposal_generation: blocked`**: Generate Gate Report in `upwork-qualification-report.md` and exit.
 3. **Handle `proposal_generation: allowed_with_conditions` / `allowed`**:
-   - Render `upwork-proposal.md` (clean prose, 350-500 words target).
+   - Render `upwork-qualification-report.md` (clean prose, 350-500 words target).
    - Render `upwork-screening-answers.md` for all screening questions.
    - Render `upwork-work-samples.md` recommending up to 3 work samples.

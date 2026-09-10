@@ -1,22 +1,23 @@
-# Configuration for Career Projection Platform (v0.5)
+# Configuration template for Career Projection Platform (v0.5)
 pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "AI Automation Expert for Business Process Automation and AI Integration"
+  target_role: "Senior Agentic AI Architect"
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
-  phone: ""
+  phone: "+44 (0) 7304 093460"
   email: "alexandre.franco@mostelli.com"
   linkedin: "https://linkedin.com/in/avfranco"
   portfolio_url: "https://alexandrefranco.dev"
 
 target_opportunity:
-  company: ""
-  role_title: "AI Automation Expert for Business Process Automation and AI Integration"
+  company: "USA Brndenburg"
+  role_title: "Senior Agentic AI Architect"
   industry: ""
-  interviewer: "Recruiter"
-  source: "config/target-position/upwork-ai-automation-integration.md"
+  interviewer: ""
+  source: "./target-position/upwork-senior-agentic-ai-architect.md"
+  target_type: "upwork"  # Options: employment (default), upwork
 
 projections:
   resume:
@@ -24,7 +25,11 @@ projections:
   cover_letter:
     max_pages: 1
   linkedin:
-    style: "all"
+    style: "executive"
+  upwork:
+    word_count_target:
+      min: 350
+      max: 500
 
 pipeline:
   skills:
@@ -42,6 +47,7 @@ pipeline:
     - story-engine
     # Runtime Layer
     - opportunity-analyzer
+    - upwork-qualification
     # Coaching Layer
     - interview-strategy-generator
     - knowledge-gaps
@@ -52,6 +58,7 @@ pipeline:
     - linkedin-projection
     - opportunity-alignment-view
     - executive-brief-view
+    - upwork-proposal
     - playbook-assembler
     - projection-validator
     - brand-validator

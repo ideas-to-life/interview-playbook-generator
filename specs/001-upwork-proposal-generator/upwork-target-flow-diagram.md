@@ -26,7 +26,7 @@ flowchart TD
     subgraph ProjectionLayer["4. PROJECTION LAYER (out/<target-slug>/)"]
         ProjRegistry["projection-registry\n(existing)"]
         ProposalSkill["upwork-proposal\n(projection capability)"]
-        CleanProposal["upwork-proposal.md\nClean client-facing prose\n350–500 words target"]
+        CleanProposal["upwork-qualification-report.md\nClean client-facing prose\n350–500 words target"]
         ScreeningAnswers["upwork-screening-answers.md\nDirect answers + evidence\nExplicit open conditions if conditional"]
         WorkSamples["upwork-work-samples.md\nMaximum 3 relevant samples\nEvidence-backed + externally suitable"]
         GateReport["upwork-qualification-report.md\n• Blocking Requirement\n• Evidence Gap\n• Decision Rationale\n• What Would Change Decision"]
@@ -122,8 +122,8 @@ flowchart TD
 3. Qualification Evidence vs Projection Evidence: Qualification determines whether the opportunity can legitimately be pursued. Projection selects persuasive evidence only within the evidence boundary established by qualification.
 4. Production Evidence Integrity: Production experience, prototype/innovation experience, personal projects, and theoretical knowledge remain explicitly distinct. The system must never infer production status from technical similarity or sophistication.
 5. Single Source of Career Evidence: Canonical career evidence remains in the OKF Knowledge Layer. The Upwork feature does not create a second career or evidence repository.
-6. Clean Client Prose: upwork-proposal.md contains natural, professional client-facing prose. Internal provenance, evidence relationships, validation metadata, and qualification state remain in structured/runtime context rather than being exposed as machine-readable tags in the proposal.
-7. DO NOT APPLY Is Not a Failure: A blocked opportunity produces a qualification/gate report, not a submission-ready proposal. The gate report is deliberately separate from upwork-proposal.md.
+6. Clean Client Prose: upwork-qualification-report.md contains natural, professional client-facing prose. Internal provenance, evidence relationships, validation metadata, and qualification state remain in structured/runtime context rather than being exposed as machine-readable tags in the proposal.
+7. DO NOT APPLY Is Not a Failure: A blocked opportunity produces a qualification/gate report, not a submission-ready proposal. The gate report is deliberately separate from upwork-qualification-report.md.
 8. Validation Is a Quality Gate: All projection artifacts—including the proposal, screening answers, and work-sample recommendations—pass through projection-validator before reaching human review.
 9. Validation Failure Does Not Bypass Governance: Failed outputs return for correction/regeneration within the same qualification and evidence boundaries. Validation cannot expand the evidence boundary or change the qualification decision.
 10. Human Review Boundary: The system ends with human-reviewable artifacts. Final submission to Upwork remains a human action. No automated browser interaction, scraping, or proposal submission is performed in V1.

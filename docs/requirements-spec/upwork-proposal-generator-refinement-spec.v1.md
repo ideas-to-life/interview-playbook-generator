@@ -496,7 +496,7 @@ Where possible, this strategy SHOULD remain internal to the projection workflow 
 
 For APPLY, the projection SHOULD produce:
 
-upwork-proposal.md
+upwork-qualification-report.md
 upwork-screening-answers.md
 upwork-work-samples.md
 
@@ -701,7 +701,7 @@ If an existing schema can be extended cleanly, it SHOULD be extended rather than
 
 For permitted proposal generation:
 
-out/<target-slug>/upwork-proposal.md
+out/<target-slug>/upwork-qualification-report.md
 out/<target-slug>/upwork-screening-answers.md
 out/<target-slug>/upwork-work-samples.md
 

@@ -25,7 +25,7 @@ The qualification gate evaluates whether an opportunity can be pursed credibly w
      - `CONDITIONAL` → `proposal_generation: allowed_with_conditions`
      - `DO NOT APPLY` → `proposal_generation: blocked`
 4. **Zero Proposal Generation**:
-   - `upwork-qualification` MUST NOT generate client-facing proposal prose markdown files (`upwork-proposal.md`).
+   - `upwork-qualification` MUST NOT generate client-facing proposal prose markdown files (`upwork-qualification-report.md`).
 
 ## Taxonomy & Schema
 

@@ -34,7 +34,7 @@ Run the orchestrator pipeline:
 
 ### Expected Outcome
 1. `out/<target-slug>/runtime/upwork-qualification.yaml` returns `decision: DO NOT APPLY` and `proposal_generation: blocked`.
-2. `out/<target-slug>/upwork-proposal.md` contains a concise **Gate Report**:
+2. `out/<target-slug>/upwork-qualification-report.md` contains a concise **Gate Report**:
    - Decision: `DO NOT APPLY`
    - Blocking Requirement: "Personal implementation of production multi-agent system in a real company"
    - Evidence Gap: Prototype/governance evidence present, production implementation absent.
@@ -55,7 +55,7 @@ Run the orchestrator pipeline:
 
 ### Expected Outcome
 1. `out/<target-slug>/runtime/upwork-qualification.yaml` returns `decision: APPLY` and `proposal_generation: allowed`.
-2. `out/<target-slug>/upwork-proposal.md` contains clean submission-ready proposal text (350-500 words) free of internal `[evidence]` tags or `[^source-id]` footnotes.
+2. `out/<target-slug>/upwork-qualification-report.md` contains clean submission-ready proposal text (350-500 words) free of internal `[evidence]` tags or `[^source-id]` footnotes.
 3. `out/<target-slug>/runtime/upwork-qualification.yaml` contains `claim_traceability` array verifying 100% of claims.
 4. `out/<target-slug>/upwork-screening-answers.md` contains complete answers for all client screening questions.
 5. `out/<target-slug>/upwork-work-samples.md` recommends up to 3 evidence-backed work samples.
@@ -75,7 +75,7 @@ Run the orchestrator pipeline:
 
 ### Expected Outcome
 1. `out/<target-slug>/runtime/upwork-qualification.yaml` returns `decision: CONDITIONAL` and `proposal_generation: allowed_with_conditions`.
-2. `out/<target-slug>/upwork-proposal.md` displays an `[OPEN CONDITION: <fact>]` banner at top.
+2. `out/<target-slug>/upwork-qualification-report.md` displays an `[OPEN CONDITION: <fact>]` banner at top.
 3. `out/<target-slug>/upwork-screening-answers.md` attaches explicit `[OPEN CONDITION: <fact>]` tags to affected questions.
 
 ---

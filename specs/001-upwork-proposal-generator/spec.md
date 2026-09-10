@@ -15,9 +15,9 @@ Primary objective: Add Upwork proposal generation as a governed projection of th
 ### Session 2026-09-10
 - Q: Should Upwork qualification and proposal generation be integrated into the standard pipeline orchestrator as runtime and projection skills, or invoked as a standalone skill? → A: Option A - Register a runtime qualification skill (`upwork-qualification`) in the Runtime Layer and add `upwork-proposal` to `projection-registry` so it runs automatically via `playbook-orchestrator` when `target_type: upwork`.
 - Q: How should screening answers be generated when the qualification gate returns a CONDITIONAL decision? → A: Option A - Generate screening answers with explicit `[OPEN CONDITION: <fact>]` markers for any response dependent on unverified information.
-- Q: Should the qualification gate output be stored as machine-readable YAML in runtime context while proposal outputs are generated as Markdown documents? → A: Option A - Machine-readable YAML at `out/<target-slug>/runtime/upwork-qualification.yaml` and Markdown files (`upwork-proposal.md`, `upwork-screening-answers.md`, `upwork-work-samples.md`) in `out/<target-slug>/`.
+- Q: Should the qualification gate output be stored as machine-readable YAML in runtime context while proposal outputs are generated as Markdown documents? → A: Option A - Machine-readable YAML at `out/<target-slug>/runtime/upwork-qualification.yaml` and Markdown files (`upwork-qualification-report.md`, `upwork-screening-answers.md`, `upwork-work-samples.md`) in `out/<target-slug>/`.
 - Q: Should the existing projection-validator skill be extended to evaluate Upwork proposals and screening answers as part of the standard evaluation layer? → A: Option A - Extend existing `projection-validator` to parse and validate Upwork proposal artifacts and record validation results in `out/<target-slug>/runtime/projection-validation-report.yaml`.
-- Q: Should client-facing proposal text (`upwork-proposal.md`) be generated cleanly without visible inline evidence tags or footnotes, storing claim traceability in runtime YAML context for automated validation? → A: Option A - Render `upwork-proposal.md` clean of visible inline tags/footnotes for direct submission, storing claim traceability in `out/<target-slug>/runtime/upwork-qualification.yaml` and internal frontmatter for `projection-validator`.
+- Q: Should client-facing proposal text (`upwork-qualification-report.md`) be generated cleanly without visible inline evidence tags or footnotes, storing claim traceability in runtime YAML context for automated validation? → A: Option A - Render `upwork-qualification-report.md` clean of visible inline tags/footnotes for direct submission, storing claim traceability in `out/<target-slug>/runtime/upwork-qualification.yaml` and internal frontmatter for `projection-validator`.
 
 ⸻
 
@@ -590,7 +590,7 @@ Machine-readable qualification output:
 `out/<target-slug>/runtime/upwork-qualification.yaml`
 
 Human-readable Markdown proposal outputs:
-`out/<target-slug>/upwork-proposal.md`
+`out/<target-slug>/upwork-qualification-report.md`
 `out/<target-slug>/upwork-screening-answers.md`
 `out/<target-slug>/upwork-work-samples.md`
 
@@ -874,7 +874,7 @@ Do not introduce a second configuration mechanism if the existing target-positio
 
 V1 must include automated and deterministic validation integrated into the existing Evaluation Layer (`projection-validator`).
 
-`projection-validator` shall be extended to validate generated Upwork proposal artifacts (`upwork-proposal.md`, `upwork-screening-answers.md`) and append results to `out/<target-slug>/runtime/projection-validation-report.yaml`.
+`projection-validator` shall be extended to validate generated Upwork proposal artifacts (`upwork-qualification-report.md`, `upwork-screening-answers.md`) and append results to `out/<target-slug>/runtime/projection-validation-report.yaml`.
 
 At minimum, tests and validation rules should cover:
 

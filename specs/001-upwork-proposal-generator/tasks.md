@@ -46,7 +46,7 @@
 
 ## Phase 4: User Story 2 - Upwork Proposal Projection (Priority: P1)
 
-**Goal**: Generate clean, tailored executive proposal markdown (`out/<target-slug>/upwork-proposal.md`) free of visible inline tags or footnotes for direct marketplace submission, respecting qualification decisions and word count constraints (350-500 words).
+**Goal**: Generate clean, tailored executive proposal markdown (`out/<target-slug>/upwork-qualification-report.md`) free of visible inline tags or footnotes for direct marketplace submission, respecting qualification decisions and word count constraints (350-500 words).
 
 **Independent Test**: Run `upwork-proposal` projection on qualified (`APPLY`), conditional (`CONDITIONAL`), and disqualified (`DO NOT APPLY`) qualification outputs and verify markdown outputs.
 
@@ -100,7 +100,7 @@
 ### Implementation for User Story 5
 
 - [ ] T020 [P] [US5] Write validation rules for Upwork proposal artifacts and internal provenance checking in `skills/projection-validator/SKILL.md`
-- [ ] T021 [US5] Update `skills/projection-validator/SKILL.md` to parse `upwork-proposal.md`, `upwork-screening-answers.md`, and `upwork-qualification.yaml` `claim_traceability` and append validation metrics to `out/<target-slug>/runtime/projection-validation-report.yaml`
+- [ ] T021 [US5] Update `skills/projection-validator/SKILL.md` to parse `upwork-qualification-report.md`, `upwork-screening-answers.md`, and `upwork-qualification.yaml` `claim_traceability` and append validation metrics to `out/<target-slug>/runtime/projection-validation-report.yaml`
 
 ---
 

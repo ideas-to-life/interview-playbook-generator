@@ -87,7 +87,7 @@ claim_traceability:
 
 ## 3. Proposal Projection Schemas (`out/<target-slug>/`)
 
-### 3.1 Upwork Proposal (`out/<target-slug>/upwork-proposal.md`)
+### 3.1 Upwork Proposal (`out/<target-slug>/upwork-qualification-report.md`)
 
 Rendered as clean professional prose for direct marketplace submission.
 
@@ -154,7 +154,7 @@ Rendered as clean professional prose for direct marketplace submission.
 
 ```yaml
 projections_evaluated:
-  - artifact: "upwork-proposal.md"
+  - artifact: "upwork-qualification-report.md"
     qualification_status: "APPLY | CONDITIONAL | DO NOT APPLY"
     proposal_generation_state: "allowed | allowed_with_conditions | blocked"
     word_count: 412
