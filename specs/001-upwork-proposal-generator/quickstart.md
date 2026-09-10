@@ -1,95 +1,91 @@
-# Quickstart & Validation Guide: Upwork Qualification and Proposal Generator
+# Quickstart & Runnable Validation Scenarios: Upwork Proposal Generator (V2.0)
 
-This guide describes how to run and validate the Upwork qualification and proposal projection feature end-to-end.
+## Overview
 
----
-
-## 1. Prerequisites
-
-Ensure target opportunity configuration in `config/config.yaml` or target position file specifies `target_type: upwork`:
-
-```yaml
-target_slug: "head-of-ai-upwork"
-target_type: "upwork"
-opportunity_source: "inputs/upwork-job-description.md"
-```
-
-Canonical OKF knowledge graph must exist in `out/okf/`.
+This guide documents runnable validation scenarios verifying that the `upwork-qualification` runtime skill, `upwork-proposal` projection skill, and `projection-validator` enforcement gate satisfy all V2.0 Evidence Integrity & Production Qualification requirements.
 
 ---
 
-## 2. Test Scenario 1: Reference `DO NOT APPLY` Test Case (Section 35)
+## Runnable Validation Scenarios
 
-### Setup
-Target job requires:
-> "Personal implementation of a production multi-agent or AI workforce system inside a real operating company."
+### Scenario 1: Unverified WPP Production Evidence on Explicit Dealbreaker Requirement (`DO NOT APPLY`)
 
-Candidate evidence contains architecture/governance work in Prototype & Innovation, but no verified production multi-agent implementation inside a real company.
+**Prerequisites**:
+- Target specification [`config/target-position/upwork-senior-agentic-ai-architect.md`](config/target-position/upwork-senior-agentic-ai-architect.md) requires *"real company in production"* implementation experience (explicit dealbreaker).
+- Canonical evidence card [`wpp-agentic-ai-platform.md`](out/okf/evidence/wpp-agentic-ai-platform.md) has `environment: prototype` and `production_verified: false`.
 
-### Execution
-Run the orchestrator pipeline:
+**Execution Command**:
 ```bash
-/skill playbook-orchestrator
+pyenv exec python3 scripts/generate_upwork_playbook.py
 ```
 
-### Expected Outcome
-1. `out/<target-slug>/runtime/upwork-qualification.yaml` returns `decision: DO NOT APPLY` and `proposal_generation: blocked`.
-2. `out/<target-slug>/upwork-qualification-report.md` contains a concise **Gate Report**:
-   - Decision: `DO NOT APPLY`
-   - Blocking Requirement: "Personal implementation of production multi-agent system in a real company"
-   - Evidence Gap: Prototype/governance evidence present, production implementation absent.
-3. No submission-ready proposal or screening answers generated.
+**Expected Outcome**:
+- `out/upwork-senior-agentic-ai-architect/runtime/upwork-qualification.yaml`:
+  - `decision: "DO NOT APPLY"`
+  - `proposal_generation: "blocked"`
+  - `hard_requirements[0].production_status: "unknown"` (or `verified_non_production`)
+  - `hard_requirements[0].status: "not_met"`
+- `out/upwork-senior-agentic-ai-architect/upwork-proposal.md`:
+  - Renders a **Gate Report** displaying Decision (`DO NOT APPLY`), Blocking Requirement, Available Evidence, and Evidence Gap.
+  - Does NOT contain a submission-ready application proposal draft.
+- `out/upwork-senior-agentic-ai-architect/upwork-screening-answers.md`:
+  - Does NOT render application drafts for screening questions.
 
 ---
 
-## 3. Test Scenario 2: Qualified `APPLY` Test Case (Section 36)
+### Scenario 2: Verified Production Evidence on Target Organisation (`APPLY`)
 
-### Setup
-Target job requires Enterprise AI architecture and governance advisor. Authoritative evidence explicitly supports production architecture, controls, and advisory experience.
+**Prerequisites**:
+- Canonical evidence card `wpp-agentic-ai-platform.md` updated with `environment: production`, `production_verified: true`, `implementation_role: lead_architect`, and `organisation.id: emp-wpp-media-2`.
 
-### Execution
-Run the orchestrator pipeline:
+**Execution Command**:
 ```bash
-/skill playbook-orchestrator
+pyenv exec python3 scripts/generate_upwork_playbook.py
 ```
 
-### Expected Outcome
-1. `out/<target-slug>/runtime/upwork-qualification.yaml` returns `decision: APPLY` and `proposal_generation: allowed`.
-2. `out/<target-slug>/upwork-qualification-report.md` contains clean submission-ready proposal text (350-500 words) free of internal `[evidence]` tags or `[^source-id]` footnotes.
-3. `out/<target-slug>/runtime/upwork-qualification.yaml` contains `claim_traceability` array verifying 100% of claims.
-4. `out/<target-slug>/upwork-screening-answers.md` contains complete answers for all client screening questions.
-5. `out/<target-slug>/upwork-work-samples.md` recommends up to 3 evidence-backed work samples.
+**Expected Outcome**:
+- `out/upwork-senior-agentic-ai-architect/runtime/upwork-qualification.yaml`:
+  - `decision: "APPLY"`
+  - `proposal_generation: "allowed"`
+  - `hard_requirements[0].production_status: "verified_production"`
+  - `hard_requirements[0].status: "met"`
+- `out/upwork-senior-agentic-ai-architect/upwork-proposal.md`:
+  - Renders a 6-part submission-ready clean executive proposal (350-500 words target).
+- `out/upwork-senior-agentic-ai-architect/runtime/projection-validation-report.yaml`:
+  - `employment_integrity.status: "PASS"`
+  - `upwork_validation.status: "PASS"`
 
 ---
 
-## 4. Test Scenario 3: `CONDITIONAL` Test Case (Section 24)
+### Scenario 3: Cross-Organisation Evidence Isolation (`DO NOT APPLY`)
 
-### Setup
-Target job requires specific cloud platform certification or tool tenure that is unverified in portfolio but candidate can confirm.
+**Prerequisites**:
+- Target requirement bound to `organisation.id: emp-wpp-media-2`.
+- Canonical evidence includes Personal CAS card (`organisation.id: personal-cas`, `production_verified: true`) and WPP card (`organisation.id: emp-wpp-media-2`, `production_verified: false`).
 
-### Execution
-Run the orchestrator pipeline:
-```bash
-/skill playbook-orchestrator
-```
-
-### Expected Outcome
-1. `out/<target-slug>/runtime/upwork-qualification.yaml` returns `decision: CONDITIONAL` and `proposal_generation: allowed_with_conditions`.
-2. `out/<target-slug>/upwork-qualification-report.md` displays an `[OPEN CONDITION: <fact>]` banner at top.
-3. `out/<target-slug>/upwork-screening-answers.md` attaches explicit `[OPEN CONDITION: <fact>]` tags to affected questions.
+**Expected Outcome**:
+- `upwork-qualification` refuses to pool the Personal CAS production evidence into WPP requirement `req-1`.
+- `req-1` production status remains `unknown` for WPP, yielding `decision: "DO NOT APPLY"`.
 
 ---
 
-## 5. Automated Validation & Test Suite
+### Scenario 4: Negative Inference Prohibition on Repository Names (`DO NOT APPLY`)
 
-Run pytest to verify qualification rules, evidence integrity, and proposal constraints:
+**Prerequisites**:
+- Ingested source repository contains path `pca-productionagents-a2a`, but OKF evidence card frontmatter has `production_verified: false`.
+
+**Expected Outcome**:
+- `upwork-qualification` ignores `"productionagents"` in repo string.
+- `production_status` remains `unknown`, preventing false-positive `verified_production` qualification.
+
+---
+
+## Automated Test Execution
+
+Run the complete regression test suite:
 
 ```bash
-pytest tests/test_upwork_proposal_generator.py -v
+pyenv exec pytest tests/test_upwork_proposal_generator.py tests/test_projection_validator.py
 ```
 
-Run projection validator:
-```bash
-/skill projection-validator
-```
-Inspect `out/<target-slug>/runtime/projection-validation-report.yaml` for validation metrics.
+All test cases (including the 10 V2.0 regression scenarios) MUST pass.

@@ -1,22 +1,57 @@
-# Qualification Skill Contract: `upwork-qualification`
+# Runtime Qualification Skill Contract: `upwork-qualification` (V2.0)
 
-## Purpose
-The `upwork-qualification` Skill is a Runtime Layer Skill responsible for evaluating an Upwork target opportunity against canonical OKF evidence to produce a deterministic qualification decision and explicit `proposal_generation` control state.
+## Overview
 
-## Inputs
-- **Target Opportunity Analysis**: `out/<target-slug>/runtime/opportunity-analysis.yaml`
-- **Canonical Evidence**: `out/okf/evidence-cards/`, `out/okf/signature-achievements.md`, `out/okf/capabilities/`
-- **Target Config**: `config/config.yaml` or target position metadata (`target_type: upwork`)
+`upwork-qualification` is a Runtime Layer Skill. It evaluates target opportunity requirements against canonical OKF evidence to produce an authoritative qualification decision and machine-readable execution context at `out/<target-slug>/runtime/upwork-qualification.yaml`.
 
-## Output
-- **Qualification Artifact**: `out/<target-slug>/runtime/upwork-qualification.yaml`
+---
 
-## Behavior Rules
-1. **Hard Requirements Check**: Scan all explicit client hard requirements in `opportunity-analysis.yaml`.
-2. **Evidence Relationship Mapping**: Assign relationship (`direct`, `adjacent`, `transferable`, `absent`) and production status (`verified_production`, `verified_non_production`, `unknown`).
-3. **Decision Evaluation & Control Semantics**:
-   - `DO NOT APPLY` (`proposal_generation: blocked`): If any hard requirement is `absent`, unsupported, or requires treating non-production work as client production implementation.
-   - `CONDITIONAL` (`proposal_generation: allowed_with_conditions`): If hard requirements are met except for unverified facts that candidate can confirm.
-   - `APPLY` (`proposal_generation: allowed`): If all hard requirements are supported by verified evidence.
-4. **Claim Traceability**: Write `claim_traceability` mapping each claim line to its evidence ID and source.
-5. **No Proposal Writing**: `upwork-qualification` MUST NOT write proposal prose or markdown text files.
+## Input & Output Declarations
+
+- **Inputs**:
+  - `config/config.yaml`
+  - `out/<target-slug>/runtime/opportunity-analysis.yaml`
+  - `out/okf/evidence/*.md` (Canonical Evidence Cards with V2.0 frontmatter metadata)
+  - `out/okf/employment-records.yaml`
+- **Outputs**:
+  - `out/<target-slug>/runtime/upwork-qualification.yaml`
+  - `okf/log.md` (append entry)
+
+---
+
+## Machine-Readable Predicate Contract
+
+The qualification engine MUST evaluate the deterministic predicate:
+
+$$\text{PERSONAL\_PRODUCTION\_IMPLEMENTATION\_EXPERIENCE}(E, R) \iff$$
+
+$$\big(E.\text{organisation.id} == R.\text{target\_organisation\_id} \lor R.\text{organisation\_bound} == \text{ANY}\big)$$
+$$\land \big(E.\text{project.id} == R.\text{target\_project\_id} \lor R.\text{project\_bound} == \text{ANY}\big)$$
+$$\land \big(E.\text{environment} == \text{production} \land E.\text{production\_verified} == \text{true}\big)$$
+$$\land \big(E.\text{implementation\_role} \in \{\text{lead\_architect}, \text{sole\_developer}, \text{contributor}\}\big)$$
+
+---
+
+## Prohibited Negative Inferences (FR-08)
+
+The skill MUST NOT infer `production_verified: true` from:
+1. Employment relationship alone
+2. Employer name
+3. Repository name (e.g. `pca-productionagents-a2a`)
+4. Directory or file paths
+5. Markdown prose words ("production", "deployed", "operational")
+6. Technology names
+7. Evaluation metrics / latency tables
+8. Personal projects (`organisation.id: personal-cas`)
+9. Prototype / lab / innovation titles
+
+---
+
+## Qualification Gate Semantics
+
+| `production_status` | Requirement Type | `decision` | `proposal_generation` | Required Action |
+| :--- | :--- | :--- | :--- | :--- |
+| `verified_production` | Hard / Dealbreaker | `APPLY` | `allowed` | Render submission-ready proposal |
+| `unknown` | Explicit Dealbreaker | `DO NOT APPLY` | `blocked` | Render Gate Report only |
+| `unknown` | Non-Dealbreaker | `CONDITIONAL` | `allowed_with_conditions` | Attach `[OPEN CONDITION]` prompt |
+| `verified_non_production` | Hard / Dealbreaker | `DO NOT APPLY` | `blocked` | Render Gate Report only |

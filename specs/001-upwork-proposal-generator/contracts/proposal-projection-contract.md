@@ -1,40 +1,32 @@
-# Proposal Projection Skill Contract: `upwork-proposal`
+# Proposal Projection Skill Contract: `upwork-proposal` (V2.0)
 
-## Purpose
-The `upwork-proposal` Skill is a Projection Layer Skill registered in `skills/projection-registry/SKILL.md`. It generates tailored Upwork proposals, screening answers, and work sample recommendations.
+## Overview
 
-## Inputs
-- **Qualification Result**: `out/<target-slug>/runtime/upwork-qualification.yaml`
-- **Target Opportunity Analysis**: `out/<target-slug>/runtime/opportunity-analysis.yaml`
-- **Canonical Knowledge**: `out/okf/` (Evidence Cards, Executive Identity, Narrative Library, Story Library)
-
-## Outputs
-- `out/<target-slug>/upwork-qualification-report.md` (Clean prose ready for submission)
+`upwork-proposal` is a Projection Layer Skill registered in `skills/projection-registry/SKILL.md`. It reads runtime qualification context (`out/<target-slug>/runtime/upwork-qualification.yaml`) and canonical OKF evidence to project client-facing artifacts in `out/<target-slug>/`:
+- `out/<target-slug>/upwork-proposal.md`
 - `out/<target-slug>/upwork-screening-answers.md`
 - `out/<target-slug>/upwork-work-samples.md`
 
-## Behavior Rules by Decision State
-1. **`DO NOT APPLY` State (`proposal_generation: blocked`)**:
-   - `upwork-qualification-report.md` MUST NOT contain a submission-ready application proposal.
-   - It MUST contain a concise Gate Report listing: Decision (`DO NOT APPLY`), Blocking Requirement(s), Available Evidence, Evidence Gap, and What Would Change Decision.
-   - `upwork-screening-answers.md` MUST NOT be generated as an application draft.
-2. **`CONDITIONAL` State (`proposal_generation: allowed_with_conditions`)**:
-   - `upwork-qualification-report.md` may render a draft proposal provided unsupported claims are excluded.
-   - It MUST display an `[OPEN CONDITION: <fact>]` banner at the top listing the exact facts requiring candidate confirmation.
-   - `upwork-screening-answers.md` MUST attach `[OPEN CONDITION: <fact>]` tags to any answer relying on unverified context.
-3. **`APPLY` State (`proposal_generation: allowed`)**:
-   - Renders submission-ready `upwork-qualification-report.md` (350-500 words target) as clean, natural professional prose (no `[evidence]` tags or `[^source-id]` footnotes in visible proposal text).
-   - Traceability metadata is maintained in `upwork-qualification.yaml` and frontmatter.
+---
 
-## Projection Registry Interface
-`upwork-proposal` satisfies the standard Projection Contract:
-```yaml
-name: "upwork-proposal"
-layer: "projection"
-target_type: "upwork"
-active_if: "target_type == 'upwork'"
-outputs:
-  - "upwork-qualification-report.md"
-  - "upwork-screening-answers.md"
-  - "upwork-work-samples.md"
-```
+## Control Boundary Semantics
+
+1. **`proposal_generation: blocked` (`DO NOT APPLY`)**:
+   - MUST NOT render a submission-ready application proposal.
+   - MUST render a concise **Gate Report** in `upwork-proposal.md` displaying: Decision (`DO NOT APPLY`), Blocking Requirement, Available Evidence, Evidence Gap, Decision Rationale, and What Would Change Decision.
+   - MUST NOT render application drafts for `upwork-screening-answers.md`.
+
+2. **`proposal_generation: allowed_with_conditions` (`CONDITIONAL`)**:
+   - Renders a proposal draft with a prominent `[OPEN CONDITION: <fact>]` banner listing facts requiring candidate confirmation.
+   - Attaches explicit `[OPEN CONDITION: <fact>]` tags to affected screening answers.
+
+3. **`proposal_generation: allowed` (`APPLY`)**:
+   - Renders submission-ready 6-part proposal (350-500 words target).
+   - Proposal text is rendered clean of visible `[evidence]` tags or `[^source-id]` footnotes for direct Upwork submission.
+   - Machine-readable traceability maintained in `upwork-qualification.yaml` `claim_traceability` array.
+
+---
+
+## Work Samples Selection Boundary
+
+Recommends up to 3 work samples. Work samples MUST match qualification status and MUST NOT describe prototype, lab, or personal projects as production experience.

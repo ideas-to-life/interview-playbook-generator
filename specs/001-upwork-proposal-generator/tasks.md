@@ -1,115 +1,91 @@
-# Tasks: Upwork Qualification and Proposal Generator
+# Tasks: Upwork Qualification, Evidence Integrity, and Proposal Generator
 
-**Feature**: Upwork opportunity qualification and proposal generation
-**Branch**: `001-upwork-proposal-generator`
-**Plan**: [specs/001-upwork-proposal-generator/plan.md](specs/001-upwork-proposal-generator/plan.md)
-
----
-
-## Phase 1: Setup (Shared Infrastructure)
-
-**Purpose**: Initial environment and configuration setup for Upwork feature support.
-
-- [ ] T001 Verify project configuration schemas and extend target opportunity options in `config/config.example.yaml`
-- [ ] T002 [P] Configure test fixture paths and test environment setup in `tests/test_upwork_proposal_generator.py`
+**Feature**: Upwork Opportunity Qualification, Evidence Integrity Controls, and Proposal Generation  
+**Branch**: `001-upwork-proposal-generator`  
+**Spec**: [specs/001-upwork-proposal-generator/spec.md](specs/001-upwork-proposal-generator/spec.md) (V2.0 Refinement)  
+**Plan**: [specs/001-upwork-proposal-generator/plan.md](specs/001-upwork-proposal-generator/plan.md)  
 
 ---
 
-## Phase 2: Foundational (Blocking Prerequisites)
+## Phase 1: Setup (Machine-Readable Evidence Schema)
 
-**Purpose**: Core infrastructure that MUST be complete before ANY user story implementation.
+**Purpose**: Establish mandatory machine-readable frontmatter schema fields (`organisation.id`, `project.id`, `environment`, `production_verified`, `implementation_role`, `provenance`) across OKF Evidence Cards.
 
-- [ ] T003 Establish core Python qualification data structures and YAML parser helpers for requirement mapping (`direct`, `adjacent`, `transferable`, `absent`), evidence strength (`strong`, `moderate`, `weak`), and production status (`verified_production`, `verified_non_production`, `unknown`) in `skills/upwork-qualification/SKILL.md`
-- [ ] T004 [P] Implement OKF evidence retrieval helper routines prioritizing evidence cards, signature achievements, and capabilities in `skills/upwork-qualification/SKILL.md`
-
-**Checkpoint**: Foundation ready - user story implementation can now begin.
+- [ ] T001 Update OKF `EvidenceCard` generator schema in `skills/evidence-card-generator/SKILL.md` to require `organisation.id: "emp-wpp-media-2" | "personal-cas"`, `project.id: slug`, `environment: "production" | "staging" | "prototype" | "lab" | "personal" | "unknown"`, `production_verified: true | false`, `production_evidence_type: "telemetry" | "release_notes" | "client_signoff" | "attested_claim" | "none"`, `implementation_role: "lead_architect" | "sole_developer" | "contributor" | "advisor" | "evaluator" | "none"`, and `provenance.source_type: "production_telemetry" | "release_notes" | "client_signoff" | "repo_code" | "eval_harness" | "resume_claim"` frontmatter fields.
+- [ ] T002 [P] Update existing canonical OKF `EvidenceCard` markdown files in `out/okf/evidence/` with explicit frontmatter values matching `data-model.md` (setting `organisation.id: "emp-wpp-media-2"`, `project.id: "wpp-open-pca"`, `environment: "prototype"`, `production_verified: false`, `implementation_role: "lead_architect"` strictly from explicit source evidence per card, with zero contextual inheritance or inference from parent employment records or project folders).
 
 ---
 
-## Phase 3: User Story 1 - Opportunity Qualification & Hard Gate (Priority: P1) 🎯 MVP
+## Phase 2: Foundational (Qualification Predicates & Isolation Rules)
 
-**Goal**: Ingest Upwork job description, map requirements to canonical OKF evidence, evaluate hard gate rules (`APPLY`, `CONDITIONAL`, `DO NOT APPLY`), enforce `proposal_generation` control state (`allowed`, `allowed_with_conditions`, `blocked`), and write `out/<target-slug>/runtime/upwork-qualification.yaml`.
+**Purpose**: Implement Contract V2.0 qualification predicate logic and 15 negative inference rules in Runtime Layer qualification skill.
 
-**Independent Test**: Execute `upwork-qualification` against reference test cases (Scenario 1 `DO NOT APPLY` and Scenario 2 `APPLY`) and verify generated `upwork-qualification.yaml` status, `proposal_generation` state, and `claim_traceability` schema match.
+- [ ] T003 Implement `PERSONAL_PRODUCTION_IMPLEMENTATION_EXPERIENCE` predicate in `skills/upwork-qualification/SKILL.md` requiring `(E.organisation.id == R.target_organisation_id OR R.organisation_bound == ANY) AND (E.project.id == R.target_project_id OR R.project_bound == ANY) AND (E.environment == "production" AND E.production_verified == true) AND (E.implementation_role IN ["lead_architect", "sole_developer", "contributor"])`.
+- [ ] T004 Implement 15 negative inference rules in `skills/upwork-qualification/SKILL.md` prohibiting inference of `production_verified = true` from 1) Employment relationship, 2) Employer name, 3) Repository name, 4) Directory name, 5) "production" in prose, 6) "deployed" in prose, 7) "operational" in prose, 8) Technology choice, 9) Evaluation metrics, 10) High success rate, 11) Low latency benchmarks, 12) Architecture diagrams, 13) Case study slides, 14) Personal CAS project evidence, or 15) Unverified resume claims.
+- [ ] T005 [P] Implement cross-organisation and cross-project isolation checks in `skills/upwork-qualification/SKILL.md` ensuring evidence from Company B or personal projects cannot satisfy Company A production requirements (`C_1.organisation.id == C_2.organisation.id` AND `C_1.project.id == C_2.project.id`).
+
+**Checkpoint**: Foundation ready — user story implementation can now begin.
+
+---
+
+## Phase 3: User Story 1 - Production Evidence Integrity & Qualification Gate (Priority: P1) 🎯 MVP
+
+**Goal**: Ingest Upwork job description, evaluate requirements against canonical OKF evidence frontmatter, enforce explicit dealbreaker hard gate (`UNKNOWN` $\rightarrow$ `DO NOT APPLY`), and emit machine-readable `out/<target-slug>/runtime/upwork-qualification.yaml`.
+
+**Independent Test**: Execute `upwork-qualification` against reference target `upwork-senior-agentic-ai-architect` and verify generated `upwork-qualification.yaml` has `decision: "DO NOT APPLY"` and `proposal_generation: "blocked"` due to unverified WPP production status.
 
 ### Implementation for User Story 1
 
-- [ ] T005 [P] [US1] Write unit tests for qualification decision rules (`APPLY`, `CONDITIONAL`, `DO NOT APPLY`) and `proposal_generation` control states in `tests/test_upwork_proposal_generator.py`
-- [ ] T006 [P] [US1] Create requirement mapping parser in `skills/upwork-qualification/SKILL.md`
-- [ ] T007 [US1] Implement production evidence validation logic in `skills/upwork-qualification/SKILL.md` to ensure prototype/lab evidence cannot satisfy explicit client production implementation requirements
-- [ ] T008 [US1] Implement `CONDITIONAL` state evaluator in `skills/upwork-qualification/SKILL.md` to track open conditions requiring candidate confirmation
-- [ ] T009 [US1] Implement YAML output writer in `skills/upwork-qualification/SKILL.md` to write `out/<target-slug>/runtime/upwork-qualification.yaml` containing `proposal_generation` control status and `claim_traceability` array
+- [ ] T006 [P] [US1] Implement dealbreaker hard gate evaluator in `skills/upwork-qualification/SKILL.md` evaluating `UNKNOWN` production status to `decision: "DO NOT APPLY"` (`proposal_generation: "blocked"`) when a requirement is an explicit client dealbreaker ("If you have not already done this in production, do not apply").
+- [ ] T007 [US1] Implement `CONDITIONAL` state evaluator in `skills/upwork-qualification/SKILL.md` to track open conditions (`proposal_generation: "allowed_with_conditions"`) when non-dealbreaker ambiguous requirements exist.
+- [ ] T008 [US1] Implement machine-readable `upwork-qualification.yaml` YAML output writer in `skills/upwork-qualification/SKILL.md` with complete 100% `claim_traceability` array matching schema (`requirement_id`, `claim_text`, `classification`, `okf_node_id`, `attribution`, `confidence`).
+- [ ] T009 [US1] Update pipeline execution script `scripts/generate_upwork_playbook.py` to invoke `upwork-qualification` and inspect `proposal_generation` control state (`allowed | allowed_with_conditions | blocked`).
+- [ ] T010 [US1] Implement `DO NOT APPLY` Gate Report generator in `skills/upwork-proposal/SKILL.md` to render blocking requirements, evidence gaps, and decision rationale in `out/<target-slug>/upwork-qualification-report.md` when `proposal_generation: "blocked"`.
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently.
 
 ---
 
-## Phase 4: User Story 2 - Upwork Proposal Projection (Priority: P1)
+## Phase 4: User Story 2 - Independent Validation & Cross-Organisation Isolation (Priority: P1)
 
-**Goal**: Generate clean, tailored executive proposal markdown (`out/<target-slug>/upwork-qualification-report.md`) free of visible inline tags or footnotes for direct marketplace submission, respecting qualification decisions and word count constraints (350-500 words).
+**Goal**: Extend `projection-validator` to independently inspect canonical OKF `EvidenceCard` frontmatter and cross-verify `upwork-qualification.yaml` `claim_traceability` entries, and render clean executive proposal markdown for qualified applications.
 
-**Independent Test**: Run `upwork-proposal` projection on qualified (`APPLY`), conditional (`CONDITIONAL`), and disqualified (`DO NOT APPLY`) qualification outputs and verify markdown outputs.
+**Independent Test**: Run `projection-validator` on generated Upwork artifacts and verify it detects any unevidenced production claims, cross-organisation evidence bleeding, or cross-project isolation breaches.
 
 ### Implementation for User Story 2
 
-- [ ] T010 [P] [US2] Write unit tests for proposal projection generation and `DO NOT APPLY` gate reports in `tests/test_upwork_proposal_generator.py`
-- [ ] T011 [P] [US2] Implement `DO NOT APPLY` Gate Report generator in `skills/upwork-proposal/SKILL.md` to render blocking requirements, evidence gaps, and decision rationale when `proposal_generation: blocked`
-- [ ] T012 [P] [US2] Implement `CONDITIONAL` proposal renderer in `skills/upwork-proposal/SKILL.md` to display `[OPEN CONDITION: <fact>]` banners when `proposal_generation: allowed_with_conditions`
-- [ ] T013 [US2] Implement `APPLY` proposal renderer in `skills/upwork-proposal/SKILL.md` to generate clean 6-part executive proposal (Opening, Proof Mapping, Project Snapshots, Approach, Smart Questions, CTA) free of visible `[evidence]` tags or `[^source-id]` footnotes, while recording claim traceability in `upwork-qualification.yaml`
-- [ ] T014 [US2] Implement word count target bounds validation (350-500 words) in `skills/upwork-proposal/SKILL.md`
+- [ ] T011 [P] [US2] Update `skills/projection-validator/SKILL.md` to cross-verify `upwork-qualification.yaml` `claim_traceability` entries against canonical OKF `EvidenceCard` frontmatter metadata (`organisation.id`, `project.id`, `environment`, `production_verified`, `implementation_role`).
+- [ ] T012 [P] [US2] Update `skills/projection-validator/SKILL.md` to flag any production claim in proposal prose that is not backed by `environment: "production"` and `production_verified: true` in OKF frontmatter.
+- [ ] T013 [US2] Implement clean executive proposal renderer in `skills/upwork-proposal/SKILL.md` (6-part structure: Opening, Proof Mapping, Project Snapshots, Approach, Smart Questions, CTA) free of inline tags (`[evidence]`) or footnotes (`[^source-id]`) for marketplace submission, target word count 350-500 words.
+- [ ] T014 [US2] Register `upwork-proposal` in `skills/projection-registry/SKILL.md` and update `skills/playbook-orchestrator/SKILL.md` to orchestrate Upwork targets through `upwork-qualification` and `upwork-proposal`.
 
-**Checkpoint**: At this point, User Stories 1 AND 2 should both work independently.
+**Checkpoint**: At this point, User Stories 1 AND 2 work independently and interoperate cleanly.
 
 ---
 
-## Phase 5: User Story 3 - Screening Answers & Work Sample Projection (Priority: P2)
+## Phase 5: User Story 3 - Automated Regression Protection Suite (Priority: P2)
 
-**Goal**: Generate `out/<target-slug>/upwork-screening-answers.md` and `out/<target-slug>/upwork-work-samples.md`.
+**Goal**: Implement comprehensive automated regression test suite covering all 10 defined regression scenarios across qualification, projection, validation, and isolation controls.
 
-**Independent Test**: Verify screening answers cover all client questions with explicit evidence and `[OPEN CONDITION]` tags where applicable, and work samples select up to 3 evidence-backed artifacts.
+**Independent Test**: Execute `pytest tests/test_upwork_proposal_generator.py tests/test_projection_validator.py` and verify all 10 regression test scenarios pass cleanly.
 
 ### Implementation for User Story 3
 
-- [ ] T015 [P] [US3] Write unit tests for screening answers and work sample recommendations in `tests/test_upwork_proposal_generator.py`
-- [ ] T016 [P] [US3] Implement screening answer generator in `skills/upwork-proposal/SKILL.md` answering all client questions with direct response + evidence proof, attaching `[OPEN CONDITION: <fact>]` tags under `CONDITIONAL` status
-- [ ] T017 [US3] Implement work sample selector in `skills/upwork-proposal/SKILL.md` recommending up to 3 evidence-backed work samples mapped to client requirements
+- [ ] T015 [P] [US3] Implement unit and integration tests for Scenarios 1-7 (Scenario 1: `DO NOT APPLY` missing WPP production attestation, Scenario 2: `APPLY` with explicit production evidence, Scenario 3: Cross-organisation isolation, Scenario 4: Cross-project isolation, Scenario 5: Negative inference prohibition, Scenario 6: Hard dealbreaker gate, Scenario 7: `CONDITIONAL` open conditions) in `tests/test_upwork_proposal_generator.py`.
+- [ ] T016 [P] [US3] Implement validation tests for Scenarios 8-10 (Scenario 8: Clean proposal output, Scenario 9: Word count bounds 350-500 words, Scenario 10: Validation error reporting) in `tests/test_projection_validator.py`.
+- [ ] T017 [US3] Create reference golden snapshot outputs for Upwork test targets in `tests/golden/upwork/`.
 
-**Checkpoint**: User Stories 1, 2, and 3 are functional independently.
-
----
-
-## Phase 6: User Story 4 - Pipeline Orchestration & Registry Integration (Priority: P2)
-
-**Goal**: Integrate `upwork-qualification` into Runtime Layer and `upwork-proposal` into `projection-registry` so `playbook-orchestrator` automatically runs Upwork proposals when `target_type: upwork`.
-
-**Independent Test**: Execute `/skill playbook-orchestrator` with `target_type: upwork` and confirm automated execution of qualification and proposal projection.
-
-### Implementation for User Story 4
-
-- [ ] T018 [P] [US4] Register `upwork-proposal` in `skills/projection-registry/SKILL.md` for `target_type == 'upwork'`
-- [ ] T019 [US4] Update `skills/playbook-orchestrator/SKILL.md` to invoke `upwork-qualification` in the Runtime Layer and dispatch `upwork-proposal` via `projection-registry`
+**Checkpoint**: User Stories 1, 2, and 3 are fully functional and protected by automated regression tests.
 
 ---
 
-## Phase 7: User Story 5 - Automated Quality Gate & Evaluation Extension (Priority: P3)
+## Phase 6: Polish & Verification
 
-**Goal**: Extend `skills/projection-validator/SKILL.md` to evaluate Upwork proposal artifacts by inspecting internal `claim_traceability` in `upwork-qualification.yaml` and append metrics to `out/<target-slug>/runtime/projection-validation-report.yaml`.
+**Purpose**: Update architecture documentation, perform end-to-end verification, and validate quickstart scenarios.
 
-**Independent Test**: Run `/skill projection-validator` and check validation report for internal claim classification rate, evidence attribution rate, word count validity, and open condition marker presence.
-
-### Implementation for User Story 5
-
-- [ ] T020 [P] [US5] Write validation rules for Upwork proposal artifacts and internal provenance checking in `skills/projection-validator/SKILL.md`
-- [ ] T021 [US5] Update `skills/projection-validator/SKILL.md` to parse `upwork-qualification-report.md`, `upwork-screening-answers.md`, and `upwork-qualification.yaml` `claim_traceability` and append validation metrics to `out/<target-slug>/runtime/projection-validation-report.yaml`
-
----
-
-## Phase 8: Polish & Cross-Cutting Concerns
-
-**Purpose**: Documentation updates, integration testing, and final quality verification.
-
-- [ ] T022 [P] Update repository architecture documentation in `ARCHITECTURE.md` and `AGENTS.md`
-- [ ] T023 Run full pytest suite in `tests/test_upwork_proposal_generator.py` and execute `quickstart.md` validation scenarios
+- [ ] T018 [P] Update architecture documentation in `ARCHITECTURE.md` and `AGENTS.md` reflecting Evidence Integrity & Production Qualification Controls V2.0.
+- [ ] T019 Execute end-to-end playbook run `/skill playbook-orchestrator` on target `upwork-senior-agentic-ai-architect` and verify `DO NOT APPLY` gate report output in `out/upwork-senior-agentic-ai-architect/upwork-qualification-report.md`.
+- [ ] T020 Run full pytest suite across `tests/test_upwork_proposal_generator.py` and `tests/test_projection_validator.py` and verify 100% test pass rate.
 
 ---
 
@@ -117,31 +93,29 @@
 
 ### Phase Dependencies
 
-- **Setup (Phase 1)**: No dependencies - can start immediately.
-- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories.
-- **User Stories (Phase 3+)**: All depend on Foundational phase completion.
-  - US1 (P1) → US2 (P1) → US3 (P2) → US4 (P2) → US5 (P3)
-- **Polish (Phase 8)**: Depends on all user stories being complete.
+- **Setup (Phase 1)**: No dependencies — start immediately.
+- **Foundational (Phase 2)**: Depends on Setup completion — BLOCKS all user stories.
+- **User Story 1 (Phase 3)**: Depends on Foundational phase completion. (MVP Gate)
+- **User Story 2 (Phase 4)**: Depends on US1 completion.
+- **User Story 3 (Phase 5)**: Depends on US1 and US2 completion.
+- **Polish (Phase 6)**: Depends on all user stories being complete.
 
 ---
 
 ## Parallel Opportunities
 
-- T002, T004 can run in parallel during Setup & Foundational phases.
-- T005, T006 can run in parallel for US1.
-- T010, T011, T012 can run in parallel for US2.
+- T002, T005 can run in parallel during Setup & Foundational phases.
+- T006, T008 can run in parallel for US1.
+- T011, T012 can run in parallel for US2.
 - T015, T016 can run in parallel for US3.
-- T018 can run in parallel for US4.
-- T020 can run in parallel for US5.
-- T022 can run in parallel during Polish phase.
+- T018 can run in parallel during Polish phase.
 
 ---
 
 ## Implementation Strategy
 
-### MVP First (User Story 1 & User Story 2)
-1. Complete Phase 1: Setup
-2. Complete Phase 2: Foundational
-3. Complete Phase 3: User Story 1 (Qualification & Gate)
-4. Complete Phase 4: User Story 2 (Proposal Projection)
-5. **STOP and VALIDATE**: Verify clean proposal generation and gate report behavior independently.
+### MVP First (User Story 1 - Production Qualification Gate)
+1. Complete Phase 1: Setup (Schema update)
+2. Complete Phase 2: Foundational (Predicate logic & isolation rules)
+3. Complete Phase 3: User Story 1 (Dealbreaker Hard Gate & `DO NOT APPLY` report)
+4. **STOP and VALIDATE**: Run `upwork-qualification` against `upwork-senior-agentic-ai-architect` and confirm `decision: "DO NOT APPLY"` and `proposal_generation: "blocked"`.

@@ -1,22 +1,32 @@
-# Validation Contract: Upwork Evaluation Extension
+# Validation Contract: Independent Production Verification & Upwork Validation (V2.0)
 
-## Purpose
-Specifies the validation contract implemented by `skills/projection-validator/SKILL.md` when validating Upwork projection outputs.
+## Overview
 
-## Evaluated Artifacts
-- `out/<target-slug>/upwork-qualification-report.md`
-- `out/<target-slug>/upwork-screening-answers.md`
-- `out/<target-slug>/runtime/upwork-qualification.yaml`
+`projection-validator` evaluates generated projection artifacts in `out/<target-slug>/` against canonical OKF evidence frontmatter and runtime qualification context, emitting `out/<target-slug>/runtime/projection-validation-report.yaml`.
 
-## Verification Checks
-1. **Zero Fabrication & Internal Provenance Pass**:
-   - Inspect `out/<target-slug>/runtime/upwork-qualification.yaml` `claim_traceability` array to verify that 100% of claims in `upwork-qualification-report.md` link to valid canonical evidence cards (`[^source-id]`).
-   - Confirm client-facing `upwork-qualification-report.md` contains zero unparsed internal metadata tags (`[evidence]`, `[inference]`).
-2. **Word Count Compliance**:
-   - For `APPLY` status proposals, word count must be within configured bounds (default 350-500 words).
-3. **DO NOT APPLY Enforcement**:
-   - If `upwork-qualification.yaml` decision is `DO NOT APPLY` (`proposal_generation: blocked`), `upwork-qualification-report.md` must contain the Gate Report header and zero submission-ready application text.
-4. **CONDITIONAL Tag Enforcement**:
-   - If `upwork-qualification.yaml` decision is `CONDITIONAL` (`proposal_generation: allowed_with_conditions`), `upwork-qualification-report.md` and `upwork-screening-answers.md` must include explicit `[OPEN CONDITION: ...]` tags for unverified items.
-5. **Output Target**:
-   - Validation metrics appended to `out/<target-slug>/runtime/projection-validation-report.yaml`.
+---
+
+## Independent Production Verification Check (FR-14)
+
+$$\text{ValidateQualification}(Q, \text{OKF}) = \text{PASS} \iff$$
+
+$$\forall r \in Q.\text{hard\_requirements}: \Big(r.\text{production\_status} = \text{verified\_production} \implies$$
+
+$$\exists e \in \text{OKF}.\text{evidence\_cards}: e.\text{id} \in r.\text{evidence\_sources}$$
+$$\land e.\text{production\_verified} = \text{true}$$
+$$\land e.\text{environment} = \text{production}$$
+$$\land e.\text{implementation\_role} \in \{\text{lead\_architect}, \text{sole\_developer}, \text{contributor}\}$$
+$$\land (r.\text{target\_organisation\_id} \implies e.\text{organisation.id} = r.\text{target\_organisation\_id})\Big)$$
+
+If any requirement in `upwork-qualification.yaml` claims `verified_production` without matching canonical evidence meeting this predicate, `projection-validator` MUST emit `status: FAIL`.
+
+---
+
+## Validated Metrics
+
+1. **Production Status Integrity**: Verifies that every `verified_production` claim is backed by canonical EvidenceCard frontmatter with `production_verified: true`, `environment: production`, and matching `organisation.id` / `project.id`.
+2. **Employment History Evidence Integrity**: Deterministically executes `scripts/employment_validator.py` against `out/okf/employment-records.yaml`.
+3. **Internal Provenance & Attribution**: Confirms 100% of claims in `upwork-proposal.md` map to valid evidence cards in `upwork-qualification.yaml` `claim_traceability`.
+4. **Gate Compliance**: Verifies `DO NOT APPLY` state (`proposal_generation: blocked`) prevents submission proposal generation and renders a valid Gate Report.
+5. **Open Condition Verification**: Verifies `CONDITIONAL` state artifacts contain explicit `[OPEN CONDITION: <fact>]` tags.
+6. **Readability & Word Count**: Validates word count (350-500 words target).
