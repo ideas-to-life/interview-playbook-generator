@@ -10,6 +10,14 @@ Implementation owner: Coding agent
 Governance: Existing CAS + SLDC workflow
 Primary objective: Add Upwork proposal generation as a governed projection of the existing Career Knowledge / OKF evidence, with explicit qualification gates and human approval.
 
+## Clarifications
+
+### Session 2026-09-10
+- Q: Should Upwork qualification and proposal generation be integrated into the standard pipeline orchestrator as runtime and projection skills, or invoked as a standalone skill? → A: Option A - Register a runtime qualification skill (`upwork-qualification`) in the Runtime Layer and add `upwork-proposal` to `projection-registry` so it runs automatically via `playbook-orchestrator` when `target_type: upwork`.
+- Q: How should screening answers be generated when the qualification gate returns a CONDITIONAL decision? → A: Option A - Generate screening answers with explicit `[OPEN CONDITION: <fact>]` markers for any response dependent on unverified information.
+- Q: Should the qualification gate output be stored as machine-readable YAML in runtime context while proposal outputs are generated as Markdown documents? → A: Option A - Machine-readable YAML at `out/<target-slug>/runtime/upwork-qualification.yaml` and Markdown files (`upwork-proposal.md`, `upwork-screening-answers.md`, `upwork-work-samples.md`) in `out/<target-slug>/`.
+- Q: Should the existing projection-validator skill be extended to evaluate Upwork proposals and screening answers as part of the standard evaluation layer? → A: Option A - Extend existing `projection-validator` to parse and validate Upwork proposal artifacts and record validation results in `out/<target-slug>/runtime/projection-validation-report.yaml`.
+
 ⸻
 
 1. Purpose
@@ -541,7 +549,8 @@ Rules:
 * do not evade difficult questions;
 * explicitly acknowledge missing evidence;
 * do not substitute personal projects for required production experience;
-* do not manufacture numbers.
+* do not manufacture numbers;
+* under CONDITIONAL status, attach an explicit `[OPEN CONDITION: <fact>]` tag to any answer relying on unverified candidate context.
 
 For an opportunity with an explicit hard production requirement that is not satisfied, screening answers should not be generated as if the candidate were applying.
 
@@ -574,18 +583,15 @@ Confidential internal material must not be recommended unless it is already appr
 
 21. Output Model
 
-The precise paths should follow repository conventions discovered by the coding agent.
+V1 requires the following explicit output paths adhering to repository conventions:
 
-Conceptually, V1 requires:
+Machine-readable qualification output:
+`out/<target-slug>/runtime/upwork-qualification.yaml`
 
-<target>/runtime/upwork-qualification
-<target>/upwork-proposal
-<target>/upwork-screening-answers
-<target>/upwork-work-samples
-
-The qualification output should be machine-readable.
-
-The proposal outputs should be human-readable.
+Human-readable Markdown proposal outputs:
+`out/<target-slug>/upwork-proposal.md`
+`out/<target-slug>/upwork-screening-answers.md`
+`out/<target-slug>/upwork-work-samples.md`
 
 ⸻
 
@@ -766,13 +772,11 @@ If an existing architectural decision already establishes this projection strate
 
 29. Skill Design
 
-The implementation should reuse existing Skills wherever possible.
+The implementation shall register a runtime qualification skill (`upwork-qualification`) in the Runtime Layer and add an Upwork projection skill (`upwork-proposal`) to `projection-registry` so that it is automatically executed via `playbook-orchestrator` when `target_type: upwork` is set.
 
-If new Skills are necessary, they should follow the repository’s established Skill contract.
+Conceptually, two discrete responsibilities are enforced:
 
-Conceptually, two responsibilities are required:
-
-Qualification Skill
+Qualification Skill (`upwork-qualification`)
 
 Responsible for:
 
@@ -781,18 +785,18 @@ opportunity
 → evidence
 → qualification
 
-It must not write the proposal.
+It must produce the runtime qualification artifact and must not write the proposal.
 
-Proposal Projection Skill
+Proposal Projection Skill (`upwork-proposal`)
 
-Responsible for:
+Registered with `projection-registry`. Responsible for:
 
 qualified opportunity
 +
 evidence
 → proposal package
 
-It must not override qualification.
+It must consume the runtime qualification artifact and must not override qualification decisions.
 
 If repository inspection shows these responsibilities can be cleanly incorporated into existing Skills without creating unnecessary fragmentation, the agent should prefer that design.
 
@@ -860,9 +864,11 @@ Do not introduce a second configuration mechanism if the existing target-positio
 
 33. Validation Requirements
 
-V1 must include automated or deterministic validation appropriate to the repository.
+V1 must include automated and deterministic validation integrated into the existing Evaluation Layer (`projection-validator`).
 
-At minimum, tests should cover:
+`projection-validator` shall be extended to validate generated Upwork proposal artifacts (`upwork-proposal.md`, `upwork-screening-answers.md`) and append results to `out/<target-slug>/runtime/projection-validation-report.yaml`.
+
+At minimum, tests and validation rules should cover:
 
 Qualification
 
