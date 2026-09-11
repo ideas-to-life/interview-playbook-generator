@@ -345,3 +345,232 @@ def test_v21_validation_semantic_evidence_support():
     validation_result = validate_semantic_evidence(claim_traceability[0], canonical_evidence_cards)
 
     assert validation_result == "FAIL_SEMANTIC_EVIDENCE_MISMATCH"
+
+
+# ==============================================================================
+# Forensic Regression Test Suite (V2.1 Defect Prevention)
+# ==============================================================================
+
+def test_forensic_proposal_prose_omits_unverified_production_claims():
+    """Forensic Test 1: Client-facing proposal prose MUST NOT assert established live production implementation
+    when production_deployment_verification is missing in upwork-qualification.yaml.
+    """
+    report_path = "out/upwork-senior-agentic-ai-architect/upwork-qualification-report.md"
+    assert os.path.exists(report_path), "upwork-qualification-report.md must exist"
+
+    with open(report_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    assert "**Submission Readiness**: `HUMAN_REVIEW_REQUIRED`" in content
+    assert "implemented production multi-agent" not in content.lower()
+    assert "personally architected and implemented production" not in content.lower()
+
+
+def test_forensic_screening_answers_reject_fabricated_metrics():
+    """Forensic Test 2: Screening answers MUST NOT contain unevidenced quantitative metrics
+    such as >99.5%, 3-5x, dozens of specialized AI agents, or dramatically reduced cycle time.
+    """
+    answers_path = "out/upwork-senior-agentic-ai-architect/upwork-screening-answers.md"
+    assert os.path.exists(answers_path), "upwork-screening-answers.md must exist"
+
+    with open(answers_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    assert ">99.5%" not in content
+    assert "3-5x" not in content
+    assert "dozens of specialized AI agents" not in content
+    assert "dramatically reduced cycle time" not in content
+
+
+def test_forensic_user_decision_state_remains_unforced():
+    """Forensic Test 3: user_decision_state in upwork-qualification.yaml MUST remain unforced (None)
+    when no human candidate decision is supplied.
+    """
+    qual_path = "out/upwork-senior-agentic-ai-architect/runtime/upwork-qualification.yaml"
+    assert os.path.exists(qual_path), "upwork-qualification.yaml must exist"
+
+    with open(qual_path, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+
+    assert data.get("user_decision_state") is None, "user_decision_state must be unforced (None)"
+
+
+def test_forensic_upwork_validator_fails_on_production_inflation():
+    """Forensic Test 4: Dynamic upwork_validator MUST fail any proposal asserting production implementation
+    when requirement production_status is unverified.
+    """
+    from scripts.upwork_validator import validate_upwork_proposal
+
+    corrupted_proposal = "I have personally architected and implemented production multi-agent systems for live enterprise clients."
+    screening_clean = "Answer: Prototyped agentic architecture."
+    qual_data = {
+        "submission_readiness": "HUMAN_REVIEW_REQUIRED",
+        "user_decision_state": None,
+        "requirement_assessments": [
+            {
+                "requirement_id": "req-1",
+                "classification": "PARTIALLY_SUPPORTED",
+                "production_status": "unknown",
+                "missing_facts": ["production_deployment_verification"]
+            }
+        ]
+    }
+
+    result = validate_upwork_proposal(corrupted_proposal, screening_clean, qual_data)
+
+    assert result["status"] == "FAIL"
+    assert any(v["type"] == "production_claim_inflation" for v in result["violations"])
+
+
+def test_forensic_independent_validator_rejects_corrupted_proposal_even_if_generator_claims_pass():
+    """Independent Validator Test: Demonstrates that even if a generator outputs status: PASS,
+    the independent executable validator evaluates actual markdown content and rejects corrupted claims (>99.5% accuracy).
+    """
+    from scripts.upwork_validator import validate_upwork_proposal
+
+    clean_proposal = "Architected multi-agent platform and reasoning observability infrastructure."
+    corrupted_screening = "Question 8 Answer: Achieved >99.5% accuracy over a 30-day baseline with 3-5x throughput."
+    qual_data = {
+        "submission_readiness": "HUMAN_REVIEW_REQUIRED",
+        "user_decision_state": None,
+        "requirement_assessments": []
+    }
+
+    result = validate_upwork_proposal(clean_proposal, corrupted_screening, qual_data)
+
+    assert result["status"] == "FAIL"
+    assert result["quantitative_integrity_verified"] is False
+    assert any(v["type"] == "unsupported_quantitative_metric" for v in result["violations"])
+
+
+def test_req2_and_req3_cannot_inherit_verified_production_when_deployment_unknown():
+    """Requirement production-status inheritance invariant: req-2 and req-3 cannot be marked
+    verified_production when host platform production deployment status is unknown.
+    """
+    qual_path = "out/upwork-senior-agentic-ai-architect/runtime/upwork-qualification.yaml"
+    assert os.path.exists(qual_path), "upwork-qualification.yaml must exist"
+
+    with open(qual_path, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+
+    reqs = {r["requirement_id"]: r for r in data.get("requirement_assessments", [])}
+    assert reqs["req-2"]["production_status"] == "unknown", "req-2 production status must remain unknown"
+    assert reqs["req-3"]["production_status"] == "unknown", "req-3 production status must remain unknown"
+
+
+def test_wpp_work_sample_classification_not_client_production():
+    """Work-sample production classification invariant: WPP work sample must NOT be classified as client_production
+    when production status is unknown.
+    """
+    qual_path = "out/upwork-senior-agentic-ai-architect/runtime/upwork-qualification.yaml"
+    assert os.path.exists(qual_path), "upwork-qualification.yaml must exist"
+
+    with open(qual_path, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+
+    samples = data.get("recommended_work_samples", [])
+    wpp_sample = next((s for s in samples if "WPP" in s.get("title", "")), None)
+    assert wpp_sample is not None, "WPP work sample must exist"
+    assert wpp_sample["project_type"] != "client_production", "WPP work sample project_type must not be client_production when production is unknown"
+
+
+def test_screening_q2_and_q4_status_evidence_safe_qualified():
+    """Screening-answer completeness invariant: Q2 and Q4 must be marked EVIDENCE_SAFE_QUALIFIED
+    when exact counts or quantitative business metrics are missing in evidence.
+    """
+    answers_path = "out/upwork-senior-agentic-ai-architect/upwork-screening-answers.md"
+    assert os.path.exists(answers_path), "upwork-screening-answers.md must exist"
+
+    with open(answers_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    assert "## Question 2: How many agents or automated workflows were involved?\n**Status**: `EVIDENCE_SAFE_QUALIFIED`" in content
+    assert "## Question 4: What measurable business result did the system produce?\n**Status**: `EVIDENCE_SAFE_QUALIFIED`" in content
+
+
+def test_unsupported_narrative_claims_absent():
+    """Remove unsupported narrative claims invariant: 'transformed commercial operations' and
+    'eliminated ungoverned AI experiments' must be absent from generated outputs.
+    """
+    answers_path = "out/upwork-senior-agentic-ai-architect/upwork-screening-answers.md"
+    assert os.path.exists(answers_path), "upwork-screening-answers.md must exist"
+
+    with open(answers_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    assert "transformed commercial operations" not in content
+    assert "eliminated ungoverned AI experiments" not in content
+
+
+def test_validation_metrics_not_static():
+    """Remove static validation metrics invariant: total_claims: 24 must not appear as hardcoded static count.
+    """
+    report_path = "out/upwork-senior-agentic-ai-architect/runtime/projection-validation-report.yaml"
+    assert os.path.exists(report_path), "projection-validation-report.yaml must exist"
+
+    with open(report_path, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+
+    cov = data["metrics"]["evidence_coverage"]
+    assert "total_claims" not in cov, "total_claims: 24 hardcoded metric must be removed"
+    assert "total_checks" in cov, "real total_checks metric must be present"
+
+
+def test_validator_checks_work_samples_and_rejects_corrupted_sample():
+    """Extend validator coverage to work samples invariant: upwork_validator must fail any work sample
+    claiming client_production when production status is unknown.
+    """
+    from scripts.upwork_validator import validate_upwork_proposal
+
+    proposal_clean = "Architected multi-agent platform and reasoning observability infrastructure."
+    screening_clean = "Answer: Prototyped agentic architecture."
+    corrupted_work_samples = """# Recommended Work Samples
+## 1. WPP Agentic AI Platform
+- **Project Type**: `client_production`
+- **Summary**: Live enterprise client production deployment.
+"""
+    qual_data = {
+        "submission_readiness": "HUMAN_REVIEW_REQUIRED",
+        "user_decision_state": None,
+        "requirement_assessments": [
+            {
+                "requirement_id": "req-1",
+                "classification": "PARTIALLY_SUPPORTED",
+                "production_status": "unknown",
+                "missing_facts": ["production_deployment_verification"]
+            }
+        ]
+    }
+
+    result = validate_upwork_proposal(proposal_clean, screening_clean, qual_data, work_samples_md=corrupted_work_samples)
+
+    assert result["status"] == "FAIL"
+    assert result["work_samples_verified"] is False
+    assert any(v["type"] == "work_sample_production_misclassification" for v in result["violations"])
+
+
+def test_validator_rejects_corrupted_screening_answer_status():
+    """Strengthen independent validation invariant: upwork_validator must reject screening answer Q2/Q4
+    marked ANSWERED without evidence-backed numerical metric.
+    """
+    from scripts.upwork_validator import validate_upwork_proposal
+
+    proposal_clean = "Architected multi-agent platform and reasoning observability infrastructure."
+    corrupted_screening = """# Upwork Screening Answers
+## Question 2: How many agents or automated workflows were involved?
+**Status**: `ANSWERED`
+**Answer**: At WPP Media, the platform coordinated specialized AI agents across media planning workflows.
+"""
+    qual_data = {
+        "submission_readiness": "HUMAN_REVIEW_REQUIRED",
+        "user_decision_state": None,
+        "requirement_assessments": []
+    }
+
+    result = validate_upwork_proposal(proposal_clean, corrupted_screening, qual_data)
+
+    assert result["status"] == "FAIL"
+    assert result["screening_completeness_verified"] is False
+    assert any(v["type"] == "screening_answer_status_mismatch" for v in result["violations"])
+
+

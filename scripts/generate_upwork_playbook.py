@@ -9,7 +9,7 @@ import yaml
 from pathlib import Path
 from datetime import datetime
 
-TIMESTAMP = "2026-09-10T11:57:00+01:00"
+TIMESTAMP = datetime.now().astimezone().isoformat()
 TARGET_SLUG = "upwork-senior-agentic-ai-architect"
 REPO_ROOT = Path(__file__).resolve().parent.parent
 OUT_DIR = REPO_ROOT / "out" / TARGET_SLUG
@@ -155,8 +155,8 @@ def generate_upwork_qualification():
         "recommendation_rationale": "Direct, verified enterprise AI architecture and governance experience at WPP Media and BBC Studios. Production deployment verification for full multi-agent system remains an unresolved evidence gap.",
         "proposal_content_mode": "HUMAN_REVIEW_REQUIRED",
         "submission_readiness": "HUMAN_REVIEW_REQUIRED",
-        "user_decision_state": "APPLY",  # Human-controlled, user decision state
-        "decision": "APPLY",  # Backward compatibility
+        "user_decision_state": None,  # Unforced, pending human candidate decision
+        "decision": None,  # Backward compatibility
         "proposal_generation": "allowed",  # Backward compatibility
         "confidence": "HIGH",
         "overall_rationale": "Candidate possesses direct, verified production architecture and advisory experience as Senior Director & System Architect - Agentic AI at WPP Media and Lead Enterprise Architect at BBC Studios. Live production deployment details are unrecorded in canonical evidence and surfaced for human confirmation.",
@@ -190,30 +190,30 @@ def generate_upwork_qualification():
             {
                 "requirement_id": "req-2",
                 "requirement_text": "Agent hierarchy, memory architecture, and durable state design",
-                "classification": "SUPPORTED",
+                "classification": "PARTIALLY_SUPPORTED",
                 "is_dealbreaker": True,
                 "relationship": "direct",
                 "evidence_strength": "strong",
-                "production_status": "verified_production",
-                "missing_facts": [],
+                "production_status": "unknown",
+                "missing_facts": ["production_deployment_verification"],
                 "established_facts": ["Designed durable state, memory isolation, and LLM reasoning observability at WPP Media"],
                 "matched_evidence_ids": ["wpp-agentic-ai-platform", "rai-reasoning-observability"],
                 "candidate_confirmation_questions": [],
-                "rationale": "Designed durable state, memory isolation, and LLM reasoning observability at WPP Media."
+                "rationale": "Designed durable state, memory isolation, and LLM reasoning observability at WPP Media. Production deployment attestation is unrecorded in canonical evidence."
             },
             {
                 "requirement_id": "req-3",
                 "requirement_text": "Human approval gates and maker/checker governance controls",
-                "classification": "SUPPORTED",
+                "classification": "PARTIALLY_SUPPORTED",
                 "is_dealbreaker": True,
                 "relationship": "direct",
                 "evidence_strength": "strong",
-                "production_status": "verified_production",
-                "missing_facts": [],
+                "production_status": "unknown",
+                "missing_facts": ["production_deployment_verification"],
                 "established_facts": ["Established GenAI governance framework at BBC Studios", "Human approval guardrails in CAS"],
                 "matched_evidence_ids": ["bbc-studios-genai-framework", "cas-coding-agent-guardrails"],
                 "candidate_confirmation_questions": [],
-                "rationale": "Established GenAI governance framework at BBC Studios and human approval guardrails in CAS."
+                "rationale": "Established GenAI governance framework at BBC Studios and human approval guardrails in CAS. Live external production attestation is unrecorded in canonical evidence."
             }
         ],
         "hard_requirements": [
@@ -283,7 +283,7 @@ def generate_upwork_qualification():
             {
                 "sample_id": "ws-1",
                 "title": "Agentic AI Platform Architecture & Multi-Agent Guardrails (WPP Media)",
-                "project_type": "client_production",
+                "project_type": "prototype_innovation",
                 "supports_requirement": "Multi-agent orchestration & durable state",
                 "demonstrates_capability": "agentic-ai-architecture",
                 "evidence_source": "wpp-agentic-ai-platform"
@@ -291,7 +291,7 @@ def generate_upwork_qualification():
             {
                 "sample_id": "ws-2",
                 "title": "GenAI Governance & Human Approval Framework (BBC Studios)",
-                "project_type": "client_production",
+                "project_type": "enterprise_architecture",
                 "supports_requirement": "Human approval gates & maker/checker controls",
                 "demonstrates_capability": "enterprise-ai-governance",
                 "evidence_source": "bbc-studios-genai-framework"
@@ -521,16 +521,37 @@ def generate_projection_registry():
     write_yaml(RUNTIME_DIR / "projection-registry.yaml", data)
 
 def generate_projection_validation_report():
+    try:
+        from scripts.upwork_validator import validate_upwork_proposal
+        from scripts.employment_validator import validate_employment_history
+    except ModuleNotFoundError:
+        from upwork_validator import validate_upwork_proposal
+        from employment_validator import validate_employment_history
+
+    proposal_md = (OUT_DIR / "upwork-qualification-report.md").read_text(encoding="utf-8") if (OUT_DIR / "upwork-qualification-report.md").exists() else ""
+    screening_md = (OUT_DIR / "upwork-screening-answers.md").read_text(encoding="utf-8") if (OUT_DIR / "upwork-screening-answers.md").exists() else ""
+    work_samples_md = (OUT_DIR / "upwork-work-samples.md").read_text(encoding="utf-8") if (OUT_DIR / "upwork-work-samples.md").exists() else ""
+
+    qual_yaml_path = RUNTIME_DIR / "upwork-qualification.yaml"
+    qual_data = {}
+    if qual_yaml_path.exists():
+        with open(qual_yaml_path, "r", encoding="utf-8") as f:
+            qual_data = yaml.safe_load(f)
+
+    upwork_val_res = validate_upwork_proposal(proposal_md, screening_md, qual_data, work_samples_md=work_samples_md)
+    emp_val_res = validate_employment_history(proposal_md)
+
+    checks_performed = upwork_val_res.get("checks_performed", 8)
     data = {
         "version": "6.1",
         "generated_at": TIMESTAMP,
         "target_slug": TARGET_SLUG,
         "metrics": {
             "evidence_coverage": {
-                "score": 1.0,
-                "status": "PASS",
-                "total_claims": 24,
-                "verified_claims": 24
+                "score": 1.0 if upwork_val_res["status"] == "PASS" else 0.0,
+                "status": upwork_val_res["status"],
+                "total_checks": checks_performed,
+                "passed_checks": checks_performed - len(upwork_val_res["violations"])
             },
             "capability_alignment": {
                 "score": 0.96,
@@ -550,20 +571,24 @@ def generate_projection_validation_report():
                 "status": "PASS"
             },
             "readability": {
-                "proposal_word_count": 425,
+                "proposal_word_count": len(proposal_md.split()),
                 "target_range": [350, 500],
                 "status": "PASS"
             },
             "employment_integrity": {
-                "status": "PASS",
-                "records_checked": 13,
-                "violations": []
+                "status": emp_val_res["status"],
+                "records_checked": emp_val_res["records_checked"],
+                "violations": emp_val_res["violations"]
             },
             "upwork_validation": {
-                "status": "PASS",
+                "status": upwork_val_res["status"],
                 "gate_state": "allowed",
-                "clean_prose_verified": True,
-                "traceability_100_percent": True
+                "clean_prose_verified": upwork_val_res["clean_prose_verified"],
+                "semantic_support_verified": upwork_val_res["semantic_support_verified"],
+                "quantitative_integrity_verified": upwork_val_res["quantitative_integrity_verified"],
+                "work_samples_verified": upwork_val_res["work_samples_verified"],
+                "screening_completeness_verified": upwork_val_res["screening_completeness_verified"],
+                "violations": upwork_val_res["violations"]
             }
         }
     }
@@ -642,19 +667,19 @@ def generate_upwork_proposal_md():
 
 **Submission Readiness**: `HUMAN_REVIEW_REQUIRED`
 **Machine Recommendation**: `EVIDENCE_GAPS`
-**User Decision State**: `APPLY` (Human-Owned)
+**User Decision State**: `PENDING_HUMAN_SELECTION` (Human-Owned)
 **Proposal Content Mode**: `HUMAN_REVIEW_REQUIRED`
-**Word Count**: 425 words (Target: 350-500 words)
+**Word Count**: 410 words (Target: 350-500 words)
 
 ---
 
 ### MULTI-AGENT ARCHITECT
 
-I have personally architected and implemented production multi-agent systems inside complex, real operating companies—most recently as Senior Director & System Architect for Agentic AI at WPP Media, and previously as Lead Enterprise Architect at BBC Studios.
+I served as Senior Director & System Architect for Agentic AI at WPP Media and Lead Enterprise Architect at BBC Studios, where I architected multi-agent platform frameworks, durable memory boundaries, and enterprise GenAI governance controls.
 
 Building a durable, company-wide AI operating system across Sales, Operations, Finance, and Customer Service requires much more than low-code automation tools or standard chatbots. It requires a resilient master orchestration layer, explicit agent hierarchies, isolated state management, robust maker/checker approval gates, and comprehensive LLM reasoning observability.
 
-### 1. Proof of Production Experience
+### 1. Proof of Architecture & Governance Experience
 At WPP Media, I led the architectural design of an enterprise multi-agent platform and reasoning observability infrastructure. The system coordinated autonomous agents executing multi-step workflows while enforcing strict state persistence, agent-to-agent communication protocols, and deterministic failure recovery. 
 
 At BBC Studios, I established the corporate GenAI Governance Framework, defining maker/checker approval controls, risk classification, and human escalation gates for operational AI deployment.
@@ -685,20 +710,20 @@ def generate_upwork_screening_answers_md():
     content = """# Upwork Screening Answers: Senior Agentic AI Architect
 
 ## Question 1: What real company have you personally helped implement a production multi-agent or AI workforce system for?
-**Status**: `ANSWERED`
-**Answer**: I personally served as Senior Director & System Architect – Agentic AI at WPP Media (Dec 2025 – Jul 2026), where I architected the enterprise multi-agent platform and LLM reasoning observability infrastructure. Prior to that, as Lead Enterprise Architect at BBC Studios (2021–2025), I created the enterprise GenAI governance framework governing operational AI adoption.
+**Status**: `EVIDENCE_SAFE_QUALIFIED`
+**Answer**: I served as Senior Director & System Architect – Agentic AI at WPP Media (Dec 2025 – Jul 2026), where I architected the enterprise multi-agent platform and LLM reasoning observability infrastructure. Prior to that, as Lead Enterprise Architect at BBC Studios (2021–2025), I created the enterprise GenAI governance framework governing operational AI adoption. Live external production deployment attestation is unrecorded in canonical evidence and surfaced for human confirmation.
 
 ## Question 2: How many agents or automated workflows were involved?
-**Status**: `ANSWERED`
-**Answer**: At WPP Media, the platform coordinated dozens of specialized AI agents across media planning, content analysis, and automated research workflows, integrated into an enterprise-wide agentic framework with central governance and shared memory boundaries.
+**Status**: `EVIDENCE_SAFE_QUALIFIED`
+**Answer**: At WPP Media, the platform architecture coordinated specialized AI agents across media planning, content analysis, and automated research workflows, integrated into an enterprise-wide agentic framework with central governance and shared memory boundaries. The exact numerical count of active agents or workflows is unrecorded in canonical evidence.
 
 ## Question 3: What parts of the company were affected?
 **Status**: `ANSWERED`
-**Answer**: The multi-agent platform transformed commercial operations, media planning, campaign execution, and research teams at WPP, bridging technical engineering with day-to-day business operations.
+**Answer**: The multi-agent platform architecture addressed media planning, campaign execution, and research workflows at WPP, bridging technical engineering with operational business processes.
 
 ## Question 4: What measurable business result did the system produce?
-**Status**: `ANSWERED`
-**Answer**: The platform dramatically reduced cycle time for multi-step research and media analysis, established full auditability for agent decision-making via LLM reasoning observability, and eliminated ungoverned AI experiments.
+**Status**: `EVIDENCE_SAFE_QUALIFIED`
+**Answer**: The platform established full auditability for agent decision-making via LLM reasoning observability and enforced state persistence across workflows. Specific quantitative business yield metrics are unrecorded in canonical evidence.
 
 ## Question 5: How would you coordinate 50 AI agents with shared company knowledge but different permissions?
 **Status**: `ANSWERED`
@@ -717,8 +742,8 @@ def generate_upwork_screening_answers_md():
 **Answer**: I apply a 4-tier process framework based on Volume, Complexity, and Reversibility:
 1. **Automate First**: High-volume, low-complexity, reversible tasks (e.g., routine data enrichment, initial CS triage).
 2. **Keep Human**: High-stake strategic relationships, novel exception handling, and irreversible financial/legal approvals.
-3. **Reliability Gating**: Transition a process from human-executed -> AI-assisted -> human-approved -> autonomous only when automated evals achieve >99.5% accuracy over a 30-day baseline.
-4. **Staffing Transition**: Staffing is never reduced abruptly; roles evolve as throughput per human manager increases by 3-5x through agent delegation.
+3. **Reliability Gating**: Transition a process from human-executed -> AI-assisted -> human-approved -> autonomous only when empirical eval pipelines meet target accuracy thresholds over defined evaluation baselines.
+4. **Staffing Transition**: Staffing is never reduced abruptly; roles evolve as human managers delegate tasks to supervised agentic workflows.
 """
     (OUT_DIR / "upwork-screening-answers.md").write_text(content, encoding="utf-8")
 
@@ -726,18 +751,21 @@ def generate_upwork_work_samples_md():
     content = """# Recommended Work Samples: Senior Agentic AI Architect
 
 ## 1. Agentic AI Platform Architecture & Multi-Agent Guardrails (WPP Media)
+- **Project Type**: `prototype_innovation`
 - **Supports Requirement**: Master multi-agent orchestration, agent hierarchy, and durable state
 - **Demonstrated Capability**: agentic-ai-architecture
 - **Evidence Source**: wpp-agentic-ai-platform
 - **Summary**: Designed and architected WPP Open / Agentic AI platform, implementing multi-agent coordination, state isolation, reasoning observability, and automated LLM evals.
 
 ## 2. Enterprise GenAI Governance & Human Approval Framework (BBC Studios)
+- **Project Type**: `enterprise_architecture`
 - **Supports Requirement**: Human approval gates, maker/checker controls, and operational risk boundaries
 - **Demonstrated Capability**: enterprise-ai-governance
 - **Evidence Source**: bbc-studios-genai-framework
 - **Summary**: Authored and established the corporate GenAI governance framework at BBC Studios, setting up approval controls, risk evaluation matrix, and enterprise AI guardrails.
 
 ## 3. Reasoning Observability & Evaluation System (RAI / CAS Framework)
+- **Project Type**: `personal_project`
 - **Supports Requirement**: LLM observability, logging, audit trails, and failure recovery
 - **Demonstrated Capability**: observability-and-evals
 - **Evidence Source**: rai-reasoning-observability
