@@ -1,4 +1,4 @@
-# Feature Specification: Upwork Proposal Generator — Evidence Attribution & Composition Integrity
+# Feature Specification: Upwork Proposal Generator — Evidence Attribution, Composition & Claim Projection Integrity (V3.1)
 
 **Feature Branch**: `003-upwork-proposal-refinement`
 
@@ -6,37 +6,37 @@
 
 **Status**: Draft
 
-**Input**: User description: "/speckit-specify create the formal specification for the requirements refinement @[docs/requirements-spec/upwork-proposal-generator-refinement-spec.v3.md]"
+**Input**: User description: "/speckit-specify apply the following refinements @[docs/requirements-spec/upwork-proposal-generator-refinement-spec.v3.1.md] to the generated spec."
 
 ## User Scenarios & Testing *(mandatory)*
 
-### User Story 1 - Evidence Ownership & Attribution Integrity (Priority: P1)
+### User Story 1 - Upstream Evidence Attribution & Non-Linear Contribution Preservation (Priority: P1)
 
-As an Upwork candidate/consultant whose portfolio contains enterprise architecture advisory experience alongside hands-on personal/prototype projects, I want the system to preserve exact attribution boundaries (distinguishing what a platform did, what an organization deployed, what I personally architected, and what I personally implemented in production) so that client-facing proposals and screening answers never overstate my personal implementation responsibility or production deployment history.
+As an Upwork candidate/consultant whose portfolio contains enterprise architecture advisory experience alongside hands-on personal/prototype projects, I want the system to establish structured evidence attribution upstream (distinguishing subject, candidate contribution, platform production status, candidate implementation status, deployment status, and temporal scope independently) before qualification and proposal projection take place, so that candidate contribution is never treated as a linear responsibility ladder or inflated into an unsupported production deployment claim.
 
-**Why this priority**: Solves the core evidence attribution defect where candidate advisory or architectural leadership around a production platform is inflated into an unsupported claim of personally building, implementing, or deploying that underlying production platform.
+**Why this priority**: Corrects the primary attribution defect upstream before prose generation, ensuring that the final validator only checks for projection consistency rather than attempting to infer semantic truth from generated prose.
 
-**Independent Test**: Process an opportunity requiring personal production implementation against canonical evidence establishing enterprise architecture advisory around a production platform (e.g. WPP Open) and hands-on implementation in a personal project (e.g. CAS). Verify that client-facing proposals and screening answers explicitly present architecture leadership and personal implementation as distinct contexts, never claiming personal production implementation at the enterprise organization.
+**Independent Test**: Process an opportunity requiring personal production implementation against canonical evidence establishing enterprise architecture advisory around a production platform (e.g. WPP Open) and hands-on implementation in a personal project (e.g. CAS). Verify that the qualification context records candidate contribution as architecture/advisory and candidate production deployment as unknown, causing client-facing proposals and screening answers to frame the architecture leadership and prototype coding as distinct, bounded contexts without claiming personal production deployment at the enterprise.
 
 **Acceptance Scenarios**:
 
-1. **Given** canonical evidence of an enterprise production platform where candidate held an architecture/advisory role, **When** qualification and proposal generation execute, **Then** the candidate's contribution is stated as architecture/advisory, platform production status is noted separately, candidate personal production implementation remains `UNRESOLVED`, and zero client-facing claims assert personal production implementation.
-2. **Given** a hard screening question asking "What real company have you personally helped implement a production multi-agent system for?", **When** candidate personal production implementation is unverified, **Then** the generated screening answer explicitly preserves the evidence gap (e.g. stating enterprise architecture leadership around the platform without asserting personal production implementation) rather than producing an affirmative implementation claim followed by a disclaimer.
+1. **Given** canonical evidence of an enterprise production platform where candidate held an architecture/advisory role, **When** attribution interpretation and qualification execute, **Then** `candidate_contribution` is evaluated as `architected`/`advised`, `system_production_status` is evaluated as `verified_production`, `candidate_production_deployment_status` remains `unknown`, and zero client-facing claims assert candidate production deployment.
+2. **Given** a candidate who led an enterprise implementation project that was still in progress upon departure (e.g. PCA), **When** qualification and proposal projection execute, **Then** project leadership and architectural design MAY be claimed, but live production deployment or operational status MUST NOT be inferred or claimed.
 
 ---
 
-### User Story 2 - Composition Boundary Preservation Across Multiple Sources (Priority: P2)
+### User Story 2 - Composition Boundary Preservation Across Multiple Contexts (Priority: P2)
 
-As a candidate with multi-domain experience across different organizations and projects, I want the system to permit using complementary evidence sources (e.g. WPP for enterprise architecture, BBC for governance, CAS for hands-on agent implementation) without merging them into a single fabricated historical claim (e.g. "I implemented a production multi-agent platform at WPP").
+As a candidate with multi-domain experience across different organizations and projects, I want the system to permit using complementary evidence sources (e.g. WPP for enterprise architecture, BBC for governance, CAS for hands-on agent implementation) to demonstrate broad capabilities, while prohibiting the synthesis of unsupported composite historical facts (e.g. "I implemented a production multi-agent platform at WPP using my CAS architecture").
 
-**Why this priority**: Prevents cross-project or cross-organization evidence aggregation from manufacturing historical facts that no single evidence card independently supports.
+**Why this priority**: Prevents cross-project or cross-organization evidence aggregation from manufacturing a single requirement-specific historical fact that no individual evidence context independently supports.
 
-**Independent Test**: Execute proposal generation for a role requiring enterprise agentic implementation using separate WPP (architecture) and CAS (prototype implementation) evidence cards. Verify that proposal prose describes these as separate complementary contexts rather than conflating them into a single enterprise implementation claim.
+**Independent Test**: Execute proposal generation for a role requiring enterprise agentic implementation using separate WPP (architecture) and CAS (prototype implementation) evidence cards. Verify that proposal prose describes these as separate complementary contexts rather than conflating them into a single enterprise production implementation claim.
 
 **Acceptance Scenarios**:
 
-1. **Given** separate evidence cards for enterprise architecture (Company A) and personal implementation (Project B), **When** composing qualification rationale and proposal prose, **Then** the system presents them as distinct, complementary capability demonstrations and flags any synthesized claim that combines Company A and Project B into a unified historical fact.
-2. **Given** a hard requirement for personal production implementation inside an operating company, **When** evaluating evidence composition, **Then** personal projects, prototypes, or theoretical architecture MUST NOT satisfy the hard production requirement through aggregation.
+1. **Given** separate evidence cards for enterprise architecture (Company A) and personal project implementation (Project B), **When** evaluating a single historical requirement for personal production implementation in an operating company, **Then** the system classifies the composite evidence as unsupported for that specific historical requirement while permitting its use for multi-context capability presentation.
+2. **Given** a target requirement asking for personal production implementation inside a real operating company, **When** evaluating evidence composition, **Then** personal projects, prototypes, laboratories, or theoretical architecture MUST NOT satisfy the hard requirement through aggregation.
 
 ---
 
@@ -46,7 +46,7 @@ As a candidate presenting technical solutions to prospective clients, I want the
 
 **Why this priority**: Prevents forward-looking technical proposals or proposed stack recommendations from leaking into historical experience claims.
 
-**Independent Test**: Generate a proposal specifying a target technology stack (e.g. LangGraph or Temporal) that appears only in the target job description or candidate's proposed approach. Verify that all references to the technology use proposed-approach phrasing ("I would deploy...") and zero references claim historical usage ("I previously deployed...").
+**Independent Test**: Generate a proposal specifying a target technology stack (e.g. LangGraph, Temporal, or OpenAI Agents SDK) that appears only in the job description or candidate's proposed approach. Verify that all references to the technology use proposed-approach phrasing ("I would deploy...") and zero references claim historical usage ("I previously deployed...").
 
 **Acceptance Scenarios**:
 
@@ -54,85 +54,124 @@ As a candidate presenting technical solutions to prospective clients, I want the
 
 ---
 
-### User Story 4 - Strict Multi-Axis Validation & Screening Consistency (Priority: P4)
+### User Story 4 - Strict Multi-Axis State Control & Screening Answer Integrity (Priority: P4)
 
-As a candidate reviewing generated application packages, I want automated validation checks to detect attribution inflation, invalid evidence composition, screening answer contradictions, and work sample misclassifications before presenting artifacts for review.
+As a candidate reviewing generated application packages, I want automated validation checks and screening question generators to operate on three strictly independent state axes (`requirement_qualification`, `content_generation_safety`, and `human_decision`), ensuring that screening answers never generate affirmative historical claims for unresolved requirements and never introduce assertion-then-disclaimer patterns.
 
-**Why this priority**: Provides an automated quality gate ensuring zero compliance failures or contradictory statements reach the candidate or client.
+**Why this priority**: Eliminates contradictory screening answers and ensures machine non-certification (`HUMAN_REVIEW_REQUIRED`) surfaces transparent review items without overriding human application decision sovereignty.
 
-**Independent Test**: Run `upwork-validator` against a proposal package. Verify that any transition from platform-capability to candidate-ownership, any contradiction between screening answers and qualification status, or any prototype work sample presented as production deployment is detected and marked as a validation failure.
+**Independent Test**: Run proposal and screening generation for an unresolved requirement. Verify that `requirement_qualification` is `PARTIALLY_SUPPORTED` / `UNKNOWN`, `content_generation_safety` is `EVIDENCE_SAFE_BOUNDED`, screening answers present bounded context with precise candidate confirmation questions, and zero assertion-then-disclaimer prose patterns exist.
 
 **Acceptance Scenarios**:
 
-1. **Given** a generated screening answer claiming personal production implementation alongside an `upwork-qualification.yaml` status of `UNRESOLVED` for that same fact, **When** validation executes, **Then** `upwork-validator` fails screening consistency validation and surfaces the contradiction in `upwork-validation-report.yaml`.
-2. **Given** a work sample with `project_type: prototype_innovation`, **When** proposal projection generates work sample summaries, **Then** the narrative MUST describe the work as a prototype/innovation project and validation MUST fail if the summary asserts live production deployment.
+1. **Given** a requirement classified as `PARTIALLY_SUPPORTED` or `UNKNOWN`, **When** screening answer generation executes, **Then** the generated answer MUST NOT assert the unresolved fact affirmatively, producing instead a bounded formulation with candidate confirmation prompts.
+2. **Given** a generated proposal artifact, **When** validating prose structure, **Then** the validator MUST fail any pattern that makes an assertive historical claim followed by a disclaimer (e.g. "I architected the production platform at WPP. Live production deployment is unknown").
+
+---
+
+### Golden Regression Scenarios
+
+#### Golden Scenario 1 — WPP + CAS Attribution Regression (FR-058)
+- **Given**:
+  - WPP context: WPP Open is an enterprise production platform; candidate worked in WPP Media Prototype & Innovation, contributing architecture leadership, alignment, assessment, and recommendations around agentic AI initiatives; candidate personal implementation or live production deployment of the platform is NOT established.
+  - CAS context: Candidate personally implemented AI/agentic systems in candidate's personal architecture laboratory (CAS); CAS is a personal project, not an enterprise production deployment.
+  - Requirement: "Must have personally designed and implemented AI systems inside a real operating company in production."
+- **Then**:
+  - System MUST NOT generate any equivalent of: "I architected WPP Open", "I implemented WPP Open", "I deployed the WPP multi-agent platform", "I built a production multi-agent platform at WPP", or "I personally implemented WPP's production agentic platform".
+  - System SHOULD generate bounded statements distinguishing WPP enterprise architecture/advisory experience, CAS hands-on implementation experience, and explicit unresolved status regarding personal production implementation inside an operating company.
+
+#### Golden Scenario 2 — Project In Progress at Departure (FR-059)
+- **Given**: Candidate led an enterprise project (e.g. PCA) that was still in active implementation when the candidate departed the organization.
+- **Then**: System MAY claim project leadership, architecture leadership, design, and work performed prior to departure, but MUST NOT infer or claim successful production deployment, live operational status, post-departure completion, or candidate personal production deployment.
 
 ---
 
 ### Edge Cases
 
-- **Incomplete Implementation at Departure**: What happens when a candidate led an enterprise project (e.g. PCA) that was still in active implementation when the candidate departed? The system MUST permit claiming project leadership, architecture design, and implementation management, but MUST NOT claim live production deployment or operational production status for the candidate's work.
-- **Contradictory Claim & Disclaimer Positioning**: How does the system handle proposals where an evidence gap exists? The system MUST NOT generate a strong historical claim (e.g. "I architected the production platform") followed by a disclaimer ("Production deployment is unverified"). The claim itself MUST be bounded upfront (e.g. "I led architecture work around an enterprise agentic AI platform; canonical evidence does not establish personal live production implementation").
-- **Safe Screening Answer vs. Requirement Qualification**: How is screening question safety handled when evidence is incomplete? The answer MAY be generated safely for human review (`content_safety: EVIDENCE_SAFE`), but the requirement qualification status MUST remain `UNRESOLVED` / `PARTIALLY_SUPPORTED`, and candidate confirmation questions MUST target the precise missing personal implementation fact.
+- **Assertion-Then-Disclaimer Anti-Pattern**: How does the system handle proposals where an evidence gap exists? The system MUST NOT generate an assertive historical claim followed by a disclaimer ("I architected the production platform. Live deployment is unknown"). The primary claim itself MUST be bounded upfront ("I led architecture work around an enterprise agentic AI platform; canonical evidence does not establish personal live production deployment").
+- **Safe Answer vs. Requirement Qualification**: How is screening question safety handled when evidence is incomplete? The answer MAY be generated safely for human review (`content_generation_safety: EVIDENCE_SAFE_BOUNDED`), but requirement qualification MUST remain `PARTIALLY_SUPPORTED` or `UNKNOWN`, and candidate confirmation questions MUST target the precise missing personal implementation fact.
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
-#### Core Attribution & Capability Integrity (FR-001 - FR-009)
-- **FR-001 (Evidence Subject & Ownership Preservation)**: The system MUST preserve the explicit subject of every evidence claim (Candidate, Organisation, Platform/System, Project/Team, Proposed Future Solution) across qualification and projection. Evidence of platform/system capability MUST NOT be transformed into a claim of candidate implementation without independent candidate-specific evidence.
-- **FR-002 (Platform vs Candidate Production Disambiguation)**: The classification of a platform/system as `production` MUST NOT automatically infer `candidate_personally_implemented_production_system = true`. Qualification MUST evaluate platform production status and candidate contribution as distinct dimensions.
-- **FR-003 (Contribution Boundary Preservation)**: The system MUST constrain candidate contribution claims to the strongest level supported by canonical evidence (e.g. `aligned`, `assessed`, `recommended`, `architected`, `led`). Contributions MUST NOT be upgraded to `designed`, `implemented`, `deployed`, or `operated` without explicit evidence.
-- **FR-004 (Anti-Inflation Progression)**: The pipeline MUST enforce strict non-inflation rules preventing progression up the responsibility ladder: `advised` → `designed` → `implemented` → `deployed` → `production deployment`, and `worked on production platform` → `personally implemented production platform`.
-- **FR-005 (Cross-Source Evidence Composition Boundaries)**: While complementary evidence from multiple sources MAY be combined to demonstrate multi-domain capabilities (e.g. enterprise architecture + hands-on prototyping), evidence composition MUST NOT synthesize a new unified historical claim (e.g. enterprise production implementation) that no single source independently supports.
-- **FR-006 (Hard Requirement Evidence Scope)**: When a target requirement explicitly demands personal production implementation inside an operating company, aggregation across personal projects, prototypes, laboratories, theoretical architecture, or unrelated organizational roles MUST NOT satisfy the requirement.
-- **FR-007 (Work Sample Attribution Integrity)**: Work samples MUST retain explicit metadata attributes (`project_identity`, `project_type`, `candidate_contribution`, `production_status`). Work samples marked `prototype_innovation` or `personal_project` MUST NOT be described as production implementations.
-- **FR-008 (Historical vs Proposed Architecture Disambiguation)**: The system MUST enforce clear syntactic and semantic boundaries between historical evidence ("At WPP, I led...") and proposed approach ("For your environment, I would implement..."). Proposed solutions MUST NOT be represented as past historical implementations.
-- **FR-009 (Safe Bounded Formulation)**: Where evidence supports architecture or advisory leadership but not personal implementation, the system MUST use bounded formulations ("led architecture", "shaped architecture", "aligned teams") rather than implementation action verbs ("built", "implemented", "deployed", "engineered").
+#### 1. Architectural Flow & Upstream Attribution Intent
+- **FR-030 (Upstream Attribution Pipeline Flow)**: The pipeline MUST enforce the upstream conceptual flow: Canonical Evidence → Evidence Attribution / Interpretation → Qualification → Attributed Claims / Projection Context → Proposal / Screening / Work Samples → Validation & Quality Gate → Human Review → Human Decision / Submission. Attribution integrity MUST be established upstream prior to qualification and projection.
+- **FR-030a (Cross-Cutting Validation Boundary)**: Validation MUST operate as a cross-cutting quality gate verifying projection consistency against structured attribution context, and MUST NOT become a fifth architectural layer or primary truth-inferring engine. The core architecture remains strictly 4 layers: Knowledge, Runtime, Coaching, Projection.
 
-#### Qualification & Decision Taxonomy (FR-010 - FR-017)
-- **FR-010 (Content Safety vs Requirement Qualification Decoupling)**: The qualification model MUST decouple content safety from requirement qualification. An answer marked safe for human review MUST NOT imply requirement qualification. The system MUST maintain separate fields for `content_generation_safety` (`EVIDENCE_BACKED`, `EVIDENCE_SAFE_BOUNDED`, `HUMAN_REVIEW_REQUIRED`) and `requirement_qualification_status` (`SUPPORTED`, `PARTIALLY_SUPPORTED`, `UNKNOWN`, `CONTRADICTED`).
-- **FR-011 (Screening Answer Evidence Fidelity)**: Screening questions requiring unverified historical facts MUST NOT generate affirmative implementation claims. Unresolved questions MUST produce bounded, evidence-safe answers that explicitly acknowledge the evidence boundary alongside candidate confirmation prompts.
-- **FR-012 (Non-Contradictory Claim Formulation)**: Client-facing prose MUST NOT make an assertive historical claim followed by a qualifying disclaimer in the same artifact. The primary claim itself MUST be formulated with appropriate boundaries from the start.
-- **FR-013 (Precision Candidate Confirmation Questions)**: Generated confirmation questions MUST target the specific unresolved candidate implementation fact (e.g. "Did you personally implement and deploy the system at WPP Media?") rather than general platform facts ("Was the platform deployed?").
-- **FR-014 (Candidate-Specific Production Assessment Model)**: Qualification for production-sensitive requirements MUST evaluate five mandatory dimensions: `system_production_status`, `candidate_contribution`, `candidate_implementation_status`, `candidate_production_deployment_status`, and `evidence_strength`.
-- **FR-015 (Production Requirement Unresolved State)**: If a requirement demands personal production implementation and evidence establishes only architecture/advisory around a production platform, `requirement_qualification_status` MUST remain `PARTIALLY_SUPPORTED` or `UNKNOWN`; it MUST NOT be classified as `SUPPORTED`.
-- **FR-016 (Explicit Multi-Context Capability Presentation)**: When presenting complementary capabilities across separate projects (e.g. enterprise architecture at WPP, hands-on agent coding in CAS), proposal prose MUST explicitly present them as separate, distinct evidence contexts.
-- **FR-017 (Full Provenance Traceability)**: Every generated historical claim in `upwork-qualification.yaml` and client-facing artifacts MUST maintain complete provenance metadata linking the claim to candidate contribution, organization/project, evidence card IDs, production status, and claim temporal scope (historical vs proposed).
+#### 2. Independent Attribution Dimensions & Subject Preservation
+- **FR-031 (Independent Attribution Dimensions)**: Qualification and attribution MUST represent `subject`, `candidate_contribution`, `system_production_status`, `candidate_implementation_status`, `candidate_production_deployment_status`, `evidence_strength`, and `temporal_scope` as independently assessable dimensions, without treating contribution as a linear responsibility ladder (`advised` → `designed` → `implemented` → `deployed` → `production`).
+- **FR-032 (Subject Preservation)**: Every historical claim MUST preserve its subject (`Candidate`, `Organisation`, `Platform/System`, `Project/Team`, `Proposed Future Solution`). Evidence regarding one subject MUST NOT be silently transferred to another subject.
+- **FR-033 (Candidate Contribution Boundaries)**: Candidate contribution MUST be represented independently from system production status. Supported contributions (`advised`, `assessed`, `recommended`, `aligned`, `shaped_architecture`, `architected`, `designed`, `led`, `implemented`, `deployed`, `operated`) MUST be selected strictly based on candidate-specific evidence.
+- **FR-034 (No Responsibility-Ladder Inference)**: The system MUST NOT infer `implemented` from `architected`, `deployed` from `implemented`, `production deployment` from `deployment`, `candidate implementation` from `organisation production`, or `personal implementation` from `team implementation`.
+- **FR-035 (Production Status Separation)**: The system MUST independently track `system_production_status` and `candidate_production_deployment_status`. `system_production_status = verified_production` MUST NOT imply `candidate_production_deployment_status = verified_production`.
 
-#### Proposal & Human-in-the-Loop Integration (FR-018 - FR-020)
-- **FR-018 (Proposal Utility Under Evidence Gaps)**: Evidence gaps MUST NOT suppress proposal generation. Proposals MAY highlight strongly supported adjacent strengths, frame proposed technical solutions, acknowledge missing facts transparently, and invite client discussion, while strictly omitting unverified claims.
-- **FR-019 (Opening Positioning Alignment)**: Opening proposal statements for opportunities with unresolved production dealbreakers MUST position candidate strengths around verified adjacent capabilities (e.g. enterprise architecture leadership, AI governance, agentic design patterns) rather than claiming satisfaction of the unresolved production dealbreaker.
-- **FR-020 (Human Decision Model Sovereignty)**: Machine qualification findings (`STRONG_FIT`, `POTENTIAL_FIT`, `EVIDENCE_GAPS`, `WEAK_FIT`, `CLEAR_MISMATCH`) and status labels (`HUMAN_REVIEW_REQUIRED`) MUST NOT restrict or override human user decision states (`APPLY`, `DO_NOT_APPLY`, `HOLD_FOR_EVIDENCE`). The user remains the ultimate decision-maker.
+#### 3. Attribution-Aware Intermediate Representation & Provenance
+- **FR-036 (Attributed Historical Claims)**: Before client-facing projection, historical claims MUST be represented in an attribution-aware intermediate form or equivalent runtime structure retaining `claim_id`, `subject`, `organisation`, `project_system_platform`, `candidate_contribution`, `system_production_status`, `candidate_implementation_status`, `candidate_production_deployment_status`, `temporal_scope`, `evidence_strength`, `evidence_card_ids`, `source_ids`, and `claim_type` (`historical` vs `proposed`).
+- **FR-037 (Provenance Preservation)**: Every historical claim in qualification and client-facing artifacts MUST remain fully traceable to canonical evidence through attribution metadata. Provenance MUST NOT be reconstructed solely from generated prose.
+- **FR-038 (Claim Derivation Boundary)**: Client-facing historical claims MUST be derived from attribution-aware structured claims or equivalent context. The proposal generator MUST NOT independently synthesize historical claims by freely combining raw evidence cards.
 
-#### Validation & Quality Controls (FR-021 - FR-025)
-- **FR-021 (Attribution Shift Validation)**: `upwork-validator` MUST scan generated prose and flag any unsupported attribution shift (e.g. platform → candidate, team → candidate, organization → candidate, architecture → implementation, prototype → production, proposed → historical).
-- **FR-022 (Production Claim Validation)**: Every client-facing assertion of production implementation MUST be validated against candidate-specific production evidence (`candidate_production_deployment_status == verified_production`). General platform production status is insufficient to pass validation.
-- **FR-023 (Evidence Composition Validation)**: Validator MUST flag any client-facing claim that attempts to satisfy a single historical requirement by combining evidence cards from separate contexts into an unsupported composite assertion.
-- **FR-024 (Screening Answer & Qualification Consistency Validation)**: Validator MUST detect and fail any package where a screening answer asserts an affirmative historical fact while `upwork-qualification.yaml` records `PARTIALLY_SUPPORTED`, `UNKNOWN`, or `CONTRADICTED` for that same fact.
-- **FR-025 (Work Sample Metadata & Narrative Consistency Validation)**: Validator MUST verify mutual consistency across `project_type`, `production_status`, `demonstrated_capability`, and summary narrative for all included work samples.
+#### 4. Cross-Source Composition & Single-Fact Boundaries
+- **FR-039 (Capability Composition Without Historical Fabrication)**: Complementary evidence from multiple contexts MAY be combined to demonstrate multi-domain capabilities (e.g. enterprise architecture + AI governance + hands-on prototyping), but MUST NOT be merged into a single historical fact unsupported by any individual context.
+- **FR-040 (Single-Fact Requirement Boundary)**: When evaluating a requirement asking for a specific historical fact (e.g. personal production implementation in an operating company), the evidence supporting that fact MUST come from a context that independently establishes all required attributes.
+- **FR-041 (Composition Boundary Classification)**: The system MUST distinguish `same-context evidence`, `complementary multi-context evidence`, and `unsupported composite evidence`. Unsupported composite evidence MUST NOT be used to satisfy a historical qualification requirement.
 
-### Key Entities *(include if feature involves data)*
+#### 5. Historical vs. Proposed Architecture & Technology Boundaries
+- **FR-042 (Temporal & Intent Separation)**: Historical experience (what candidate did) and proposed architecture (what candidate recommends/would implement) MUST remain explicitly distinct.
+- **FR-043 (Proposed Technology Boundary)**: Technologies appearing only in job descriptions, proposed architecture, or candidate recommendations (e.g. LangGraph, Temporal, Redis, Supabase, OpenAI Agents SDK) MUST NOT be represented as past historical implementations without independent canonical evidence.
 
-- **CandidateContributionProfile**: Schema entity capturing candidate-specific role (`architect`, `advisor`, `lead`, `implementer`), candidate implementation status (`verified_production`, `implementation_in_progress`, `prototype`, `architecture_only`, `unknown`), and contribution boundaries.
-- **RequirementAttributionAssessment**: Schema entity within `upwork-qualification.yaml` evaluating `system_production_status`, `candidate_contribution`, `candidate_implementation_status`, `candidate_production_deployment_status`, `evidence_strength`, `content_generation_safety`, and `requirement_qualification_status`.
-- **EvidenceCompositionBoundary**: Metadata rule defining valid and invalid combinations of evidence cards across projects, preventing unauthorized cross-context aggregation.
-- **UpworkQualificationContextV3**: Machine-readable context at `out/<target-slug>/runtime/upwork-qualification.yaml` tracking multi-axis requirement assessments, attribution provenance, candidate confirmation questions, machine recommendations, and human decision state.
+#### 6. Qualification Taxonomy & Three Independent State Axes
+- **FR-044 (Independent State Axes)**: The system MUST maintain three strictly decoupled state axes:
+  1. `requirement_qualification`: `SUPPORTED`, `PARTIALLY_SUPPORTED`, `UNKNOWN`, `CONTRADICTED`
+  2. `content_generation_safety`: `EVIDENCE_BACKED`, `EVIDENCE_SAFE_BOUNDED`, `HUMAN_REVIEW_REQUIRED`
+  3. `human_decision`: `APPLY`, `DO_NOT_APPLY`, `HOLD_FOR_EVIDENCE`
+  `EVIDENCE_SAFE_BOUNDED` does NOT mean `SUPPORTED`, and `HUMAN_REVIEW_REQUIRED` does NOT mean `DO_NOT_APPLY`.
+- **FR-045 (Evidence Gap Proposal Utility)**: Evidence gaps MUST NOT auto-suppress proposal generation. Proposals MAY present adjacent positioning, supported capabilities, proposed architecture, relevant work samples, and confirmation questions without fabricating claims.
+- **FR-046 (Opening Positioning Alignment)**: Opening statements for opportunities with unresolved production dealbreakers MUST position candidate strengths around verified adjacent capabilities rather than claiming requirement satisfaction.
+
+#### 7. Screening Answers & Prose Patterns
+- **FR-047 (Screening Answer Fidelity)**: Screening answers MUST be derived from attribution-aware qualification context. For `PARTIALLY_SUPPORTED`, `UNKNOWN`, or `CONTRADICTED` facts, answers MUST NOT assert the fact affirmatively.
+- **FR-048 (Precision Confirmation Questions)**: Candidate confirmation questions MUST target the specific missing candidate implementation fact (e.g. "Did you personally implement and deploy the system at WPP Media into live production?") rather than general platform facts ("Was WPP Open deployed?").
+- **FR-049 (No Assertion-Then-Disclaimer Pattern)**: The system MUST NOT generate an affirmative historical claim followed by a disclaimer. The primary claim itself MUST be bounded upfront.
+
+#### 8. Work Samples & Attribution Integrity
+- **FR-050 (Work Sample Attribution)**: Work samples MUST preserve `project_identity`, `project_type`, `candidate_contribution`, `production_status`, and `demonstrated_capability`. Prototypes, personal projects, or incomplete projects MUST NOT be described as production deployments.
+- **FR-051 (Work Sample Capability Separation)**: Personal/prototype projects MAY demonstrate technical capability without satisfying production deployment requirements inside operating companies.
+
+#### 9. Validation Responsibilities & Quality Gates
+- **FR-052 (Validation as Projection Integrity Check)**: `upwork-validator` MUST validate generated artifacts against structured qualification and attribution context. Validator checks for introduced attribution shifts (platform → candidate, team → candidate, architecture → implementation, prototype → production, proposed → historical, context A → context B).
+- **FR-053 (Attribution Shift Validation)**: Validator MUST detect defined attribution shift regression patterns using structured claim comparison, lexical rules, or deterministic checks without being restricted to regex-only implementations.
+- **FR-054 (Production Claim Validation)**: Any client-facing assertion of candidate production implementation MUST require candidate-specific production evidence. Platform production status alone is insufficient.
+- **FR-055 (Evidence Composition Validation)**: A defined attribution integrity violation MUST prevent the package from being considered validation-passing/submission-ready.
+- **FR-056 (Screening & Qualification Consistency Validation)**: Validator MUST fail any package where a screening answer asserts an affirmative historical claim while qualification records `PARTIALLY_SUPPORTED`, `UNKNOWN`, or `CONTRADICTED`.
+- **FR-057 (Work Sample Narrative Consistency Validation)**: Validator MUST verify consistency between `project_type`, `production_status`, `candidate_contribution`, `demonstrated_capability`, and generated summary narrative.
+
+#### 10. Human Sovereignty & Implementation Non-Prescription
+- **FR-060 (Human Decision Sovereignty)**: Machine recommendations (`STRONG_FIT`, `POTENTIAL_FIT`, `EVIDENCE_GAPS`, `WEAK_FIT`, `CLEAR_MISMATCH`) and status labels (`HUMAN_REVIEW_REQUIRED`) MUST NOT overwrite human user decision state (`APPLY`, `DO_NOT_APPLY`, `HOLD_FOR_EVIDENCE`).
+- **FR-061 (Non-Prescriptive Data Model Boundary)**: Requirements specify required information, invariants, and behaviour. The specification MUST NOT prematurely prescribe a conceptual intermediate representation or runtime structure schemas (such as a global `CandidateContributionProfile`) unless repository discovery during implementation planning (`/speckit-plan`) proves existing OKF EvidenceCards and runtime structures are insufficient.
+- **FR-062 (Preserve Existing V2.0/V2.1 Constraints)**: The pipeline MUST preserve all V2.0/V2.1 constraints (4 architectural layers, cross-cutting validation, OKF v0.2 graph, bounded evidence retrieval, idempotent generation, maximum 3 work samples, zero fabrication, no Upwork scraping, no browser automation, no automated submission).
+
+## Key Entities *(include if feature involves data)*
+
+- **AttributedHistoricalClaim**: Intermediate representation or runtime structure capturing `claim_id`, `subject`, `organisation`, `project_system_platform`, `candidate_contribution`, `system_production_status`, `candidate_implementation_status`, `candidate_production_deployment_status`, `temporal_scope`, `evidence_strength`, `evidence_card_ids`, `source_ids`, and `claim_type`.
+- **RequirementAttributionAssessment**: Entity within `upwork-qualification.yaml` evaluating multi-axis requirement alignment, attribution provenance, candidate confirmation questions, and independent state classifications.
+- **UpworkQualificationContextV3**: Machine-readable context at `out/<target-slug>/runtime/upwork-qualification.yaml` tracking requirement assessments, attribution provenance, machine fit recommendations, content safety modes, and human decision state.
 - **UpworkValidationReportV3**: Validation output at `out/<target-slug>/runtime/upwork-validation-report.yaml` logging checks for attribution shifts, production evidence grounding, composition boundaries, screening consistency, and work sample alignment.
 
 ## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 
-- **SC-001 (Zero Attribution Inflation)**: 100% prevention of candidate attribution inflation (upgrading architecture/advisory to implementation, or platform production status to candidate production implementation) across all generated client-facing proposal prose, screening answers, and work sample summaries.
-- **SC-002 (Zero Unverified Cross-Source Aggregation)**: 100% detection and prevention of synthesized historical claims that merge separate project contexts into an unsupported composite assertion.
-- **SC-003 (Screening Answer Consistency)**: 100% semantic consistency between screening answers, qualification statuses, and evidence gap reports—zero affirmative implementation answers generated for unresolved requirements.
-- **SC-004 (Proposal Generation Utility)**: 100% of opportunities with evidence gaps generate actionable, evidence-safe proposals positioning candidate strengths around verified adjacent capabilities and proposed technical approaches without auto-blocking output.
-- **SC-005 (Validation Pass Rate & Coverage)**: 100% pass rate on automated validator rules checking attribution boundaries, production evidence grounding, screening consistency, and work sample metadata alignment.
-- **SC-006 (V2.0/V2.1 Regression Compliance)**: 100% preservation of four-layer architecture, OKF v0.2 graph structure, human decision sovereignty, and bounded evidence retrieval rules.
+- **SC-031 (Attribution Regression Coverage)**: 100% of defined attribution regression scenarios (including WPP+CAS FR-058 and In-Progress FR-059) MUST generate correctly bounded output or fail validation—zero silent attribution shifts permitted.
+- **SC-032 (Production Attribution Integrity)**: 100% of defined production-sensitive regression scenarios MUST prevent system/platform production status from being transformed into candidate personal production implementation.
+- **SC-033 (Cross-Context Composition Integrity)**: 100% of defined cross-source regression scenarios MUST prevent unsupported historical composites while permitting valid capability-level multi-context presentation.
+- **SC-034 (Screening Answer Consistency)**: 100% of defined screening regression scenarios MUST prevent affirmative historical answers where the corresponding requirement fact is `PARTIALLY_SUPPORTED`, `UNKNOWN`, or `CONTRADICTED`.
+- **SC-035 (Historical / Proposed Separation)**: 100% of defined historical-vs-proposed regression scenarios MUST prevent proposed technologies or approaches from being represented as past historical experience without canonical evidence.
+- **SC-036 (Evidence-Gap Proposal Utility)**: Opportunities with unresolved evidence MUST remain capable of generating evidence-safe, actionable proposal artifacts when proposal generation is permitted by qualification and human-decision state. Evidence gaps MUST NOT independently suppress otherwise permitted proposal generation.
+- **SC-037 (V2.0/V2.1 Regression Suite Passing)**: 100% of existing V2.0/V2.1 regression test suites MUST continue to pass cleanly.
 
 ## Assumptions
 
-- **A-001**: Upwork qualification (`skills/upwork-qualification/`), proposal projection (`skills/upwork-proposal/`), and validator (`scripts/upwork_validator.py`) skills will be refined in-place to implement V3.0 attribution and composition rules.
-- **A-002**: The underlying OKF v0.2 knowledge graph (`out/okf/`) and target opportunity analysis schema (`out/<target-slug>/runtime/opportunity-analysis.yaml`) remain the canonical data sources.
-- **A-003**: Human users interact with generated packages by inspecting `upwork-qualification-report.md`, `upwork-evidence-gaps.md`, and `upwork-validation-report.yaml`, updating canonical evidence in `okf/` as needed before initiating deterministic pipeline re-runs.
+- **A-001**: Implementation details regarding exact schemas, intermediate file structures, and validator mechanics will be determined during `/speckit-plan` after inspecting existing codebase structures.
+- **A-002**: Upwork qualification (`skills/upwork-qualification/`), proposal projection (`skills/upwork-proposal/`), and validator (`scripts/upwork_validator.py`) will be updated in-place to support V3.1 attribution and composition rules.
+- **A-003**: The underlying OKF v0.2 knowledge graph (`out/okf/`) and target opportunity analysis schema (`out/<target-slug>/runtime/opportunity-analysis.yaml`) remain the canonical baseline data sources.

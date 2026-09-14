@@ -1,4 +1,4 @@
-# Specification Quality Checklist: Upwork Proposal Generator — Evidence Attribution & Composition Integrity
+# Specification Quality Checklist: Upwork Proposal Generator — Evidence Attribution, Composition & Claim Projection Integrity (V3.1)
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-09-14
@@ -31,5 +31,6 @@
 
 ## Notes
 
-- All 25 functional requirements, qualification taxonomies, proposal requirements, validation rules, and acceptance scenarios successfully formalised from `docs/requirements-spec/upwork-proposal-generator-refinement-spec.v3.md`.
-- No `[NEEDS CLARIFICATION]` markers remain; specification is fully bounded and ready for `/speckit-plan`.
+- All V3.1 refinement requirements (FR-030 to FR-062), architectural intent flow, independent attribution dimensions, intermediate representations, composition boundaries, 3 independent state axes, Golden Regression Scenarios (FR-058 WPP+CAS, FR-059 In-Progress), and testable success criteria (SC-031 to SC-037) incorporated into `specs/003-upwork-proposal-refinement/spec.md`.
+- Implementation freedom preserved (FR-061: schema choices left for `/speckit-plan` inspection).
+- No `[NEEDS CLARIFICATION]` markers remain; specification is fully ready for `/speckit-plan`.
