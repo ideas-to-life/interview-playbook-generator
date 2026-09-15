@@ -6,7 +6,7 @@
 
 **Status**: Draft
 
-**Input**: User description: "/speckit-specify apply the following refinements @[docs/requirements-spec/upwork-proposal-generator-refinement-spec.v3.1.md] to the generated spec."
+**Input**: User description: "/speckit-specify Candidate-Agnostic Engine refinement: Employer names, project names, technologies, career-history facts, and specific evidence instances MUST NOT be embedded in production implementation logic, schemas, validators, prompts, or generation rules."
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -16,22 +16,22 @@ As an Upwork candidate/consultant whose portfolio contains enterprise architectu
 
 **Why this priority**: Corrects the primary attribution defect upstream before prose generation, ensuring that the final validator only checks for projection consistency rather than attempting to infer semantic truth from generated prose.
 
-**Independent Test**: Process an opportunity requiring personal production implementation against canonical evidence establishing enterprise architecture advisory around a production platform (e.g. WPP Open) and hands-on implementation in a personal project (e.g. CAS). Verify that the qualification context records candidate contribution as architecture/advisory and candidate production deployment as unknown, causing client-facing proposals and screening answers to frame the architecture leadership and prototype coding as distinct, bounded contexts without claiming personal production deployment at the enterprise.
+**Independent Test**: Process an opportunity requiring personal production implementation against canonical evidence establishing enterprise architecture advisory around a production platform (e.g. `OrgAlpha` platform) and hands-on implementation in a personal project (e.g. `ProjectBeta`). Verify that the qualification context records candidate contribution as architecture/advisory and candidate production deployment as unknown, causing client-facing proposals and screening answers to frame the architecture leadership and prototype coding as distinct, bounded contexts without claiming personal production deployment at the enterprise.
 
 **Acceptance Scenarios**:
 
 1. **Given** canonical evidence of an enterprise production platform where candidate held an architecture/advisory role, **When** attribution interpretation and qualification execute, **Then** `candidate_contribution` is evaluated as `architected`/`advised`, `system_production_status` is evaluated as `verified_production`, `candidate_production_deployment_status` remains `unknown`, and zero client-facing claims assert candidate production deployment.
-2. **Given** a candidate who led an enterprise implementation project that was still in progress upon departure (e.g. PCA), **When** qualification and proposal projection execute, **Then** project leadership and architectural design MAY be claimed, but live production deployment or operational status MUST NOT be inferred or claimed.
+2. **Given** a candidate who led an enterprise implementation project that was still in progress upon departure (e.g. `ProjectGamma`), **When** qualification and proposal projection execute, **Then** project leadership and architectural design MAY be claimed, but live production deployment or operational status MUST NOT be inferred or claimed.
 
 ---
 
 ### User Story 2 - Composition Boundary Preservation Across Multiple Contexts (Priority: P2)
 
-As a candidate with multi-domain experience across different organizations and projects, I want the system to permit using complementary evidence sources (e.g. WPP for enterprise architecture, BBC for governance, CAS for hands-on agent implementation) to demonstrate broad capabilities, while prohibiting the synthesis of unsupported composite historical facts (e.g. "I implemented a production multi-agent platform at WPP using my CAS architecture").
+As a candidate with multi-domain experience across different organizations and projects, I want the system to permit using complementary evidence sources (e.g. `OrgAlpha` for enterprise architecture, `OrgBeta` for governance, `ProjectGamma` for hands-on agent implementation) to demonstrate broad capabilities, while prohibiting the synthesis of unsupported composite historical facts (e.g. "I implemented a production multi-agent platform at `OrgAlpha` using my `ProjectGamma` architecture").
 
 **Why this priority**: Prevents cross-project or cross-organization evidence aggregation from manufacturing a single requirement-specific historical fact that no individual evidence context independently supports.
 
-**Independent Test**: Execute proposal generation for a role requiring enterprise agentic implementation using separate WPP (architecture) and CAS (prototype implementation) evidence cards. Verify that proposal prose describes these as separate complementary contexts rather than conflating them into a single enterprise production implementation claim.
+**Independent Test**: Execute proposal generation for a role requiring enterprise agentic implementation using separate `OrgAlpha` (architecture) and `ProjectGamma` (prototype implementation) evidence cards. Verify that proposal prose describes these as separate complementary contexts rather than conflating them into a single enterprise production implementation claim.
 
 **Acceptance Scenarios**:
 
@@ -42,7 +42,7 @@ As a candidate with multi-domain experience across different organizations and p
 
 ### User Story 3 - Historical vs. Proposed Architecture Disambiguation (Priority: P3)
 
-As a candidate presenting technical solutions to prospective clients, I want the system to strictly separate historical experience ("At WPP, I led...") from proposed future architecture ("For your environment, I would implement..."), so that proposed technical approaches or candidate recommendations are never represented as past historical implementations.
+As a candidate presenting technical solutions to prospective clients, I want the system to strictly separate historical experience ("At `OrgAlpha`, I led...") from proposed future architecture ("For your environment, I would implement..."), so that proposed technical approaches or candidate recommendations are never represented as past historical implementations.
 
 **Why this priority**: Prevents forward-looking technical proposals or proposed stack recommendations from leaking into historical experience claims.
 
@@ -65,22 +65,24 @@ As a candidate reviewing generated application packages, I want automated valida
 **Acceptance Scenarios**:
 
 1. **Given** a requirement classified as `PARTIALLY_SUPPORTED` or `UNKNOWN`, **When** screening answer generation executes, **Then** the generated answer MUST NOT assert the unresolved fact affirmatively, producing instead a bounded formulation with candidate confirmation prompts.
-2. **Given** a generated proposal artifact, **When** validating prose structure, **Then** the validator MUST fail any pattern that makes an assertive historical claim followed by a disclaimer (e.g. "I architected the production platform at WPP. Live production deployment is unknown").
+2. **Given** a generated proposal artifact, **When** validating prose structure, **Then** the validator MUST fail any pattern that makes an assertive historical claim followed by a disclaimer (e.g. "I architected the production platform at `OrgAlpha`. Live production deployment is unknown").
 
 ---
 
-### Golden Regression Scenarios
+### Golden Regression Scenarios (External Test Fixtures)
 
-#### Golden Scenario 1 — WPP + CAS Attribution Regression (FR-058)
+> **Candidate-Agnostic Note**: Specific candidate entities (WPP, CAS, PCA) exist ONLY in external test dataset fixtures. Production engine code, schemas, and validators MUST NOT hardcode these specific names.
+
+#### Golden Scenario 1 — WPP + CAS Attribution Regression Fixture (FR-058)
 - **Given**:
-  - WPP context: WPP Open is an enterprise production platform; candidate worked in WPP Media Prototype & Innovation, contributing architecture leadership, alignment, assessment, and recommendations around agentic AI initiatives; candidate personal implementation or live production deployment of the platform is NOT established.
-  - CAS context: Candidate personally implemented AI/agentic systems in candidate's personal architecture laboratory (CAS); CAS is a personal project, not an enterprise production deployment.
+  - Enterprise context (e.g. WPP): Enterprise production platform exists; candidate contributed architecture leadership, alignment, assessment, and recommendations around agentic AI initiatives; candidate personal implementation or live production deployment of the platform is NOT established.
+  - Personal Lab context (e.g. CAS): Candidate personally implemented AI/agentic systems in candidate's personal architecture laboratory (CAS); CAS is a personal project, not an enterprise production deployment.
   - Requirement: "Must have personally designed and implemented AI systems inside a real operating company in production."
 - **Then**:
-  - System MUST NOT generate any equivalent of: "I architected WPP Open", "I implemented WPP Open", "I deployed the WPP multi-agent platform", "I built a production multi-agent platform at WPP", or "I personally implemented WPP's production agentic platform".
-  - System SHOULD generate bounded statements distinguishing WPP enterprise architecture/advisory experience, CAS hands-on implementation experience, and explicit unresolved status regarding personal production implementation inside an operating company.
+  - System MUST NOT generate any equivalent of: "I architected [Enterprise Platform]", "I implemented [Enterprise Platform]", "I deployed the enterprise multi-agent platform", "I built a production multi-agent platform at [Enterprise]", or "I personally implemented [Enterprise]'s production agentic platform".
+  - System SHOULD generate generic bounded statements distinguishing enterprise architecture/advisory experience, personal lab implementation experience, and explicit unresolved status regarding personal production implementation inside an operating company.
 
-#### Golden Scenario 2 — Project In Progress at Departure (FR-059)
+#### Golden Scenario 2 — Project In Progress at Departure Fixture (FR-059)
 - **Given**: Candidate led an enterprise project (e.g. PCA) that was still in active implementation when the candidate departed the organization.
 - **Then**: System MAY claim project leadership, architecture leadership, design, and work performed prior to departure, but MUST NOT infer or claim successful production deployment, live operational status, post-departure completion, or candidate personal production deployment.
 
@@ -114,7 +116,7 @@ As a candidate reviewing generated application packages, I want automated valida
 #### 4. Cross-Source Composition & Single-Fact Boundaries
 - **FR-039 (Capability Composition Without Historical Fabrication)**: Complementary evidence from multiple contexts MAY be combined to demonstrate multi-domain capabilities (e.g. enterprise architecture + AI governance + hands-on prototyping), but MUST NOT be merged into a single historical fact unsupported by any individual context.
 - **FR-040 (Single-Fact Requirement Boundary)**: When evaluating a requirement asking for a specific historical fact (e.g. personal production implementation in an operating company), the evidence supporting that fact MUST come from a context that independently establishes all required attributes.
-- **FR-041 (Composition Boundary Classification)**: The system MUST distinguish `same-context evidence`, `complementary multi-context evidence`, and `unsupported composite evidence`. Unsupported composite evidence MUST NOT be used to satisfy a historical qualification requirement.
+- **FR-041 (Composition Boundary Classification)**: The system MUST distinguish `same_context evidence`, `complementary multi-context evidence`, and `unsupported composite evidence`. Unsupported composite evidence MUST NOT be used to satisfy a historical qualification requirement.
 
 #### 5. Historical vs. Proposed Architecture & Technology Boundaries
 - **FR-042 (Temporal & Intent Separation)**: Historical experience (what candidate did) and proposed architecture (what candidate recommends/would implement) MUST remain explicitly distinct.
@@ -131,7 +133,7 @@ As a candidate reviewing generated application packages, I want automated valida
 
 #### 7. Screening Answers & Prose Patterns
 - **FR-047 (Screening Answer Fidelity)**: Screening answers MUST be derived from attribution-aware qualification context. For `PARTIALLY_SUPPORTED`, `UNKNOWN`, or `CONTRADICTED` facts, answers MUST NOT assert the fact affirmatively.
-- **FR-048 (Precision Confirmation Questions)**: Candidate confirmation questions MUST target the specific missing candidate implementation fact (e.g. "Did you personally implement and deploy the system at WPP Media into live production?") rather than general platform facts ("Was WPP Open deployed?").
+- **FR-048 (Precision Confirmation Questions)**: Candidate confirmation questions MUST target the specific missing candidate implementation fact (e.g. "Did you personally implement and deploy the system at [Organization] into live production?") rather than general platform facts ("Was [Platform] deployed?").
 - **FR-049 (No Assertion-Then-Disclaimer Pattern)**: The system MUST NOT generate an affirmative historical claim followed by a disclaimer. The primary claim itself MUST be bounded upfront.
 
 #### 8. Work Samples & Attribution Integrity
@@ -140,7 +142,7 @@ As a candidate reviewing generated application packages, I want automated valida
 
 #### 9. Validation Responsibilities & Quality Gates
 - **FR-052 (Validation as Projection Integrity Check)**: `upwork-validator` MUST validate generated artifacts against structured qualification and attribution context. Validator checks for introduced attribution shifts (platform → candidate, team → candidate, architecture → implementation, prototype → production, proposed → historical, context A → context B).
-- **FR-053 (Attribution Shift Validation)**: Validator MUST detect defined attribution shift regression patterns using structured claim comparison, lexical rules, or deterministic checks without being restricted to regex-only implementations.
+- **FR-053 (Attribution Shift Validation)**: Validator MUST detect defined attribution shift regression patterns using generic, candidate-agnostic structured claim comparison or lexical rules without hardcoding specific employer or project names.
 - **FR-054 (Production Claim Validation)**: Any client-facing assertion of candidate production implementation MUST require candidate-specific production evidence. Platform production status alone is insufficient.
 - **FR-055 (Evidence Composition Validation)**: A defined attribution integrity violation MUST prevent the package from being considered validation-passing/submission-ready.
 - **FR-056 (Screening & Qualification Consistency Validation)**: Validator MUST fail any package where a screening answer asserts an affirmative historical claim while qualification records `PARTIALLY_SUPPORTED`, `UNKNOWN`, or `CONTRADICTED`.
@@ -150,6 +152,9 @@ As a candidate reviewing generated application packages, I want automated valida
 - **FR-060 (Human Decision Sovereignty)**: Machine recommendations (`STRONG_FIT`, `POTENTIAL_FIT`, `EVIDENCE_GAPS`, `WEAK_FIT`, `CLEAR_MISMATCH`) and status labels (`HUMAN_REVIEW_REQUIRED`) MUST NOT overwrite human user decision state (`APPLY`, `DO_NOT_APPLY`, `HOLD_FOR_EVIDENCE`).
 - **FR-061 (Non-Prescriptive Data Model Boundary)**: Requirements specify required information, invariants, and behaviour. The specification MUST NOT prematurely prescribe a conceptual intermediate representation or runtime structure schemas (such as a global `CandidateContributionProfile`) unless repository discovery during implementation planning (`/speckit-plan`) proves existing OKF EvidenceCards and runtime structures are insufficient.
 - **FR-062 (Preserve Existing V2.0/V2.1 Constraints)**: The pipeline MUST preserve all V2.0/V2.1 constraints (4 architectural layers, cross-cutting validation, OKF v0.2 graph, bounded evidence retrieval, idempotent generation, maximum 3 work samples, zero fabrication, no Upwork scraping, no browser automation, no automated submission).
+
+#### 11. Candidate-Agnostic Engine & Parameterized Test Fixtures
+- **FR-063 (Candidate-Agnostic Engine Rule)**: The proposal-generation system MUST be candidate-agnostic. Employer names (e.g. WPP, BBC), project names (e.g. WPP Open, CAS, PCA), technologies, career-history facts, and specific evidence instances MUST NOT be embedded in production implementation logic, schemas, validators, prompts, or generation rules. Candidate-specific information MUST be consumed exclusively from canonical evidence and opportunity inputs at runtime. Candidate-specific scenarios (such as WPP/CAS) MAY exist only as external regression fixtures or test data. Regression tests MUST demonstrate the general rule rather than encode the candidate’s identity as a special case. Where practical, attribution and composition tests SHOULD use synthetic or parameterized organizations and projects (e.g. `OrgAlpha`, `ProjectBeta`, `SystemGamma`) so that passing tests demonstrates generic behavior.
 
 ## Key Entities *(include if feature involves data)*
 
@@ -162,13 +167,14 @@ As a candidate reviewing generated application packages, I want automated valida
 
 ### Measurable Outcomes
 
-- **SC-031 (Attribution Regression Coverage)**: 100% of defined attribution regression scenarios (including WPP+CAS FR-058 and In-Progress FR-059) MUST generate correctly bounded output or fail validation—zero silent attribution shifts permitted.
+- **SC-031 (Attribution Regression Coverage)**: 100% of defined attribution regression scenarios (including WPP+CAS FR-058 and In-Progress FR-059 test fixtures) MUST generate correctly bounded output or fail validation—zero silent attribution shifts permitted.
 - **SC-032 (Production Attribution Integrity)**: 100% of defined production-sensitive regression scenarios MUST prevent system/platform production status from being transformed into candidate personal production implementation.
 - **SC-033 (Cross-Context Composition Integrity)**: 100% of defined cross-source regression scenarios MUST prevent unsupported historical composites while permitting valid capability-level multi-context presentation.
 - **SC-034 (Screening Answer Consistency)**: 100% of defined screening regression scenarios MUST prevent affirmative historical answers where the corresponding requirement fact is `PARTIALLY_SUPPORTED`, `UNKNOWN`, or `CONTRADICTED`.
 - **SC-035 (Historical / Proposed Separation)**: 100% of defined historical-vs-proposed regression scenarios MUST prevent proposed technologies or approaches from being represented as past historical experience without canonical evidence.
 - **SC-036 (Evidence-Gap Proposal Utility)**: Opportunities with unresolved evidence MUST remain capable of generating evidence-safe, actionable proposal artifacts when proposal generation is permitted by qualification and human-decision state. Evidence gaps MUST NOT independently suppress otherwise permitted proposal generation.
 - **SC-037 (V2.0/V2.1 Regression Suite Passing)**: 100% of existing V2.0/V2.1 regression test suites MUST continue to pass cleanly.
+- **SC-038 (Candidate Agnosticism Verification)**: Zero employer names, project names, or specific candidate evidence strings hardcoded within production code (`skills/`, `scripts/upwork_validator.py`, or generation prompts). 100% of attribution and validation rules operate on generic metadata attributes.
 
 ## Assumptions
 

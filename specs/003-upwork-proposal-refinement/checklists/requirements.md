@@ -31,6 +31,6 @@
 
 ## Notes
 
-- All V3.1 refinement requirements (FR-030 to FR-062), architectural intent flow, independent attribution dimensions, intermediate representations, composition boundaries, 3 independent state axes, Golden Regression Scenarios (FR-058 WPP+CAS, FR-059 In-Progress), and testable success criteria (SC-031 to SC-037) incorporated into `specs/003-upwork-proposal-refinement/spec.md`.
-- Implementation freedom preserved (FR-061: schema choices left for `/speckit-plan` inspection).
-- No `[NEEDS CLARIFICATION]` markers remain; specification is fully ready for `/speckit-plan`.
+- Updated with FR-063 (Candidate-Agnostic Engine Rule) and SC-038 (Candidate Agnosticism Verification): Zero employer names, project names, or specific career-history facts hardcoded in production implementation logic, schemas, validators, or prompts.
+- All candidate-specific scenarios (such as WPP/CAS) restricted to external test fixtures/regression datasets.
+- 12/12 quality checklist items passing.
