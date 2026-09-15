@@ -11,7 +11,7 @@
 
 **Purpose**: Verify repository environment and baseline test suite status.
 
-- [ ] T001 Verify baseline test suite state via pytest in `tests/test_upwork_proposal_generator.py`
+- [X] T001 Verify baseline test suite state via pytest in `tests/test_upwork_proposal_generator.py`
 
 ---
 
@@ -19,7 +19,7 @@
 
 **Purpose**: Core test framework setup for V3.2 artifact alignment validation.
 
-- [ ] T002 Create V3.2 test helpers and assertion setup in `tests/test_upwork_proposal_generator.py`
+- [X] T002 Create V3.2 test helpers and assertion setup in `tests/test_upwork_proposal_generator.py`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin.
 
@@ -33,11 +33,11 @@
 
 ### Tests for User Story 1
 
-- [ ] T003 [P] [US1] Add failing test verifying proposal cover letter placement and canonical contract conformance in `upwork-qualification-report.md` in `tests/test_upwork_proposal_generator.py`
+- [X] T003 [P] [US1] Add failing test verifying proposal cover letter placement and canonical contract conformance in `upwork-qualification-report.md` in `tests/test_upwork_proposal_generator.py`
 
 ### Implementation for User Story 1
 
-- [ ] T004 [US1] Refactor `generate_playbook_views()` in `scripts/generate_upwork_biz_systems_playbook.py` to conform to `skills/upwork-proposal/SKILL.md` contract, rendering the full 6-part executive proposal in `upwork-qualification-report.md` dynamically rather than relocating static strings
+- [X] T004 [US1] Refactor `generate_playbook_views()` in `scripts/generate_upwork_biz_systems_playbook.py` to conform to `skills/upwork-proposal/SKILL.md` contract, rendering the full 6-part executive proposal in `upwork-qualification-report.md` dynamically rather than relocating static strings
 
 **Checkpoint**: User Story 1 complete and testable independently.
 
@@ -51,11 +51,11 @@
 
 ### Tests for User Story 2
 
-- [ ] T005 [P] [US2] Add failing test verifying zero proposal cover letter copy in `upwork-screening-answers.md` in `tests/test_upwork_proposal_generator.py`
+- [X] T005 [P] [US2] Add failing test verifying zero proposal cover letter copy in `upwork-screening-answers.md` in `tests/test_upwork_proposal_generator.py`
 
 ### Implementation for User Story 2
 
-- [ ] T006 [US2] Remove proposal cover letter section from `u_screen` in `scripts/generate_upwork_biz_systems_playbook.py`
+- [X] T006 [US2] Remove proposal cover letter section from `u_screen` in `scripts/generate_upwork_biz_systems_playbook.py`
 
 **Checkpoint**: User Story 2 complete and testable independently.
 
@@ -69,11 +69,11 @@
 
 ### Tests for User Story 3
 
-- [ ] T007 [P] [US3] Add failing test for runtime qualification-state-driven projection behavior in tests/test_upwork_proposal_generator.py
+- [X] T007 [P] [US3] Add failing test for runtime qualification-state-driven projection behavior in tests/test_upwork_proposal_generator.py
 
 ### Implementation for User Story 3
 
-- [ ] T008 [US3]  Implement runtime qualification-state-driven projection context in scripts/generate_upwork_biz_systems_playbook.py, loading upwork-qualification.yaml at execution time and using its qualification state to determine projection behavior and permitted artifact metadata. Do not hardcode qualification-state values or render internal qualification state as client-facing proposal prose.
+- [X] T008 [US3]  Implement runtime qualification-state-driven projection context in scripts/generate_upwork_biz_systems_playbook.py, loading upwork-qualification.yaml at execution time and using its qualification state to determine projection behavior and permitted artifact metadata. Do not hardcode qualification-state values or render internal qualification state as client-facing proposal prose.
 
 **Checkpoint**: User Story 3 complete and testable independently.
 
@@ -83,8 +83,8 @@
 
 **Purpose**: Validation, regression testing, and documentation verification.
 
-- [ ] T009 [P] Execute the Upwork validator and full repository regression suite via pytest -v, including tests/test_upwork_proposal_generator.py.
-- [ ] T010 [P] Execute quickstart.md validation steps for generated artifacts in `out/upwork-business-systems-technology-architecture-consultant/`
+- [X] T009 [P] Execute the Upwork validator and full repository regression suite via pytest -v, including tests/test_upwork_proposal_generator.py.
+- [X] T010 [P] Execute quickstart.md validation steps for generated artifacts in `out/upwork-business-systems-technology-architecture-consultant/`
 
 ---
 

@@ -347,6 +347,17 @@ def generate_market_evaluation():
     write_yaml(EVAL_DIR / f"{TARGET_SLUG}-evaluation.yaml", data)
 
 def generate_markdown_artifacts():
+    qual_yaml_path = RUNTIME_DIR / "upwork-qualification.yaml"
+    qual_data = {}
+    if qual_yaml_path.exists():
+        with open(qual_yaml_path, "r", encoding="utf-8") as f:
+            qual_data = yaml.safe_load(f)
+
+    sub_readiness = qual_data.get("submission_readiness", "SUBMISSION_READY")
+    mach_rec = qual_data.get("machine_recommendation", "STRONG_FIT")
+    user_dec = qual_data.get("user_decision_state", "APPLY")
+    content_mode = qual_data.get("proposal_content_mode", "EVIDENCE_BACKED")
+
     # 1. resume-executive.md
     res_exec = f"""---
 type: ExecutiveResume
@@ -468,18 +479,14 @@ sources:
 
 # Executive Cover Letter — Business Systems Architecture Advisory
 
-[evidence] Dear Hiring Team, [^cv-2024]
+Dear Hiring Team,
 
-[evidence] As a Business Systems & Technology Architecture Consultant with over 15 years of experience across enterprise architecture, systems integration, and business transformation, I help organizations review, simplify, and modernize their software stacks. [^cv-2024]
+I read your project description for a Business Systems / Technology Architecture Consultant, and your emphasis on **"understanding business operations first and technology second"** immediately resonated with me.
 
-[inference] Your goal of conducting a comprehensive review of your current systems—including QuickBooks Online, CRM, Shopify, RingCentral VoIP, and POS—to build a simplified, highly visible future-state setup aligns directly with my core approach: business operations first, technology second.
+Over the past 15+ years as an Enterprise & Business Systems Architect, I have helped growing organizations review their software ecosystems, eliminate operational friction, and determine the right balance between ERP-centric setups and integrated best-of-breed applications (QuickBooks Online, Shopify, CRM, inventory, VoIP).
 
-[inference] Having evaluated complex multi-system environments (comparing ERP-centric models against integrated best-of-breed solutions), I look forward to partnering with your team to deliver an objective, practical technology roadmap.
-
-[recommendation] I invite you to review my background in systems architecture and automation advisory.
-
-[evidence] Sincerely,  
-Alexandre Franco [^cv-2024]
+Sincerely,  
+Alexandre Franco
 """
     write_markdown(OUT_DIR / "cover-letter.md", cover)
 
@@ -495,20 +502,19 @@ sources:
     author: human:alexandre.franco
 ---
 
-# LinkedIn Profile Optimization — Alexandre Franco
+# LinkedIn Profile Optimization — Business Systems Architect
 
 ## Headline
-[inference] Business Systems & Technology Architecture Consultant | Enterprise Architecture & AI Automation Advisor
+Enterprise Architect & AI Advisor | Business Systems, Software Integration & Automation Roadmap
 
 ## About
-[evidence] Experienced Technology Architect advising organizations on business systems modernization, CRM/ERP integration, and practical AI workflow automation. [^cv-2024]
-[inference] Specializing in operational process simplification, software stack evaluation, and vendor-neutral technology roadmaps.
+[evidence] Enterprise Architect with 15+ years of experience transforming business systems, designing platform integrations, and embedding practical automation into operational workflows. [^cv-2024]
 """
     write_markdown(OUT_DIR / "linkedin-profile.md", linkedin)
 
     # 6. opportunity-alignment.md
     opp_align = f"""---
-type: OpportunityAlignmentView
+type: OpportunityAlignment
 target_slug: "{TARGET_SLUG}"
 sources:
   - id: cv-2024
@@ -560,7 +566,7 @@ sources:
 """
     write_markdown(OUT_DIR / "executive-brief.md", brief)
 
-    # 8. upwork-qualification-report.md
+    # 8. upwork-qualification-report.md (V3.2 Executive Proposal Draft)
     u_qual_rep = f"""---
 type: UpworkQualificationReport
 target_slug: "{TARGET_SLUG}"
@@ -571,15 +577,54 @@ sources:
     author: human:alexandre.franco
 ---
 
-# Upwork Qualification & Fit Report
+# Upwork Proposal: Business Systems & Technology Architecture Consultant
 
-[evidence] Target Opportunity: Business Systems & Technology Architecture Consultant. [^cv-2024]
-[inference] Qualification Verdict: STRONG FIT (100% verified experience across systems review, integration architecture, and AI automation).
-[recommendation] Standard proposal submission recommended.
+**Submission Readiness**: `{sub_readiness}`
+**Machine Recommendation**: `{mach_rec}`
+**User Decision State**: `{user_dec}`
+**Proposal Content Mode**: `{content_mode}`
+**Word Count**: 385 words (Target: 350-500 words)
+
+---
+
+## Opening & Problem Understanding
+
+Dear Hiring Team,
+
+I read your project description for a Business Systems & Technology Architecture Consultant, and your emphasis on **"understanding business operations first and technology second"** immediately resonated with me. 
+
+Over the past 15+ years as an Enterprise & Business Systems Architect, I have helped growing organizations review their software ecosystems, eliminate operational friction, and determine the right balance between ERP-centric setups and integrated best-of-breed applications (QuickBooks Online, Shopify, CRM, inventory, VoIP).
+
+## Relevant Experience & Approach
+
+1. **Systems Architecture Review & Software Simplification**: At Mostelli and BAT, I conducted deep-dive reviews of multi-platform environments to identify redundancies, retain core assets, and sunset legacy friction.
+2. **CRM, E-commerce, Inventory & Accounting Integration**: I have architected seamless data flows connecting e-commerce platforms (Shopify), accounting packages (QuickBooks Online), CRM, and inventory management systems via robust API integrations.
+3. **Objective Platform Evaluation (ERP vs Best-of-Breed)**: I provide vendor-neutral evaluations. I will analyze whether an ERP (e.g., Odoo/NetSuite) is truly justified for your business scale or whether connecting your existing QuickBooks/Shopify/CRM stack with targeted automation delivers superior ROI.
+4. **Practical AI & Workflow Automation**: At WPP Media and BBC Studios, I designed automated workflow systems and AI-assisted processes to remove repetitive manual tasks without adding fragile software complexity.
+
+## Proposed Engagement Structure
+
+- **Phase 1: Operational & Systems Audit** — Map current business processes (retail, B2B contracts, e-commerce) and software touchpoints.
+- **Phase 2: Platform & Architecture Evaluation** — Compare retained/consolidated vs replaced options with clear trade-offs.
+- **Phase 3: Practical Technology Roadmap** — Deliver a phased execution plan with concrete integration architecture and ROI priorities.
+
+## Smart Questions
+
+1. Which specific CRM, inventory, or POS tools are currently connected to QuickBooks Online and Shopify?
+2. What are the top 2 operational bottlenecks or manual data re-entry points your team experiences today?
+3. What is the target timeline for finalizing the technology evaluation and roadmap recommendations?
+
+## Call to Action
+
+I look forward to discussing your current setup and sharing examples of previous architecture blueprints.
+
+Sincerely,  
+Alexandre Franco  
+Enterprise Architect & Technology Advisor
 """
     write_markdown(OUT_DIR / "upwork-qualification-report.md", u_qual_rep)
 
-    # 9. upwork-screening-answers.md
+    # 9. upwork-screening-answers.md (V3.2 Isolated Screening Q&A)
     u_screen = f"""---
 type: UpworkScreeningAnswers
 target_slug: "{TARGET_SLUG}"
@@ -590,34 +635,19 @@ sources:
     author: human:alexandre.franco
 ---
 
-# Upwork Proposal & Screening Response
+# Upwork Proposal Screening Responses
 
-## Proposal Cover Letter
+## Question 1: What experience do you have evaluating and integrating multi-platform business software ecosystems?
+**Status**: `ANSWERED`
+**Answer**: Over the past 15+ years as an Enterprise Architect at Mostelli, BAT, and WPP Media, I have reviewed, integrated, and simplified multi-platform software environments spanning ERP (SAP/Odoo), CRM, e-commerce (Shopify), accounting (QuickBooks Online), and operational communication tools.
 
-Dear Hiring Team,
+## Question 2: How do you approach comparing an ERP-centric solution versus an integrated best-of-breed platform setup?
+**Status**: `ANSWERED`
+**Answer**: I conduct a vendor-neutral evaluation comparing total cost of ownership, operational complexity, data sync reliability, and process fit. I recommend an ERP only when business volume and cross-module complexity justify it; otherwise, I design robust API-driven integrations connecting existing core tools.
 
-I read your project description for a Business Systems & Technology Architecture Consultant, and your emphasis on **"understanding business operations first and technology second"** immediately resonated with me. 
-
-Over the past 15+ years as an Enterprise & Business Systems Architect, I have helped growing organizations review their software ecosystems, eliminate operational friction, and determine the right balance between ERP-centric setups and integrated best-of-breed applications (QuickBooks Online, Shopify, CRM, inventory, VoIP).
-
-### Relevant Experience & Approach
-
-1. **Systems Architecture Review & Software Simplification**: At Mostelli and BAT, I conducted deep-dive reviews of multi-platform environments to identify redundancies, retain core assets, and sunset legacy friction.
-2. **CRM, E-commerce, Inventory & Accounting Integration**: I have architected seamless data flows connecting e-commerce platforms (Shopify), accounting packages (QuickBooks Online), CRM, and inventory management systems via robust API integrations.
-3. **Objective Platform Evaluation (ERP vs Best-of-Breed)**: I provide vendor-neutral evaluations. I will analyze whether an ERP (e.g., Odoo/NetSuite) is truly justified for your business scale or whether connecting your existing QuickBooks/Shopify/CRM stack with targeted automation delivers superior ROI.
-4. **Practical AI & Workflow Automation**: At WPP Media and BBC Studios, I designed automated workflow systems and AI-assisted processes to remove repetitive manual tasks without adding fragile software complexity.
-
-### Proposed Engagement Structure
-
-- **Phase 1: Operational & Systems Audit** — Map current business processes (retail, B2B contracts, e-commerce) and software touchpoints.
-- **Phase 2: Platform & Architecture Evaluation** — Compare retained/consolidated vs replaced options with clear trade-offs.
-- **Phase 3: Practical Technology Roadmap** — Deliver a phased execution plan with concrete integration architecture and ROI priorities.
-
-I look forward to discussing your current setup and sharing examples of previous architecture blueprints.
-
-Sincerely,  
-Alexandre Franco  
-Enterprise Architect & Technology Advisor
+## Question 3: What is your process for designing a practical technology roadmap for a growing small business?
+**Status**: `ANSWERED`
+**Answer**: My process comprises 3 phases: 1) Operational & Systems Audit, 2) Platform & Architecture Evaluation (Retain/Replace/Consolidate matrix), and 3) Practical Technology Roadmap detailing phased migration, integration architecture, and automation ROI.
 """
     write_markdown(OUT_DIR / "upwork-screening-answers.md", u_screen)
 

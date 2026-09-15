@@ -745,4 +745,67 @@ def test_candidate_agnosticism_verification():
             assert 'r"BBC"' not in content
 
 
+# ==============================================================================
+# V3.2 Contract Alignment & Fixture Projection Tests (Specs 004)
+# ==============================================================================
+
+def test_v32_upwork_proposal_cover_letter_placement():
+    """T003 / US1: Verify that upwork-qualification-report.md contains the full Executive Proposal Cover Letter
+    conforming to skills/upwork-proposal/SKILL.md (350-500 words) and zero 3-line static verdict stubs.
+    """
+    report_path = "out/upwork-business-systems-technology-architecture-consultant/upwork-qualification-report.md"
+    assert os.path.exists(report_path), f"{report_path} must exist"
+
+    with open(report_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    # Must contain executive proposal cover letter prose
+    assert "Dear Hiring Team" in content or "Business Systems" in content
+    assert "Proposed Engagement Structure" in content or "Proposed Approach" in content or "Relevant Experience" in content
+    assert len(content.split()) >= 250, "Proposal cover letter must be a substantial draft (250-500 words target)"
+
+    # Must NOT contain legacy 3-line static verdict stub
+    assert "[inference] Qualification Verdict: STRONG FIT (100% verified experience" not in content
+
+
+def test_v32_upwork_screening_answers_scope_isolation():
+    """T005 / US2: Verify that upwork-screening-answers.md contains strictly screening Q&A responses
+    and zero ## Proposal Cover Letter copy.
+    """
+    answers_path = "out/upwork-business-systems-technology-architecture-consultant/upwork-screening-answers.md"
+    assert os.path.exists(answers_path), f"{answers_path} must exist"
+
+    with open(answers_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    # Must NOT contain Proposal Cover Letter section or heading
+    assert "## Proposal Cover Letter" not in content
+    assert "Dear Hiring Team" not in content
+
+
+def test_v32_runtime_qualification_context_binding():
+    """T007 / US3: Verify that proposal projection dynamically binds to runtime/upwork-qualification.yaml
+    for submission readiness, machine recommendation, and content mode header metadata.
+    """
+    report_path = "out/upwork-business-systems-technology-architecture-consultant/upwork-qualification-report.md"
+    qual_path = "out/upwork-business-systems-technology-architecture-consultant/runtime/upwork-qualification.yaml"
+
+    assert os.path.exists(report_path), f"{report_path} must exist"
+    assert os.path.exists(qual_path), f"{qual_path} must exist"
+
+    with open(qual_path, "r", encoding="utf-8") as f:
+        qual_data = yaml.safe_load(f)
+
+    with open(report_path, "r", encoding="utf-8") as f:
+        report_content = f.read()
+
+    # Verify header metadata values in report dynamically match upwork-qualification.yaml
+    expected_readiness = qual_data.get("submission_readiness", "SUBMISSION_READY")
+    expected_recommendation = qual_data.get("machine_recommendation", "STRONG_FIT")
+
+    assert f"**Submission Readiness**: `{expected_readiness}`" in report_content or f"**Submission Readiness**: {expected_readiness}" in report_content
+    assert f"**Machine Recommendation**: `{expected_recommendation}`" in report_content or f"**Machine Recommendation**: {expected_recommendation}" in report_content
+
+
+
 
