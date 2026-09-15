@@ -1,21 +1,83 @@
 # scripts/upwork_validator.py
-"""Deterministic validator for Upwork Proposal Projection (V2.1).
+"""Deterministic validator for Upwork Proposal Projection (V3.1).
 
 Enforces:
 1. Zero fabrication & clean prose pass (no internal tags, footnotes, or diagnostic markers in proposal prose).
 2. Semantic evidence support check (rejects claims claiming live production implementation when production status is unknown/unverified).
-3. Quantitative claim integrity (rejects unevidenced quantitative metrics like >99.5%, 3-5x, dozens of).
-4. Unsupported narrative claims check (rejects unevidenced assertions like 'transformed commercial operations', 'eliminated ungoverned AI experiments').
-5. Screening answer completeness check (requires EVIDENCE_SAFE_QUALIFIED when facts like exact counts or business metrics are missing).
-6. Work sample classification check (rejects client_production classification when production status is UNKNOWN or VERIFIED_NON_PRODUCTION).
-7. Submission readiness alignment (requires HUMAN_REVIEW_REQUIRED when material requirements are UNKNOWN or PARTIALLY_SUPPORTED).
-8. Unforced user decision state (user_decision_state must remain human-owned and unforced).
+3. Candidate-agnostic attribution shift check (detects platform->candidate, architecture->implementation, advisory->implementation shifts).
+4. Cross-context composition boundary check (rejects unsupported_composite evidence for single requirement satisfaction).
+5. Proposed vs historical technology separation (flags historical implementation claims for proposed-only technologies).
+6. Quantitative claim integrity (rejects unevidenced quantitative metrics).
+7. Screening answer completeness & multi-axis consistency (prohibits affirmative historical assertions for UNKNOWN/PARTIALLY_SUPPORTED facts).
+8. Work sample classification & narrative consistency (aligns project_type with production status).
+9. Submission readiness alignment (requires HUMAN_REVIEW_REQUIRED when material requirements are UNKNOWN or PARTIALLY_SUPPORTED).
+10. Unforced user decision state (user_decision_state must remain human-owned and unforced).
 """
 
 import os
 import re
 import yaml
 from pathlib import Path
+
+# Contribution Level Hierarchy for Candidate-Agnostic Attribution Shift Detection
+CONTRIBUTION_LEVELS = {
+    "advised": 1,
+    "assessed": 1,
+    "recommended": 1,
+    "aligned": 1,
+    "shaped_architecture": 2,
+    "architected": 2,
+    "designed": 2,
+    "led": 3,
+    "implemented": 4,
+    "deployed": 5,
+    "operated": 5,
+}
+
+
+def check_attribution_shift(claimed_contribution: str, canonical_contribution: str) -> dict | None:
+    """Evaluates if claimed contribution represents an unsupported attribution shift/upgrade.
+
+    Operates strictly on generic contribution metadata levels.
+    """
+    claimed_lvl = CONTRIBUTION_LEVELS.get(claimed_contribution.lower(), 0)
+    canonical_lvl = CONTRIBUTION_LEVELS.get(canonical_contribution.lower(), 0)
+
+    if claimed_lvl > canonical_lvl:
+        return {
+            "type": "attribution_shift_violation",
+            "claimed_contribution": claimed_contribution,
+            "canonical_contribution": canonical_contribution,
+            "reason": f"Claimed contribution '{claimed_contribution}' (level {claimed_lvl}) represents an unsupported attribution shift from canonical contribution '{canonical_contribution}' (level {canonical_lvl}).",
+        }
+    return None
+
+
+def check_evidence_composition(composition_classification: str, requirement_id: str = "") -> dict | None:
+    """Evaluates if evidence composition is valid for single requirement satisfaction."""
+    if composition_classification == "unsupported_composite":
+        return {
+            "type": "unsupported_composite_evidence",
+            "requirement_id": requirement_id,
+            "reason": f"Requirement '{requirement_id}' relies on unsupported composite evidence aggregated across separate contexts for single requirement satisfaction.",
+        }
+    return None
+
+
+def check_proposed_vs_historical_technologies(proposed_techs: list[str], proposal_md: str) -> list[dict]:
+    """Detects proposed-only technologies incorrectly framed as past historical implementations."""
+    violations = []
+    historical_past_verbs_regex = r"\b(?:previously|formerly|past|historically)\s+(?:implemented|deployed|built|used|architected)\b.*?\b{tech}\b|\b{tech}\b.*?\b(?:previously|formerly)\s+(?:implemented|deployed|built|used)\b"
+    
+    for tech in proposed_techs:
+        pattern = re.compile(rf"\b(?:previously|formerly|in past roles|at past employers)\s+.*?\b{re.escape(tech)}\b|\b{re.escape(tech)}\b\s+(?:was|were)\s+(?:previously|formerly)\s+(?:deployed|implemented)\b", re.IGNORECASE)
+        if pattern.search(proposal_md):
+            violations.append({
+                "type": "proposed_technology_historical_inflation",
+                "technology": tech,
+                "reason": f"Proposed technology '{tech}' is framed as a past historical implementation without canonical evidence.",
+            })
+    return violations
 
 
 def validate_upwork_proposal(
@@ -62,19 +124,45 @@ def validate_upwork_proposal(
         if re.search(pattern, proposal_md, re.IGNORECASE):
             violations.append({"type": "clean_prose_violation", "reason": reason})
 
-    # 2. Semantic Production Claim Check (Reject production inflation)
+    # 2. Semantic Production Claim Check (Reject production inflation & assertion-then-disclaimer)
     checks_performed += 1
     if has_unsupported_prod:
         prod_inflation_patterns = [
             (r"\bimplemented production multi-agent\b", "Claims implemented production multi-agent system when production status is unverified"),
             (r"\bpersonally architected and implemented production\b", "Claims personally implemented production multi-agent system when production status is unverified"),
+            (r"\barchitected the production platform\b", "Claims production platform architecture when production status is unverified"),
             (r"\bdeployed into live production for external clients\b", "Claims live production deployment for external clients without canonical evidence"),
             (r"\bproduction deployment of\b", "Claims production deployment without canonical evidence"),
+            (r"(?:architected|implemented|built).*?\b(?:production|live)\b.*?\b(?:deployment|status)\s+is\s+(?:unknown|unverified)\b", "Contains assertion-then-disclaimer pattern prohibited by FR-049"),
         ]
         combined_text = proposal_md + "\n" + screening_md
         for pattern, reason in prod_inflation_patterns:
             if re.search(pattern, combined_text, re.IGNORECASE):
                 violations.append({"type": "production_claim_inflation", "reason": reason})
+
+    # 2b. Candidate-Agnostic Attribution Shift & Evidence Composition Checks
+    checks_performed += 1
+    for req in req_assessments:
+        req_id = req.get("requirement_id", "")
+        comp_class = req.get("composition_classification")
+        if comp_class:
+            comp_err = check_evidence_composition(comp_class, requirement_id=req_id)
+            if comp_err:
+                violations.append(comp_err)
+
+        claimed_contrib = req.get("claimed_contribution") or req.get("candidate_contribution")
+        canonical_contrib = req.get("canonical_contribution")
+        if claimed_contrib and canonical_contrib:
+            shift_err = check_attribution_shift(claimed_contrib, canonical_contrib)
+            if shift_err:
+                violations.append(shift_err)
+
+    # 2c. Proposed-vs-Historical Technology Disambiguation Check
+    checks_performed += 1
+    proposed_techs = qualification_yaml_data.get("proposed_technologies", [])
+    if proposed_techs and proposal_md:
+        tech_violations = check_proposed_vs_historical_technologies(proposed_techs, proposal_md)
+        violations.extend(tech_violations)
 
     # 3. Unsupported Quantitative Claim Check
     checks_performed += 1
