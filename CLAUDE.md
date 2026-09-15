@@ -1,14 +1,15 @@
 # CLAUDE.md
 
-Project memory for Claude Code. Loaded automatically when a session starts in this directory. For the full project context see [`README.md`](README.md), [`ARCHITECTURE.md`](ARCHITECTURE.md), and [`AGENTS.md`](AGENTS.md). For approved design specs see [`docs/superpowers/specs/`](docs/superpowers/specs/).
+Project memory for Claude Code. Loaded automatically when a session starts in this directory. For the full project context see [`README.md`](README.md), [`RUNBOOK.md`](RUNBOOK.md), [`ARCHITECTURE.md`](ARCHITECTURE.md), and [`AGENTS.md`](AGENTS.md). For approved design specs see [`specs/`](specs/).
 
 The `AGENTS.md` file holds the vendor-neutral operating instructions that also apply to you. This file adds Claude-Code-specific context — Skills invocation, lint discipline, snapshot tests, and what to do when working *in* the repo (editing Skills, writing fixtures, adding OKF nodes).
 
+
 ## Current state
 
-- **Status:** v0.5 (Sprint 5) Executive Narrative & Personal Brand Engine active with opportunity-scoped output directories (`out/<target-slug>/`).
-- **Approved artefacts:** `requirements-spec.md`, `spec-refinements.md`, `docs/superpowers/specs/2026-07-29-interview-playbook-generator-design.md`, `docs/superpowers/specs/2026-07-30-sprint-3-design.md`, `docs/superpowers/specs/2026-07-31-sprint-4-design.md`, `docs/superpowers/specs/2026-07-31-sprint-5-design.md`, `docs/superpowers/specs/2026-08-03-opportunity-scoped-outputs-design.md`, `README.md`, `ARCHITECTURE.md`, `AGENTS.md`.
-- **Branch:** `master`.
+- **Status:** v0.6 (Sprint 6 & V3.2 Contract Alignment) Executive Narrative, Personal Brand Engine, Upwork Proposal Projection, Archetype Classifier, Gap Classifier, Market Evaluation, and opportunity-scoped output directories (`out/<target-slug>/`).
+- **Approved artefacts:** `README.md`, `RUNBOOK.md`, `ARCHITECTURE.md`, `AGENTS.md`, `specs/003-upwork-proposal-refinement/`, `specs/004-upwork-proposal-v32-alignment/`.
+- **Branch:** `003-upwork-proposal-refinement` / `main`.
 
 ## Claude Code–specific context
 
@@ -26,20 +27,27 @@ When the user invokes a Skill, you:
 4. Write the output subtree per the Skill's contract (`out/okf/` for canonical nodes, `out/<target-slug>/` for opportunity-scoped context & views).
 5. Update `okf/log.md` with a one-line entry.
 
-### Snapshot tests
+### Snapshot & Contract tests
 
-When extending a Skill, regenerate its golden fixture under `tests/golden/<skill>/`. The test in `tests/test_<skill>.py` will structural-diff your output against the golden.
+When extending a Skill, regenerate its golden fixture under `tests/golden/<skill>/` or test suite in `tests/test_upwork_proposal_generator.py`. The test will structural-diff or validate your output against the canonical contract.
 
-```
-pytest tests/
+```bash
+pytest tests/ -v
 ```
 
 ## Useful commands
 
-```
-# Run the 17-step pipeline orchestrator
+```bash
+# Run the 23-step pipeline orchestrator
 /skill playbook-orchestrator
 
-# Run full test suite
+# Run full test suite (154 tests)
 pytest tests/ -v
+
+# Run independent Upwork proposal validator
+python3 scripts/upwork_validator.py
+
+# Run offline playbook fixture generator
+python3 scripts/generate_upwork_biz_systems_playbook.py
 ```
+

@@ -4,11 +4,11 @@ You are an interactive CLI agent specializing in software engineering. This repo
 
 ## Mandatory Instructions
 
-1. **Always read AGENTS.md**: This is your primary source of operational boundaries.
-2. **Use CAS Skills**: Before modifying any code, you MUST activate the appropriate skill in `.cas/`.
-3. **Specification-First**: If a user asks for a feature, your first step is to create or update a spec in `specs/`.
+1. **Always read AGENTS.md & RUNBOOK.md**: `AGENTS.md` provides operational boundaries and non-negotiable hard rules; `RUNBOOK.md` provides execution steps and usage guides.
+2. **Use CAS / Pipeline Skills**: Before modifying code or running projection tasks, activate the appropriate Skill in `skills/`.
+3. **Specification-First**: If a user asks for a feature or refinement, your first step is to create or update a spec in `specs/`.
 4. **Surgical Edits**: Prefer precise code replacements over overwriting entire files.
-5. **Validate Behavior**: Never assume a change is correct. Always run tests or validation scripts.
+5. **Validate Behavior**: Never assume a change is correct. Always run `pytest -v` or validator scripts (`scripts/upwork_validator.py`).
 
 ## Topic Management
 Use the `update_topic` tool (if available) to keep the user informed of your strategic intent and progress across multi-turn tasks.
@@ -16,4 +16,5 @@ Use the `update_topic` tool (if available) to keep the user informed of your str
 ## Code Conventions
 - Adhere to the local project style found in existing source files.
 - Prioritize composition and delegation over complex inheritance.
-- Ensure all new logic is covered by unit or integration tests.
+- Ensure all new logic is covered by unit or integration tests in `tests/`.
+

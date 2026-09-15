@@ -1,27 +1,29 @@
 # Architecture
 
-High-level architecture of the Career Projection Platform (Interview Playbook Generator v0.5). For approved design specs, see [`docs/superpowers/specs/`](docs/superpowers/specs/).
+High-level architecture of the Career Projection Platform (Interview Playbook Generator v0.6). For approved design specs, see [`specs/`](specs/).
 
 ## What this system is
 
-A pipeline that turns raw candidate portfolio material (CV, LinkedIn export, slide decks, architecture docs, publications, JD, recruiter message) into a **structured knowledge graph** of the candidate's career, and from that graph produces multiple tailored **executive communication projections** (Resumes, Cover Letters, LinkedIn Profiles, Briefings, Playbooks).
+A pipeline that turns raw candidate portfolio material (CV, LinkedIn export, slide decks, architecture docs, publications, JD, recruiter message) into a **structured knowledge graph** of the candidate's career, and from that graph produces multiple tailored **executive communication projections** (Resumes, Cover Letters, LinkedIn Profiles, Briefings, Upwork Proposals, Playbooks).
 
-Four-Layer Pipeline Architecture:
+Five-Layer Pipeline Architecture (v0.6):
 
 - **Knowledge Layer** (canonical; stored in `out/okf/`): Stores persistent canonical career knowledge (`Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `ExecutiveIdentity`, `VoiceProfile`, `PositioningStatements`, `NarrativeLibrary`, `StoryLibrary`, `MessagingLibrary`, `Theme`, `Narrative`). Never modified by projections and shared across all target opportunities.
-- **Runtime Layer** (execution context; stored in `out/<target-slug>/runtime/`): Stores derived opportunity analysis (`opportunity-analysis.yaml`), projection validation reports (`projection-validation-report.yaml`), and brand validation reports (`brand-validation-report.yaml`).
+- **Runtime Intelligence Layer** (execution context; stored in `out/<target-slug>/runtime/`): Stores derived opportunity analysis (`opportunity-analysis.yaml`), qualification context (`upwork-qualification.yaml`), archetype analysis (`archetype-analysis.yaml`), gap analysis (`gap-analysis.yaml`), opportunity fit report (`opportunity-fit-report.yaml`), projection strategy (`projection-strategy.yaml`), projection validation report (`projection-validation-report.yaml`), and brand validation report (`brand-validation-report.yaml`).
 - **Coaching Layer** (derived strategy; stored in `okf/`): Computes opportunity-specific interview strategy (`InterviewStrategy`) and gap analysis (`KnowledgeGap`).
-- **Projection Layer** (presentation views; stored in `out/<target-slug>/`): Generates read-only executive communication projections (`resume-executive.md`, `resume-ats.md`, `resume-recruiter.md`, `cover-letter.md`, `linkedin-profile.md`, `playbook.md`, `interview-cheatsheet.md`, `executive-brief.md`, `opportunity-alignment.md`).
+- **Projection Layer** (presentation views; stored in `out/<target-slug>/`): Generates read-only executive communication projections (`resume-executive.md`, `resume-ats.md`, `resume-recruiter.md`, `cover-letter.md`, `linkedin-profile.md`, `playbook.md`, `interview-cheatsheet.md`, `executive-brief.md`, `opportunity-alignment.md`, `upwork-qualification-report.md`, `upwork-screening-answers.md`, `upwork-work-samples.md`, `upwork-evidence-gaps.md`).
+- **Evaluation Layer** (learning & feedback; stored in `evaluation/opportunities/`): Stores market feedback evaluation reports (`<target-slug>-evaluation.yaml`).
 
 The load-bearing principles:
 1. Introductory prose and executive voice are established canonically in `okf/` and adapted by projections rather than independently generated.
 2. Opportunity-specific execution context and views are scoped per target opportunity under `out/<target-slug>/` (derived from `target_opportunity.source`), preventing runs for different job opportunities from overwriting each other.
+3. Canonical contract authority resides in LLM Skills (`skills/upwork-proposal/SKILL.md`), while offline Python scripts (`scripts/generate_upwork_*.py`) serve as target-slug-specific fixture generators.
 
 ## Component responsibilities
 
 | Layer | Component | Purpose |
 |---|---|---|
-| **Knowledge** | `portfolio-ingestor` | Discovers and classifies portfolio source files. |
+| **Knowledge** | `portfolio-ingestor` | Discovers and classifies portfolio source files via `scripts/ingest_portfolio.py`. |
 | **Knowledge** | `portfolio-analyzer` | Builds top-level coverage map and domain breakdown. |
 | **Knowledge** | `achievement-extractor` | Extracts evidence-grounded achievement nodes. |
 | **Knowledge** | `evidence-card-generator` | Converts achievements into STAR Evidence Cards. |
@@ -33,6 +35,11 @@ The load-bearing principles:
 | **Knowledge** | `narrative-engine` | Generates canonical Narrative Library and Messaging Library. |
 | **Knowledge** | `story-engine` | Converts Evidence Cards into single consolidated `okf/story-library.md`. |
 | **Runtime** | `opportunity-analyzer` | Generates shared execution context at `out/<target-slug>/runtime/opportunity-analysis.yaml`. |
+| **Runtime** | `upwork-qualification` | Assesses qualification state at `out/<target-slug>/runtime/upwork-qualification.yaml`. |
+| **Runtime** | `archetype-classifier` | Classifies target position archetype in `out/<target-slug>/runtime/archetype-analysis.yaml`. |
+| **Runtime** | `gap-classifier` | Evaluates missing capability gaps in `out/<target-slug>/runtime/gap-analysis.yaml`. |
+| **Runtime** | `archetype-fit-evaluator` | Evaluates position fit in `out/<target-slug>/runtime/opportunity-fit-report.yaml`. |
+| **Runtime** | `projection-strategy-generator` | Computes target strategy in `out/<target-slug>/runtime/projection-strategy.yaml`. |
 | **Coaching** | `interview-strategy-generator` | Computes opportunity strategy and story-to-question mapping. |
 | **Coaching** | `knowledge-gaps` | Pre-assembly evaluation gate assessing bundle against target role. |
 | **Projection**| `projection-registry` | Orchestrates pluggable projection contracts into `out/<target-slug>/`. |
@@ -41,9 +48,11 @@ The load-bearing principles:
 | **Projection**| `linkedin-projection` | Generates LinkedIn profile optimization at `out/<target-slug>/linkedin-profile.md`. |
 | **Projection**| `opportunity-alignment-view` | Generates requirement alignment view at `out/<target-slug>/opportunity-alignment.md`. |
 | **Projection**| `executive-brief-view` | Generates 10-minute briefing at `out/<target-slug>/executive-brief.md`. |
+| **Projection**| `upwork-proposal` | Generates executive proposal (`upwork-qualification-report.md`), screening Q&A (`upwork-screening-answers.md`), work samples (`upwork-work-samples.md`), and gap reports (`upwork-evidence-gaps.md`). |
 | **Projection**| `playbook-assembler` | Generates `out/<target-slug>/playbook.md` and `out/<target-slug>/interview-cheatsheet.md`. |
 | **Runtime** | `projection-validator` | Evaluates evidence traceability & ATS coverage (`out/<target-slug>/runtime/projection-validation-report.yaml`). |
 | **Runtime** | `brand-validator` | Evaluates cross-projection brand alignment & voice consistency (`out/<target-slug>/runtime/brand-validation-report.yaml`). |
+| **Evaluation**| `market-feedback-evaluator` | Generates market feedback evaluations in `evaluation/opportunities/`. |
 
 
 ## Architecture Diagram
@@ -165,3 +174,4 @@ erDiagram
     STORY-LIBRARY ||--o{ PROJECTIONS : "adapts"
 ```
 <!-- END AUTO-GENERATED ARCHITECTURE DIAGRAM -->
+
