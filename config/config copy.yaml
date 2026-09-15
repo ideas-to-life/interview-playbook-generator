@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Business Systems / Technology Architecture Consultant"
+  target_role: "AI Architect – Agentic AI & AI Platform Architecture"
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: "+44 (0) 7304 093460"
@@ -12,11 +12,11 @@ candidate:
   portfolio_url: "https://alexandrefranco.dev"
 
 target_opportunity:
-  company: ""
-  role_title: "Business Systems / Technology Architecture Consultant"
-  industry: ""
+  company: "PwC"
+  role_title: "AI Architect – Agentic AI & AI Platform Architecture"
+  industry: "Consulting"
   interviewer: ""
-  source: "./target-position/upwork-business-systems-technology-architecture-consultant.md"
+  source: "./target-position/pwc-ai-architect.md"
   target_type: "employment"  # Options: employment (default), upwork
 
 projections:
