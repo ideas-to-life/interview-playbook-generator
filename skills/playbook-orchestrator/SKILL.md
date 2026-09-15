@@ -92,4 +92,4 @@ Upon completion, present the final output summary:
 - Resumes & Cover Letter (`./out/<target-slug>/`)
 - Playbook & Brief (`./out/<target-slug>/`)
 - Validation Reports (`./out/<target-slug>/runtime/`)
-- Market Evaluation (`./evaluation/opportunities/`)
+- Market Evaluation (`./evaluation/opportunities//<target-slug>-evaluation.yaml`)

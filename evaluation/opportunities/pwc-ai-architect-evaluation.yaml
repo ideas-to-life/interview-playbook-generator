@@ -1,0 +1,19 @@
+version: "6.0"
+generated_at: "2026-09-15T11:29:55+01:00"
+target_slug: "pwc-ai-architect"
+prediction_evaluation:
+  predicted_archetype: "enterprise_ai_architect"
+  predicted_overall_fit: "High"
+  actual_outcome: "active"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Direct alignment on hands-on agentic platform architecture verified"
+    - "Vendor-agnostic Agent OS model gateway strategy validated"
+    - "Responsible AI governance guardrails matched PwC security priorities"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 99.0
+    brand_consistency: 99.5
+    projection_quality: 99.0
+    opportunity_fit: 98.0
+    archetype_fit: 98.5

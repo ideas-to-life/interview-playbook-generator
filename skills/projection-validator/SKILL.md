@@ -28,12 +28,12 @@ NEVER FABRICATE:
 4. **ATS Vocabulary Density**: % of mandatory and strong ATS keywords present in `resume-ats.md`.
 5. **Readability & Word Count**: Word count budget compliance across projections.
 6. **Employment History Evidence Integrity**: Deterministically evaluates generated projection views against `okf/employment-records.yaml` using `scripts/employment_validator.py`. Reports `PASS` or `FAIL` status with explicit violation trace.
-7. **Upwork Proposal & Provenance Validation**:
-   - Inspect `out/<target-slug>/runtime/upwork-qualification.yaml` `claim_traceability` array to confirm 100% of claims map to canonical evidence cards (`[^source-id]`).
-   - Confirm client-facing `upwork-qualification-report.md` contains zero unparsed internal metadata tags (`[evidence]`, `[inference]`).
-   - Validate word count budget compliance (350–500 words for `APPLY`).
-   - Verify `DO NOT APPLY` state (`proposal_generation: blocked`) prevents submission-ready proposal output and outputs a valid Gate Report.
-   - Verify `CONDITIONAL` state (`proposal_generation: allowed_with_conditions`) includes explicit `[OPEN CONDITION: <fact>]` markers.
+7. **Upwork Proposal & Provenance Validation (V2.1)**:
+   - **Semantic Evidence Support Check**: Verify that 100% of client-facing claims have actual semantic evidence support in canonical OKF evidence cards, not merely an entry in `claim_traceability`.
+   - **Zero Fabrication & Clean Prose Pass**: Confirm client-facing `upwork-qualification-report.md` is 100% free of internal tags (`[evidence]`, `[inference]`), footnotes (`[^source-id]`), or `[OPEN CONDITION]` diagnostic markers.
+   - **Contradiction & Production Inflation Pass**: Reject any client-facing claim asserting satisfaction of a requirement classified as `CONTRADICTED`, or claiming `verified_production` when production status is `unknown` or `verified_non_production`.
+   - **Submission Readiness Alignment**: Confirm that `submission_readiness` is set to `HUMAN_REVIEW_REQUIRED` whenever 1+ material requirements are `UNKNOWN` or `PARTIALLY_SUPPORTED`.
+   - **Word Count Budget**: Validate proposal word count (350–500 words target).
 
 ## Execution Instructions
 
