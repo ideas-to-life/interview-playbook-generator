@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Business Systems / Technology Architecture Consultant"
+  target_role: "Director Enterprise Architecture"
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: "+44 (0) 7304 093460"
@@ -12,11 +12,11 @@ candidate:
   portfolio_url: "https://alexandrefranco.dev"
 
 target_opportunity:
-  company: ""
-  role_title: "Business Systems / Technology Architecture Consultant"
+  company: "FTSE Russell | LSEG Technology"
+  role_title: "Director Enterprise Architecture"
   industry: ""
   interviewer: ""
-  source: "./target-position/upwork-business-systems-technology-architecture-consultant.md"
+  source: "config/target-position/lseg-director-enterprise-architecture.md"
   target_type: "employment"  # Options: employment (default), upwork
 
 projections:

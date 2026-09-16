@@ -1,0 +1,20 @@
+version: "6.0"
+generated_at: "2026-09-16T08:55:50+01:00"
+target_slug: "lseg-director-enterprise-architecture"
+prediction_evaluation:
+  predicted_archetype: "director_enterprise_architecture"
+  predicted_overall_fit: "High"
+  actual_outcome: "active"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Direct alignment on AI-native governance automation and AI review agents verified"
+    - "Proven track record establishing Design Authorities and leading architecture reviews validated"
+    - "Deep AWS cloud-native architecture depth matching mission-critical benchmark infrastructure"
+    - "Engineering-Research partnership model demonstrated for data science enablement"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.5
+    projection_quality: 99.2
+    opportunity_fit: 99.0
+    archetype_fit: 98.5
