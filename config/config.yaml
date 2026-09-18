@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Director Enterprise Architecture"
+  target_role: "AI Lead Enterprise Architect"
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: "+44 (0) 7304 093460"
@@ -13,11 +13,11 @@ candidate:
   canonical_record: "canonical/career-record.yaml"
 
 target_opportunity:
-  company: "FTSE Russell | LSEG Technology"
-  role_title: "Director Enterprise Architecture"
-  industry: ""
+  company: "Tenth Revolution Group"
+  role_title: "AI Lead Enterprise Architect"
+  industry: "Talent acquisition and development"
   interviewer: ""
-  source: "config/target-position/lseg-director-enterprise-architecture.md"
+  source: "config/target-position/tenth-ai-lead-enterprise-architect.md"
   target_type: "employment"  # Options: employment (default), upwork
 
 projections:

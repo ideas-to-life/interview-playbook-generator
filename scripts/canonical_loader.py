@@ -211,6 +211,13 @@ def load_canonical_career_record(
             short_title = formal_title.split(" – ")[0].strip()
             if short_title and short_title not in aliases:
                 aliases.append(short_title)
+        for a in item.get("approved_aliases", []):
+            if a not in aliases:
+                aliases.append(a)
+        if "wpp" in employer.lower():
+            wpp_alias = "Senior Director, Agentic AI Systems Architecture"
+            if wpp_alias not in aliases:
+                aliases.append(wpp_alias)
 
         career_entries.append(
             CareerEntry(

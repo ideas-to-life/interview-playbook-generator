@@ -1,0 +1,20 @@
+version: "6.0"
+generated_at: "2026-09-18T15:18:20+00:00"
+target_slug: "tenth-ai-lead-enterprise-architect"
+prediction_evaluation:
+  predicted_archetype: "enterprise_ai_architect"
+  predicted_overall_fit: "High"
+  actual_outcome: "active"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Direct alignment on Enterprise Architecture Strategy across complex global landscapes verified"
+    - "Deep hands-on expertise in AI, Machine Learning, and Agentic AI applied to enterprise integrations and data reporting"
+    - "Proven architectural oversight and integration depth across Salesforce, Workday, ERP, and Finance platforms"
+    - "Proven multi-region leadership and native/fluent trilingual fluency (English, Portuguese, Spanish) covering London, Mexico City, Bogotá, Johannesburg, and New York"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.5
+    projection_quality: 99.2
+    opportunity_fit: 99.5
+    archetype_fit: 99.0
