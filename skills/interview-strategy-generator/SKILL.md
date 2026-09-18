@@ -68,6 +68,9 @@ sources:
 [inference] Flagship stories: ...
 [inference] Differentiators: ...
 [inference] Objections and mitigations: ...
+
+# Canonical Verification Gaps
+[recommendation] [NEEDS CONFIRMATION] <Unresolved canonical questions requiring candidate clarification before interview>.
 ```
 
 ## Execution Instructions
@@ -78,6 +81,9 @@ This Skill produces **coaching-layer output** (R1, R8). It reads the canonical b
 2. **Rank Evidence Cards** into 4 tiers: `Primary Story`, `Supporting Story`, `Optional Story`, `Do Not Use`. Based on relevance, uniqueness, evidence strength, target role requirements, and interview stage.
 3. **Opportunity Analysis (R8):** For each major interview theme (5–8 themes), emit a block with `[evidence]` requirement from JD, `[inference]` why it matters, supporting evidence links, alignment strength, `[recommendation]` what to emphasise, `[recommendation]` what to avoid over-explaining.
 4. **Story-to-Question Mapping (R3):** For each anticipated question (10–15), emit a block with Primary story (`[recommendation]`), Supporting evidence (`[inference]`), Alternative story (`[recommendation]`). The Primary story is selected from the `Capability.Primary Evidence` tier when one matches.
-5. **Formulate Coaching Guidance**: lead with, avoid, flagship stories, differentiators, objections.
+5. **Formulate Coaching Guidance & Unresolved Item Safety (FR-010):**
+   - Lead with, avoid, flagship stories, differentiators, objections.
+   - Query `unresolved_questions` from canonical record via `filter_unresolved_for_coaching()`.
+   - Any genuinely unresolved question (`current_status != 'resolved'`) MUST be surfaced under Canonical Verification Gaps flagged with `[NEEDS CONFIRMATION]` so the candidate can clarify it prior to the interview. Never assert unresolved questions as established facts.
 6. **Write `okf/interview-strategy.md`** (max 4 pages).
 7. **Append Log**: `okf/log.md`.

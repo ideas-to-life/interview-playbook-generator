@@ -21,7 +21,7 @@ NEVER FABRICATE:
 1. **Read-only**: Never modify any concept file in `okf/`.
 2. **Canonical Positioning**: Adapt About Section directly from `okf/executive-identity.md` and `okf/positioning-statements.md`. Do NOT generate independent positioning prose.
 3. **Voice Consistency**: Follow tone rules in `okf/voice-profile.md`.
-4. **Immutable Experience Headers**: Experience section employer names, job titles, and employment dates must strictly match canonical records in `okf/employment-records.yaml`.
+4. **Immutable Experience Headers**: Experience section employer names, job titles, and employment dates must strictly match selected canonical facts in `out/<target-slug>/runtime/canonical-selection.yaml` (and `okf/employment-records.yaml`).
 
 ## Section Structure
 
@@ -33,6 +33,6 @@ NEVER FABRICATE:
 ## Execution Instructions
 
 1. **Read `okf/executive-identity.md` & `okf/positioning-statements.md`**: Extract canonical positioning.
-2. **Read `out/<target-slug>/runtime/opportunity-analysis.yaml`**: Extract capability priorities.
+2. **Read Shared Execution Context & Canonical Selection**: Read `out/<target-slug>/runtime/opportunity-analysis.yaml` and `out/<target-slug>/runtime/canonical-selection.yaml`. Extract capability priorities, keywords, and immutable selected canonical facts (formal titles, dates, employers).
 3. **Render LinkedIn Profile Optimization (`out/<target-slug>/linkedin-profile.md`)**.
 4. **Append Log**: `okf/log.md`.

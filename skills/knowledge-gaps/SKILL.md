@@ -27,19 +27,21 @@ Every line in `okf/knowledge-gaps.md` must start with `[evidence]`, `[inference]
 
 ## Severity Buckets
 
-1. **`critical`**: Target opportunity requires a core skill or experience completely absent in portfolio evidence.
-2. **`moderate`**: Evidence exists but lacks metrics or concrete outcome figures.
+1. **`critical`**: Target opportunity requires a core skill or experience completely absent in portfolio evidence, or an unresolved canonical career ambiguity touches a core role requirement.
+2. **`moderate`**: Evidence exists but lacks metrics or concrete outcome figures, or unresolved canonical questions exist on secondary achievements.
 3. **`minor`**: Secondary requirement or nice-to-have documentation missing.
 
 ## Execution Instructions
 
 1. **Evaluate Requirements Coverage**: Map each JD/role requirement to evidence cards.
 2. **Identify Missing Evidence & Assumptions**: Uncover missing metrics or unverified `[assumption]` tags.
-3. **Emit `okf/knowledge-gaps.md`**:
+3. **Incorporate Canonical Unresolved Questions (FR-010)**: Query `unresolved_questions` from canonical record (`CanonicalCareerRecord.filter_unresolved_for_coaching()`). Any unresolved item must be registered as a knowledge gap flagged `[NEEDS CONFIRMATION]` so it is resolved before external presentation.
+4. **Emit `okf/knowledge-gaps.md`**:
    - Frontmatter: `type: KnowledgeGap`, `status: draft`.
    - Sections:
      - `# Critical Gaps`
      - `# Moderate Gaps`
      - `# Minor Gaps & Recommended Portfolio Improvements`
-4. **Enforce Gate**: If `critical` gaps exist and `pipeline.fail_on_severe_gaps` is `true`, signal the orchestrator to pause.
-5. **Append Log**: Log updates in `okf/log.md`.
+     - `# Canonical Verification Gaps ([NEEDS CONFIRMATION])`
+5. **Enforce Gate**: If `critical` gaps exist and `pipeline.fail_on_severe_gaps` is `true`, signal the orchestrator to pause.
+6. **Append Log**: Log updates in `okf/log.md`.

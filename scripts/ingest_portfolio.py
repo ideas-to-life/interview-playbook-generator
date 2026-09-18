@@ -3,10 +3,17 @@
 Ingest all portfolio files from candidate.portfolio_dir (e.g. mind-palace) into out/okf/sources/
 """
 import os
+import sys
 import re
 import html
 import yaml
 from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.canonical_loader import load_canonical_career_record, CanonicalRecordError
 
 def clean_html_text(raw_html: str) -> str:
     # Remove script and style elements
@@ -79,8 +86,11 @@ def main():
     discovered_sources = []
 
     for root, dirs, files in os.walk(portfolio_dir):
-        # Skip hidden dirs like .git
-        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        # Skip hidden dirs like .git and strictly exclude quarantine directory
+        dirs[:] = [d for d in dirs if not d.startswith('.') and d.lower() != 'quarantine']
+        rel_root = Path(root).relative_to(portfolio_dir).as_posix().lower()
+        if "quarantine" in rel_root.split("/"):
+            continue
         for file in sorted(files):
             if file.startswith('.') or file == 'CLAUDE.md':
                 continue
@@ -221,56 +231,36 @@ sources:
 """
     source_index_file.write_text(index_md, encoding='utf-8')
 
-    # Parse Positions.csv if present to update okf/employment-records.yaml
-    positions_csv = portfolio_dir / "resume-profile" / "Positions.csv"
-    if positions_csv.exists():
-        import csv
+    # Generate okf/employment-records.yaml strictly from canonical/career-record.yaml
+    try:
+        canonical_record = load_canonical_career_record(config_path=str(config_path))
         emp_records = []
-        with open(positions_csv, mode="r", encoding="utf-8") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for i, row in enumerate(reader):
-                company = row.get("Company Name", "").strip()
-                title = row.get("Title", "").strip()
-                location = row.get("Location", "").strip()
-                start_date = row.get("Started On", "").strip()
-                finished_on = row.get("Finished On", "").strip()
-                if not company or not title:
-                    continue
-                end_date = finished_on if finished_on else None
-                status = "former" if finished_on else "current"
-                emp_id = f"emp-{re.sub(r'[^a-z0-9]+', '-', company.lower()).strip('-')}-{i}"
-                aliases = [title]
-                if "Lead Enterprise Architect" in title:
-                    aliases.extend(["Lead Enterprise Architect", "Lead Enterprise Architect – Technology Transformation Group & Commercial"])
-                if "Agentic AI" in title:
-                    aliases.extend(["Senior Director, Agentic AI Systems Architecture", "Senior Director, System Architect – Agentic AI"])
-                if "Enterprise Architect" in title:
-                    aliases.append("Enterprise Architect")
-                if "Global Solution Architect" in title:
-                    aliases.append("Global Solution Architect")
-                if "BAT" in company or "British American Tobacco" in company:
-                    aliases.extend(["Enterprise Architect & Global Solution Architect", "Enterprise Architect Scientific Research and Development (SR&D)", "Global Solution Architect - Integration & Automation", "Regional Solution Architect", "Enterprise Architect"])
-                if "Mostelli" in company:
-                    aliases.extend(["Enterprise Architect | AI Transformation Advisor", "Enterprise Architect & AI Transformation Advisor"])
+        for entry in canonical_record.career:
+            emp_records.append({
+                "id": f"emp-{entry.id.lower()}",
+                "employer": entry.employer,
+                "client": entry.client,
+                "engagement_type": entry.engagement_type,
+                "title": entry.formal_title,
+                "start_date": entry.start_date,
+                "end_date": entry.end_date,
+                "status": entry.status,
+                "location": entry.location,
+                "operational_scope": entry.operational_scope,
+                "acting_responsibilities": entry.acting_responsibilities,
+                "responsibilities_scope": entry.responsibilities_scope,
+                "sources": ["canonical-career-record"],
+                "approved_aliases": entry.approved_aliases,
+            })
 
-
-                emp_records.append({
-                    "id": emp_id,
-                    "employer": company,
-                    "title": title,
-                    "start_date": start_date,
-                    "end_date": end_date,
-                    "status": status,
-                    "location": location or "London, UK",
-                    "sources": ["positions-csv"],
-                    "approved_aliases": list(dict.fromkeys(aliases))
-                })
-
-        if emp_records:
-            emp_yaml_path = repo_root / "out" / "okf" / "employment-records.yaml"
-            with open(emp_yaml_path, "w", encoding="utf-8") as yf:
-                yaml.dump({"employment_records": emp_records}, yf, sort_keys=False, default_flow_style=False)
-            print(f"Updated {emp_yaml_path} with {len(emp_records)} employment records from Positions.csv")
+        emp_yaml_path = repo_root / "out" / "okf" / "employment-records.yaml"
+        emp_yaml_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(emp_yaml_path, "w", encoding="utf-8") as yf:
+            yaml.dump({"employment_records": emp_records}, yf, sort_keys=False, default_flow_style=False)
+        print(f"Updated {emp_yaml_path} with {len(emp_records)} verified employment records from canonical career record.")
+    except Exception as e:
+        print(f"FATAL: Failed to populate employment-records.yaml from canonical career record: {e}")
+        raise
 
     print(f"Successfully ingested {len(discovered_sources)} source documents into {out_sources_dir}")
 

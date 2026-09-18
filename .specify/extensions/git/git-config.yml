@@ -66,8 +66,8 @@ auto_commit:
     enabled: false
     message: "[Spec Kit] Add tasks"
   after_implement:
-    enabled: false
-    message: "[Spec Kit] Implementation progress"
+    enabled: true
+    message: "[Spec Kit] Implement canonical career record integration (005-canonical-record-integration)"
   after_checklist:
     enabled: false
     message: "[Spec Kit] Add checklist"

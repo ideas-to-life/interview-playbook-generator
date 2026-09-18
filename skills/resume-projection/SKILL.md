@@ -34,6 +34,7 @@ NEVER FABRICATE:
 8. **Automatic Claim Verb Downgrading**: If a claim's verb strength exceeds evidence support (e.g. `Established` or `Led` when evidence supports `Contributed`), the generator MUST automatically down-level the verb to the evidence-supported level (e.g., "Contributed to CCoE governance" instead of "Established CCoE").
 9. **Transferable Domain Framing**: Evidence from an adjacent domain MUST be expressed as *transferable experience* (e.g., "Applied Enterprise Architecture governance experience to cloud and CCoE-related initiatives") rather than converting the adjacent domain into the target domain ("Established a Cloud Centre of Excellence").
 10. **Immutable Career History Metadata**: Professional Experience section headers (Employer, Job Title, Start Date, End Date, Location) MUST be rendered directly from canonical records in `okf/employment-records.yaml`. The generator MUST NOT alter dates, substitute job titles for target alignment, or reconstruct career chronologies.
+11. **Canonical Title & Credential Grounding**: Formal job titles must match canonical formal titles (e.g. `Lead Enterprise Architect - Technology Transformation Group` for BBC Studios; acting scopes may be described in bullet prose but must never inflate the formal title). Education degrees and institutions must be sourced exclusively from canonical education records (BSc in Computer Science from Universidade de Mogi das Cruzes; unevidenced degrees such as MSc or institutions like Federal University of Rio de Janeiro / UFRJ are strictly prohibited).
 
 ## Required 10 Standard Sections
 
@@ -47,7 +48,7 @@ Every generated resume variant MUST include the following 10 sections:
 6. **AI Platform, Data & Governance Expertise**: Key bulleted platform & governance capabilities.
 7. **Professional Experience**: Reverse-chronological career history (WPP Media, BBC Studios, British American Tobacco - R&D, BAT - Global, BAT - Americas) with signature achievements and opportunity-weighted bullets.
 8. **Selected AI Initiatives**: Detailed descriptions of CAS (Architecture-as-Code) and EA4ALL (AI Accessibility).
-9. **Education & Professional Development**: MSc in Computer Science, TOGAF 9, SAFe, LeanIX.
+9. **Education & Professional Development**: Canonical academic degrees (BSc in Computer Science, Universidade de Mogi das Cruzes; Specializations at PUC Minas and FGV) and verified certifications (TOGAF 9, SAFe, LeanIX) sourced strictly from canonical records.
 10. **Technical Skills**: Categorized by domain (Enterprise Architecture, AI Platforms & Governance, Architecture-as-Code, Data Architecture & Integration, Observability & Evaluation, Cloud & Enterprise Software, Programming Languages).
 
 ## Execution Instructions

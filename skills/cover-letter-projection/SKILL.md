@@ -20,7 +20,7 @@ NEVER FABRICATE:
 2. **Canonical Positioning**: Adapt opening paragraph from `okf/messaging-library.md` (`30-Second Introduction`). Do NOT generate independent positioning prose.
 3. **Length Constraint**: Strictly maximum 1 page (≤500 words).
 4. **Traceable**: Grounded in canonical OKF evidence cards and signature achievements.
-5. **Immutable Employment References**: Any references to current or former roles, employers, job titles, or dates must match canonical records in `okf/employment-records.yaml` exactly.
+5. **Immutable Employment References**: Any references to current or former roles, employers, job titles, or dates must match selected canonical facts in `out/<target-slug>/runtime/canonical-selection.yaml` (and `okf/employment-records.yaml`) exactly. Never inflate titles or approximate dates.
 
 ## Section Structure
 
@@ -33,6 +33,6 @@ NEVER FABRICATE:
 ## Execution Instructions
 
 1. **Read `okf/messaging-library.md` & `okf/story-library.md`**: Extract canonical 30s intro and executive story assets.
-2. **Read `out/<target-slug>/runtime/opportunity-analysis.yaml`**: Extract company, role_title, hiring_goals, capability_priorities, and coverage_matrix.
+2. **Read Shared Execution Context & Canonical Selection**: Read `out/<target-slug>/runtime/opportunity-analysis.yaml` and `out/<target-slug>/runtime/canonical-selection.yaml`. Extract company, role_title, hiring_goals, capability_priorities, coverage_matrix, and immutable selected canonical facts (formal titles, dates).
 3. **Render Cover Letter (`out/<target-slug>/cover-letter.md`)**.
 4. **Append Log**: `okf/log.md`.

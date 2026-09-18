@@ -33,6 +33,7 @@ The target opportunity slug `<target-slug>` is derived as follows:
 - **Inputs**: `config/config.yaml` (target_opportunity declarations), `target_opportunity.source` (JD / role spec).
 - **Outputs**:
   - `out/<target-slug>/runtime/opportunity-analysis.yaml`
+  - `out/<target-slug>/runtime/canonical-selection.yaml` (Activity A: Frozen Canonical Factual Selection)
   - `okf/log.md` (append entry)
 
 ## Concept Schema & Structure (`out/<target-slug>/runtime/opportunity-analysis.yaml`)
@@ -101,5 +102,6 @@ coverage_matrix:
 4. **Rank Capability Priorities**: Map capabilities from `okf/capabilities/` to target role importance.
 5. **Extract ATS Vocabulary**: Categorise key terminology into `mandatory`, `strong`, and `optional`.
 6. **Build Opportunity Coverage Matrix**: Map major hiring requirements to OKF evidence slugs, capabilities, and explicitly classify `evidence_relationship` (`direct`, `adjacent`, `transferable`, or `absent`).
-7. **Write `out/<target-slug>/runtime/opportunity-analysis.yaml`**.
-8. **Append Log**: `okf/log.md`.
+7. **Execute Activity A Factual Selection (FR-011)**: Run `python3 scripts/canonical_selector.py <target-slug>` to select and freeze immutable canonical facts (career roles, formal titles, exact dates, education, and certifications) into `out/<target-slug>/runtime/canonical-selection.yaml` so all downstream projection skills consume consistent facts.
+8. **Write `out/<target-slug>/runtime/opportunity-analysis.yaml`**.
+9. **Append Log**: `okf/log.md`.

@@ -39,7 +39,9 @@ Represents an immutable professional engagement.
 | `end_date` | String / Null | Verified end date or `null` if current | Yes |
 | `status` | Enum | `current`, `former` | Yes |
 | `location` | String | Work location (e.g., `"London Area, United Kingdom"`) | Yes |
-| `operational_scope` | List[String] | Operational context, acting responsibilities, governance scopes | Optional |
+| `operational_scope` | List[String] | Operational context, team management, and transition duties | Optional |
+| `acting_responsibilities` | List[String] | Specific duties assumed for vacant positions (e.g. Head of Architecture) | Optional |
+| `responsibilities_scope` | List[String] | Enterprise/domain governance boundaries | Optional |
 | `verified_accomplishments` | List[String] | Accomplishments explicitly supported by primary evidence | Optional |
 | `evidence` | List[EvidenceRef] | Primary source citations backing this entry | Yes |
 

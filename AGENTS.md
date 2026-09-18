@@ -95,6 +95,10 @@ Every Skill's input set determines its output set. Re-running a Skill overwrites
 8. **Transferable framing over domain substitution**: When target requirements are adjacent to, but not directly evidenced by, candidate experience, the projection must use explicit transferable framing rather than domain substitution.
 9. **Journey vs Destination Invariant**: The target defines the destination; the evidence defines the journey. Projection may explain why the candidate’s demonstrated experience makes the destination credible, but it must never rewrite the journey as though the candidate has already reached it.
 10. **Career History Evidence Integrity Invariant**: Employer names, employment dates, job titles, status, and locations are immutable evidence. Projection may tailor presentation and accomplishment emphasis around those facts, but must never alter, infer, normalize, approximate, reconstruct, split, merge, or fabricate employment-history facts.
+11. **Canonical Career Record Precedence**: `canonical/career-record.yaml` is the supreme source of truth for all professional facts (employment history, formal titles, dates, education degrees/institutions, and certifications). It unconditionally supersedes secondary documents, derived content, AI-generated text, and LLM inference.
+12. **Quarantine Structural Exclusion**: Any document, folder, or snippet in `quarantine/` is strictly excluded from factual sourcing. It must never be ingested as evidence or cited in any projection.
+13. **Factual Selection Decoupling (Activity A vs B)**: Selection of canonical facts for an opportunity is executed during runtime analysis and frozen into `out/<target-slug>/runtime/canonical-selection.yaml`. Projection skills consume these immutable selected facts and must never alter dates, titles, or credentials.
+14. **Automated Sanitization**: Detected discrepancies in generated output artefacts (mutated dates, inflated titles, unverified degrees) are automatically rewritten back to canonical truth with alerts recorded in `projection-validation-report.yaml`.
 
 ## How the pipeline runs (v0.6)
 

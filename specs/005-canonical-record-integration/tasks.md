@@ -10,9 +10,9 @@
 
 **Purpose**: Project initialization, configuration keys, and directory structures.
 
-- [ ] T001 Configure canonical career record path under `candidate.canonical_record` in `config/config.yaml`
-- [ ] T002 [P] Create runtime schema directory structure at `specs/005-canonical-record-integration/contracts/`
-- [ ] T003 [P] Verify pytest and PyYAML environment dependencies in `.venv`
+- [x] T001 Configure canonical career record path under `candidate.canonical_record` in `config/config.yaml` and sync `config/config.example.yaml`
+- [x] T002 [P] Create runtime schema directory structure at `specs/005-canonical-record-integration/contracts/`
+- [x] T003 [P] Verify pytest and PyYAML environment dependencies in `.venv`
 
 ---
 
@@ -22,9 +22,9 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this foundational phase is complete.
 
-- [ ] T004 Implement canonical discovery, parsing, and fast-fail error handling in `scripts/canonical_loader.py`
-- [ ] T005 [P] Implement data models and validation constraints for `CareerEntry`, `EducationEntry`, `CertificationEntry`, and `UnresolvedQuestion` in `scripts/canonical_models.py`
-- [ ] T006 Unit tests for canonical loader validation, missing file fast-fail (<1s), and read-only integrity in `tests/test_canonical_loader.py`
+- [x] T004 Implement canonical discovery, parsing, and fast-fail error handling in `scripts/canonical_loader.py`
+- [x] T005 [P] Implement data models and validation constraints for `CareerEntry`, `EducationEntry`, `CertificationEntry`, and `UnresolvedQuestion` in `scripts/canonical_models.py`
+- [x] T006 Unit tests for canonical loader validation, missing file fast-fail (<1s), and read-only integrity in `tests/test_canonical_loader.py`
 
 **Checkpoint**: Foundation ready — canonical career record can be loaded and validated deterministically.
 
@@ -38,15 +38,15 @@
 
 ### Tests for User Story 1 ⚠️
 
-- [ ] T007 [P] [US1] Unit test asserting quarantine directory paths are excluded from ingestion in `tests/test_canonical_record_regression.py` (Scenario 7)
-- [ ] T008 [P] [US1] Integration test verifying `out/okf/employment-records.yaml` contains no legacy `Positions.csv` artifacts in `tests/test_canonical_record_regression.py`
+- [x] T007 [P] [US1] Unit test asserting quarantine directory paths are excluded from ingestion in `tests/test_canonical_record_regression.py` (Scenario 7)
+- [x] T008 [P] [US1] Integration test verifying `out/okf/employment-records.yaml` contains no legacy `Positions.csv` artifacts in `tests/test_canonical_record_regression.py`
 
 ### Implementation for User Story 1
 
-- [ ] T009 [US1] Implement directory exclusion filter for `quarantine` in `os.walk` file discovery in `scripts/ingest_portfolio.py`
-- [ ] T010 [US1] Remove legacy `Positions.csv` parsing logic from `scripts/ingest_portfolio.py`
-- [ ] T011 [US1] Implement direct generation of `out/okf/employment-records.yaml` from `career-record.yaml` using `scripts/canonical_loader.py` in `scripts/ingest_portfolio.py`
-- [ ] T012 [P] [US1] Update portfolio ingestion skill instructions for canonical record and quarantine rules in `skills/portfolio-ingestor/SKILL.md`
+- [x] T009 [US1] Implement directory exclusion filter for `quarantine` in `os.walk` file discovery in `scripts/ingest_portfolio.py`
+- [x] T010 [US1] Remove legacy `Positions.csv` parsing logic from `scripts/ingest_portfolio.py`
+- [x] T011 [US1] Implement direct generation of `out/okf/employment-records.yaml` from `career-record.yaml` using `scripts/canonical_loader.py` in `scripts/ingest_portfolio.py`
+- [x] T012 [P] [US1] Update portfolio ingestion skill instructions for canonical record and quarantine rules in `skills/portfolio-ingestor/SKILL.md`
 
 **Checkpoint**: User Story 1 is fully functional and testable independently. Quarantined data is 100% blocked, and `employment-records.yaml` is clean.
 
@@ -60,18 +60,18 @@
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T013 [P] [US2] Regression test asserting MSc Federal University of Rio de Janeiro is rejected and BSc Mogi das Cruzes is preserved in `tests/test_canonical_record_regression.py` (Scenario 1)
-- [ ] T014 [P] [US2] Regression test asserting BBC formal title is preserved and Head of Enterprise Architecture title is rejected in `tests/test_canonical_record_regression.py` (Scenario 2)
-- [ ] T015 [P] [US2] Regression test asserting BBC operational acting scope is distinguished from formal title in `tests/test_canonical_record_regression.py` (Scenario 3)
-- [ ] T016 [P] [US2] Regression test asserting unsupported enhancement (supported vs established governance) is rejected in `tests/test_canonical_record_regression.py` (Scenario 8)
+- [x] T013 [P] [US2] Regression test asserting MSc Federal University of Rio de Janeiro is rejected and BSc Mogi das Cruzes is preserved in `tests/test_canonical_record_regression.py` (Scenario 1)
+- [x] T014 [P] [US2] Regression test asserting BBC formal title is preserved and Head of Enterprise Architecture title is rejected in `tests/test_canonical_record_regression.py` (Scenario 2)
+- [x] T015 [P] [US2] Regression test asserting BBC operational acting scope is distinguished from formal title in `tests/test_canonical_record_regression.py` (Scenario 3)
+- [x] T016 [P] [US2] Regression test asserting unsupported enhancement (supported vs established governance) is rejected in `tests/test_canonical_record_regression.py` (Scenario 8)
 
 ### Implementation for User Story 2
 
-- [ ] T017 [US2] Implement conflict audit detector emitting `out/<target-slug>/runtime/canonical-conflict-report.yaml` in `scripts/canonical_validator.py`
-- [ ] T018 [US2] Expand `scripts/employment_validator.py` to validate academic degrees, institutions, and certifications against canonical records
-- [ ] T019 [US2] Implement automated sanitization in `scripts/employment_validator.py` to rewrite detected output discrepancies back to canonical truth with alert logging
-- [ ] T020 [P] [US2] Update projection validator skill instructions with conflict audit and automated sanitization in `skills/projection-validator/SKILL.md`
-- [ ] T021 [P] [US2] Update executive resume projection skill instructions to enforce canonical title and credential grounding in `skills/resume-projection/SKILL.md`
+- [x] T017 [US2] Implement conflict audit detector emitting `out/<target-slug>/runtime/canonical-conflict-report.yaml` in `scripts/canonical_validator.py`
+- [x] T018 [US2] Expand `scripts/employment_validator.py` to validate academic degrees, institutions, and certifications against canonical records
+- [x] T019 [US2] Implement automated sanitization in `scripts/employment_validator.py` to rewrite detected output discrepancies back to canonical truth with alert logging
+- [x] T020 [P] [US2] Update projection validator skill instructions with conflict audit and automated sanitization in `skills/projection-validator/SKILL.md`
+- [x] T021 [P] [US2] Update executive resume projection skill instructions to enforce canonical title and credential grounding in `skills/resume-projection/SKILL.md`
 
 **Checkpoint**: User Stories 1 AND 2 are functional. Title and degree inflation are deterministically blocked and auto-sanitized.
 
@@ -85,17 +85,17 @@
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T022 [P] [US3] Regression test asserting complete BAT chronology is preserved over secondary incomplete sources in `tests/test_canonical_record_regression.py` (Scenario 4)
-- [ ] T023 [P] [US3] Regression test asserting Compugraf is represented as consultancy contracted to Souza Cruz in `tests/test_canonical_record_regression.py` (Scenario 5)
-- [ ] T024 [P] [US3] Regression test asserting WPP Media (direct) and Mostelli (advisory) are distinct timeline entries in `tests/test_canonical_record_regression.py` (Scenario 6)
-- [ ] T025 [P] [US3] Unit test asserting unresolved canonical items are omitted from external collateral and flagged `[NEEDS CONFIRMATION]` in coaching in `tests/test_canonical_record_regression.py`
+- [x] T022 [P] [US3] Regression test asserting complete BAT chronology is preserved over secondary incomplete sources in `tests/test_canonical_record_regression.py` (Scenario 4)
+- [x] T023 [P] [US3] Regression test asserting Compugraf is represented as consultancy contracted to Souza Cruz in `tests/test_canonical_record_regression.py` (Scenario 5)
+- [x] T024 [P] [US3] Regression test asserting WPP Media (direct) and Mostelli (advisory) are distinct timeline entries in `tests/test_canonical_record_regression.py` (Scenario 6)
+- [x] T025 [P] [US3] Unit test asserting unresolved canonical items are omitted from external collateral and flagged `[NEEDS CONFIRMATION]` in coaching in `tests/test_canonical_record_regression.py`
 
 ### Implementation for User Story 3
 
-- [ ] T026 [US3] Implement engagement type handling (direct, consultancy, advisory) and client relationship mapping in `scripts/canonical_loader.py`
-- [ ] T027 [US3] Implement unresolved question filter (resolved -> fact; unresolved -> omit external, flag coaching) in `scripts/canonical_models.py`
-- [ ] T028 [P] [US3] Update coaching and interview strategy skills for `[NEEDS CONFIRMATION]` handling in `skills/interview-strategy-generator/SKILL.md`
-- [ ] T029 [P] [US3] Update knowledge gap evaluation skill to incorporate unresolved canonical questions in `skills/knowledge-gaps/SKILL.md`
+- [x] T026 [US3] Implement engagement type handling (direct, consultancy, advisory) and client relationship mapping in `scripts/canonical_loader.py`
+- [x] T027 [US3] Implement unresolved question filter (resolved -> fact; unresolved -> omit external, flag coaching) in `scripts/canonical_models.py`
+- [x] T028 [P] [US3] Update coaching and interview strategy skills for `[NEEDS CONFIRMATION]` handling in `skills/interview-strategy-generator/SKILL.md`
+- [x] T029 [P] [US3] Update knowledge gap evaluation skill to incorporate unresolved canonical questions in `skills/knowledge-gaps/SKILL.md`
 
 **Checkpoint**: Chronology, employer relationships, and unresolved item policies are strictly enforced across all outputs.
 
@@ -109,16 +109,16 @@
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T030 [P] [US4] Contract test validating `out/<target-slug>/runtime/canonical-selection.yaml` against schema contract in `tests/test_canonical_selection_contract.py`
-- [ ] T031 [P] [US4] Integration test verifying multiple projection variants share identical canonical dates and formal titles in `tests/test_projection_consistency.py`
+- [x] T030 [P] [US4] Contract test validating `out/<target-slug>/runtime/canonical-selection.yaml` against schema contract in `tests/test_canonical_selection_contract.py`
+- [x] T031 [P] [US4] Integration test verifying multiple projection variants share identical canonical dates and formal titles in `tests/test_projection_consistency.py`
 
 ### Implementation for User Story 4
 
-- [ ] T032 [US4] Implement Activity A factual selection engine in `scripts/canonical_selector.py` emitting `out/<target-slug>/runtime/canonical-selection.yaml`
-- [ ] T033 [US4] Integrate `canonical_selector.py` into runtime opportunity analysis in `skills/opportunity-analyzer/SKILL.md`
-- [ ] T034 [P] [US4] Update cover letter projection skill to consume `canonical-selection.yaml` in `skills/cover-letter-projection/SKILL.md`
-- [ ] T035 [P] [US4] Update LinkedIn projection skill to consume `canonical-selection.yaml` in `skills/linkedin-projection/SKILL.md`
-- [ ] T036 [P] [US4] Update playbook assembler skill to consume `canonical-selection.yaml` in `skills/playbook-assembler/SKILL.md`
+- [x] T032 [US4] Implement Activity A factual selection engine in `scripts/canonical_selector.py` emitting `out/<target-slug>/runtime/canonical-selection.yaml`
+- [x] T033 [US4] Integrate `canonical_selector.py` into runtime opportunity analysis in `skills/opportunity-analyzer/SKILL.md`
+- [x] T034 [P] [US4] Update cover letter projection skill to consume `canonical-selection.yaml` in `skills/cover-letter-projection/SKILL.md`
+- [x] T035 [P] [US4] Update LinkedIn projection skill to consume `canonical-selection.yaml` in `skills/linkedin-projection/SKILL.md`
+- [x] T036 [P] [US4] Update playbook assembler skill to consume `canonical-selection.yaml` in `skills/playbook-assembler/SKILL.md`
 
 **Checkpoint**: Factual selection is locked into runtime context. Projection skills tailor narrative without altering facts.
 
@@ -128,10 +128,10 @@
 
 **Purpose**: End-to-end regression validation, documentation updates, and quickstart verification.
 
-- [ ] T037 [P] Execute full forensic regression suite `pytest -v tests/test_canonical_record_regression.py` asserting all 8 scenarios pass
-- [ ] T038 Execute end-to-end quickstart validation workflow per `specs/005-canonical-record-integration/quickstart.md`
-- [ ] T039 [P] Update system architecture documentation with canonical layer diagrams in `ARCHITECTURE.md`
-- [ ] T040 [P] Update pipeline agent guidelines with canonical precedence and quarantine rules in `AGENTS.md`
+- [x] T037 [P] Execute full forensic regression suite `pytest -v tests/test_canonical_record_regression.py` asserting all 8 scenarios pass
+- [x] T038 Execute end-to-end quickstart validation workflow per `specs/005-canonical-record-integration/quickstart.md`
+- [x] T039 [P] Update system architecture documentation with canonical layer diagrams in `ARCHITECTURE.md`
+- [x] T040 [P] Update pipeline agent guidelines with canonical precedence and quarantine rules in `AGENTS.md`
 
 ---
 

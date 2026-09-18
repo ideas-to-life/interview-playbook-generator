@@ -10,6 +10,7 @@ candidate:
   email: "alexandre.franco@mostelli.com"
   linkedin: "https://linkedin.com/in/avfranco"
   portfolio_url: "https://alexandrefranco.dev"
+  canonical_record: "canonical/career-record.yaml"
 
 target_opportunity:
   company: "FTSE Russell | LSEG Technology"
