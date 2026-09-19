@@ -5,7 +5,7 @@ Operating instructions for any AI agent (Claude Code, Antigravity, GitHub Copilo
 ## What this project is
 
 
-The Career Projection Platform (Interview Playbook Generator v0.5) turns a candidate's portfolio (CV, LinkedIn, slide decks, architecture docs, publications) and a target opportunity (JD / recruiter message / role summary) into a structured OKF v0.2 knowledge graph and multiple tailored executive communication artefacts (Resumes, Cover Letters, LinkedIn Profiles, Playbooks, Briefings). The pipeline runs as a sequence of Skills — each Skill is a `SKILL.md` file the user invokes; state passes between Skills as the OKF bundle and execution context on disk. There is no LLM code to run; the agent (you) *is* the runtime.
+The Career Projection Platform (Interview Playbook Generator v0.6) turns a candidate's portfolio (CV, LinkedIn, slide decks, architecture docs, publications) and a target opportunity (JD / recruiter message / role summary) into a structured OKF v0.2 knowledge graph and multiple tailored executive communication artefacts (Resumes, Cover Letters, LinkedIn Profiles, Playbooks, Briefings). The pipeline runs as a sequence of Skills — each Skill is a `SKILL.md` file the user invokes; state passes between Skills as the OKF bundle and execution context on disk. There is no LLM code to run; the agent (you) *is* the runtime.
 
 ## The five hard rules
 
@@ -95,16 +95,23 @@ Every Skill's input set determines its output set. Re-running a Skill overwrites
 8. **Transferable framing over domain substitution**: When target requirements are adjacent to, but not directly evidenced by, candidate experience, the projection must use explicit transferable framing rather than domain substitution.
 9. **Journey vs Destination Invariant**: The target defines the destination; the evidence defines the journey. Projection may explain why the candidate’s demonstrated experience makes the destination credible, but it must never rewrite the journey as though the candidate has already reached it.
 10. **Career History Evidence Integrity Invariant**: Employer names, employment dates, job titles, status, and locations are immutable evidence. Projection may tailor presentation and accomplishment emphasis around those facts, but must never alter, infer, normalize, approximate, reconstruct, split, merge, or fabricate employment-history facts.
-11. **Canonical Career Record Precedence**: `canonical/career-record.yaml` is the supreme source of truth for all professional facts (employment history, formal titles, dates, education degrees/institutions, and certifications). It unconditionally supersedes secondary documents, derived content, AI-generated text, and LLM inference.
+11. **Canonical Career Record Precedence**: `canonical/career-record.yaml` (in `candidate.portfolio_dir`, e.g. `mind-palace/canonical/career-record.yaml`) is the supreme source of truth for all professional facts (employment history, formal titles, dates, education degrees/institutions, and certifications). It unconditionally supersedes secondary documents, derived content, AI-generated text, and LLM inference.
 12. **Quarantine Structural Exclusion**: Any document, folder, or snippet in `quarantine/` is strictly excluded from factual sourcing. It must never be ingested as evidence or cited in any projection.
-13. **Factual Selection Decoupling (Activity A vs B)**: Selection of canonical facts for an opportunity is executed during runtime analysis and frozen into `out/<target-slug>/runtime/canonical-selection.yaml`. Projection skills consume these immutable selected facts and must never alter dates, titles, or credentials.
-14. **Automated Sanitization**: Detected discrepancies in generated output artefacts (mutated dates, inflated titles, unverified degrees) are automatically rewritten back to canonical truth with alerts recorded in `projection-validation-report.yaml`.
+13. **Factual Selection Decoupling (Activity A vs B)**: Selection of canonical facts for an opportunity is executed during runtime analysis and frozen into `out/<target-slug>/runtime/canonical-selection.yaml` via `scripts/canonical_selector.py`. Projection skills consume these immutable selected facts and must never alter dates, titles, or credentials.
+14. **Automated Sanitization**: Detected discrepancies in generated output artefacts (mutated dates, inflated titles, unverified degrees) are automatically rewritten back to canonical truth with alerts recorded in `projection-validation-report.yaml` and `canonical-conflict-report.yaml`.
+15. **Full Canonical Context Invariant (Forensic Finding A)**: Projection skills MUST load the complete `canonical-selection.yaml`, including education degrees/institutions and certifications, ensuring qualifications remain actively present in model context rather than relying on ungrounded generative recall.
+16. **Cross-Opportunity Isolation Invariant (Forensic Finding B)**: During opportunity analysis or projection generation, agents MUST NEVER read, inspect, or use prior opportunity directories under `out/<other-target-slug>/` as structural or stylistic templates. Every opportunity projection must be derived strictly from canonical knowledge (`out/okf/`), opportunity context (`opportunity-analysis.yaml`), and frozen facts (`canonical-selection.yaml`).
+17. **Target Terminology Evidence Boundary (Forensic Finding C)**: Target-position keywords (e.g., enterprise software tools like Workday, NetSuite, Coupa, Concur, or cloud CCoE frameworks) must never enter candidate skills, experience bullets, or executive summaries unless independently supported by canonical evidence in `career-record.yaml` or `out/okf/`.
+18. **Validator Scope Awareness & Current Limitations (Forensic Finding D)**: Automated validators (`scripts/canonical_validator.py` and `scripts/employment_validator.py`) enforce deterministic regex/pattern checks against known regressors (BBC title inflation, UFRJ degree hallucination, WPP/BBC/BAT date mutations, Compugraf/Souza Cruz direct employer conflation, governance claim inflation). They do NOT comprehensively validate education start/end dates, secondary certifications, foreign language proficiencies, or unmodeled tech stacks. Agents remain strictly accountable for manual compliance across all unautomated dimensions.
 
 ## How the pipeline runs (v0.6)
 
 ```
-KNOWLEDGE LAYER (canonical; writes to out/okf/)
-  portfolio-ingestor             (Executes python3 scripts/ingest_portfolio.py)
+CANONICAL LAYER (supreme source of professional facts)
+  career-record.yaml             (mind-palace/canonical/career-record.yaml, loaded via scripts/canonical_loader.py)
+
+KNOWLEDGE LAYER (canonical graph; writes to out/okf/)
+  portfolio-ingestor             (Executes python3 scripts/ingest_portfolio.py; excludes quarantine/)
   portfolio-analyzer
   achievement-extractor
   evidence-card-generator        (Extended: 6 fields + dup detection)
@@ -118,6 +125,7 @@ KNOWLEDGE LAYER (canonical; writes to out/okf/)
 
 RUNTIME INTELLIGENCE LAYER (derived execution context; writes to out/<target-slug>/runtime/)
   opportunity-analyzer            (out/<target-slug>/runtime/opportunity-analysis.yaml)
+  ├── canonical-selector          (Activity A: python3 scripts/canonical_selector.py <target-slug> ➔ canonical-selection.yaml)
   upwork-qualification            (if target_type: upwork ➔ out/<target-slug>/runtime/upwork-qualification.yaml)
   archetype-classifier            (out/<target-slug>/runtime/archetype-analysis.yaml)
   gap-classifier                  (out/<target-slug>/runtime/gap-analysis.yaml)
@@ -125,8 +133,8 @@ RUNTIME INTELLIGENCE LAYER (derived execution context; writes to out/<target-slu
   projection-strategy-generator   (out/<target-slug>/runtime/projection-strategy.yaml)
 
 COACHING LAYER (derived; reads canonical + opportunity-analysis)
-  interview-strategy-generator
-  knowledge-gaps                  (Pre-assembly gate)
+  interview-strategy-generator    (okf/interview-strategy.md)
+  knowledge-gaps                  (okf/knowledge-gaps.md; pre-assembly gate)
 
 PROJECTION & VALIDATION LAYER (views & reports; writes to out/<target-slug>/)
   projection-registry             (Orchestrates registered projections into out/<target-slug>/)
@@ -137,7 +145,8 @@ PROJECTION & VALIDATION LAYER (views & reports; writes to out/<target-slug>/)
   ├── executive-brief-view         (out/<target-slug>/executive-brief.md)
   ├── upwork-proposal             (if target_type: upwork ➔ out/<target-slug>/upwork-qualification-report.md, upwork-screening-answers.md, upwork-work-samples.md, upwork-evidence-gaps.md)
   └── playbook-assembler          (out/<target-slug>/playbook.md & out/<target-slug>/interview-cheatsheet.md)
-  projection-validator            (out/<target-slug>/runtime/projection-validation-report.yaml)
+  canonical-validator             (python3 scripts/canonical_validator.py <target-slug> ➔ canonical-conflict-report.yaml)
+  projection-validator            (scripts/employment_validator.py ➔ out/<target-slug>/runtime/projection-validation-report.yaml)
   archetype-fit-validator        (out/<target-slug>/runtime/projection-validation-report.yaml overpositioning check)
   brand-validator                 (out/<target-slug>/runtime/brand-validation-report.yaml)
 
@@ -164,16 +173,32 @@ v0.6 types: `Source`, `SourceIndex`, `PortfolioAnalysis`, `Achievement`, `Eviden
 ### File layout
 
 - `skills/<name>/SKILL.md` — the Skill's instructions.
+- `scripts/` — deterministic loader, selector, validator, and ingestion scripts.
 - `config/config.example.yaml` — the YAML config template.
 - `out/` — gitignored output directory.
   - `out/okf/` — canonical OKF bundle (shared across target opportunities).
-  - `out/<target-slug>/` — opportunity-scoped execution context & views (e.g. `out/senior-architect-vallum/`, `out/upwork-business-systems-technology-architecture-consultant/`).
+  - `out/<target-slug>/` — opportunity-scoped execution context & views (e.g. `out/senior-architect-vallum/`, `out/tenth-ai-lead-enterprise-architect/`).
   - `out/<target-slug>/runtime/` — derived runtime YAMLs and validation reports.
 - `evaluation/opportunities/` — market feedback evaluation reports.
 
-## Testing
+## Testing & Verification
 
-1. **Snapshot per Skill.** Diff output against `tests/golden/<skill>/`.
-2. **End-to-end criteria.** `tests/test_v06_success_criteria.py` and `tests/test_upwork_proposal_generator.py`.
-3. **Lint & Validation pass.** Every concept passes classification & attribution checks via `scripts/upwork_validator.py` and pytest.
+1. **Test Suite Execution**: 172 tests across 34 modules in `tests/` protecting canonical loading, selection contracts, career evidence integrity, claim boundary verification, and versioned success criteria:
+   ```bash
+   pytest tests/ -v
+   ```
+2. **Canonical Conflict Audit**:
+   ```bash
+   python3 scripts/canonical_validator.py <target-slug>
+   ```
+3. **Deterministic Factual Selection**:
+   ```bash
+   python3 scripts/canonical_selector.py <target-slug>
+   ```
+4. **Independent Proposal Validator**:
+   ```bash
+   python3 scripts/upwork_validator.py
+   ```
+5. **Snapshot per Skill**: Golden fixture comparisons under `tests/golden/<skill>/`.
+6. **Lint & Attribution Pass**: Concepts verified against classification (`[evidence]`, `[inference]`, `[recommendation]`, `[assumption]`) and valid source footnote bindings.
 

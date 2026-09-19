@@ -7,9 +7,9 @@ The `AGENTS.md` file holds the vendor-neutral operating instructions that also a
 
 ## Current state
 
-- **Status:** v0.6 (Sprint 6 & V3.2 Contract Alignment) Executive Narrative, Personal Brand Engine, Upwork Proposal Projection, Archetype Classifier, Gap Classifier, Market Evaluation, and opportunity-scoped output directories (`out/<target-slug>/`).
-- **Approved artefacts:** `README.md`, `RUNBOOK.md`, `ARCHITECTURE.md`, `AGENTS.md`, `specs/003-upwork-proposal-refinement/`, `specs/004-upwork-proposal-v32-alignment/`.
-- **Branch:** `003-upwork-proposal-refinement` / `main`.
+- **Status:** v0.6 (Canonical Record Integration & V3.2 Contract Alignment) Executive Narrative, Personal Brand Engine, Upwork Proposal Projection, Archetype Classifier, Gap Classifier, Market Evaluation, and opportunity-scoped output directories (`out/<target-slug>/`).
+- **Approved artefacts:** `README.md`, `RUNBOOK.md`, `ARCHITECTURE.md`, `AGENTS.md`, `specs/003-upwork-proposal-refinement/`, `specs/004-upwork-proposal-v32-alignment/`, `specs/005-canonical-record-integration/`.
+- **Branch:** `005-canonical-record-integration` / `main`.
 
 ## Claude Code–specific context
 
@@ -22,10 +22,13 @@ This project's Skills do not call an LLM API. The user invokes each Skill as `/s
 When the user invokes a Skill, you:
 
 1. Read the Skill's `SKILL.md` carefully.
-2. Confirm the input set exists (config, upstream bundle nodes, or `out/<target-slug>/runtime/opportunity-analysis.yaml`).
-3. Run the lint pass on your output before writing.
-4. Write the output subtree per the Skill's contract (`out/okf/` for canonical nodes, `out/<target-slug>/` for opportunity-scoped context & views).
-5. Update `okf/log.md` with a one-line entry.
+2. Confirm the input set exists (config, upstream bundle nodes, `canonical-selection.yaml`, or `out/<target-slug>/runtime/opportunity-analysis.yaml`).
+3. Load the full canonical context: Ensure `canonical-selection.yaml` (roles, education, and certifications) is present in model context rather than relying on ungrounded generative recall.
+4. Strictly isolate opportunity context: NEVER read previous opportunity directories under `out/<other-target-slug>/` for structure or style to prevent cross-opportunity contamination.
+5. Respect evidence boundaries: Do not inject unevidenced target JD keywords (e.g. Workday, NetSuite, Coupa, Concur) into candidate skills or experience.
+6. Run the lint pass on your output before writing.
+7. Write the output subtree per the Skill's contract (`out/okf/` for canonical nodes, `out/<target-slug>/` for opportunity-scoped context & views).
+8. Update `okf/log.md` with a one-line entry.
 
 ### Snapshot & Contract tests
 
@@ -41,8 +44,17 @@ pytest tests/ -v
 # Run the 23-step pipeline orchestrator
 /skill playbook-orchestrator
 
-# Run full test suite (154 tests)
+# Run full test suite (172 tests)
 pytest tests/ -v
+
+# Verify and test canonical career record loader (<1s fast-fail)
+python3 scripts/canonical_loader.py
+
+# Execute Activity A canonical factual selection for target opportunity
+python3 scripts/canonical_selector.py <target-slug>
+
+# Run canonical conflict detection audit
+python3 scripts/canonical_validator.py <target-slug>
 
 # Run independent Upwork proposal validator
 python3 scripts/upwork_validator.py
