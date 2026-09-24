@@ -33,8 +33,11 @@ NEVER FABRICATE:
    Target terminology MUST NOT displace the candidate's primary Enterprise Architecture foundation.
 8. **Automatic Claim Verb Downgrading**: If a claim's verb strength exceeds evidence support (e.g. `Established` or `Led` when evidence supports `Contributed`), the generator MUST automatically down-level the verb to the evidence-supported level (e.g., "Contributed to CCoE governance" instead of "Established CCoE").
 9. **Transferable Domain Framing**: Evidence from an adjacent domain MUST be expressed as *transferable experience* (e.g., "Applied Enterprise Architecture governance experience to cloud and CCoE-related initiatives") rather than converting the adjacent domain into the target domain ("Established a Cloud Centre of Excellence").
-10. **Immutable Career History Metadata**: Professional Experience section headers (Employer, Job Title, Start Date, End Date, Location) MUST be rendered directly from canonical records in `okf/employment-records.yaml`. The generator MUST NOT alter dates, substitute job titles for target alignment, or reconstruct career chronologies.
-11. **Canonical Title & Credential Grounding**: Formal job titles must match canonical formal titles (e.g. `Lead Enterprise Architect - Technology Transformation Group` for BBC Studios; acting scopes may be described in bullet prose but must never inflate the formal title). Education degrees and institutions must be sourced exclusively from canonical education records (BSc in Computer Science from Universidade de Mogi das Cruzes; unevidenced degrees such as MSc or institutions like Federal University of Rio de Janeiro / UFRJ are strictly prohibited).
+10. **Immutable Career History Metadata**: Professional Experience section headers (Employer, Job Title, Start Date, End Date, Location) MUST be rendered directly from canonical records in `out/<target-slug>/runtime/canonical-selection.yaml` (or `okf/employment-records.yaml`). The generator MUST NOT alter dates, substitute job titles for target alignment, or reconstruct career chronologies.
+11. **Canonical Title & Credential Grounding**: Formal job titles must match canonical formal titles (e.g. `Lead Enterprise Architect - Technology Transformation Group` for BBC Studios; acting scopes may be described in bullet prose but must never inflate the formal title). Education degrees and institutions must be sourced exclusively from canonical education records (BSc in Computer Science from Universidade de Mogi das Cruzes, 1988–1991; unevidenced degrees such as MSc or institutions like Federal University of Rio de Janeiro / UFRJ are strictly prohibited).
+12. **Full Canonical Context Invariant**: The generator MUST load the complete, untruncated `out/<target-slug>/runtime/canonical-selection.yaml` (including all education, certifications, and languages beyond line 50) into model context.
+13. **Cross-Opportunity Isolation Invariant**: The generator MUST NEVER read, inspect, or use prior opportunity directories under `out/<other-target-slug>/` for structure or styling. Use only the fact-free synthetic structural templates in `templates/projections/resume-executive.template.md` and `templates/projections/resume-ats.template.md`.
+14. **Target Terminology Evidence Boundary**: Unevidenced target-position keywords (e.g., Workday, NetSuite, Coupa, Concur) must NEVER be claimed as direct candidate experience. They may only appear in explicit gap or transferable architecture framing.
 
 ## Required 10 Standard Sections
 
@@ -48,14 +51,17 @@ Every generated resume variant MUST include the following 10 sections:
 6. **AI Platform, Data & Governance Expertise**: Key bulleted platform & governance capabilities.
 7. **Professional Experience**: Reverse-chronological career history (WPP Media, BBC Studios, British American Tobacco - R&D, BAT - Global, BAT - Americas) with signature achievements and opportunity-weighted bullets.
 8. **Selected AI Initiatives**: Detailed descriptions of CAS (Architecture-as-Code) and EA4ALL (AI Accessibility).
-9. **Education & Professional Development**: Canonical academic degrees (BSc in Computer Science, Universidade de Mogi das Cruzes; Specializations at PUC Minas and FGV) and verified certifications (TOGAF 9, SAFe, LeanIX) sourced strictly from canonical records.
+9. **Education & Professional Development**: Canonical academic degrees (BSc in Computer Science, Universidade de Mogi das Cruzes, 1988–1991) and verified certifications (TOGAF 9, SAFe, LeanIX) sourced strictly from canonical records.
 10. **Technical Skills**: Categorized by domain (Enterprise Architecture, AI Platforms & Governance, Architecture-as-Code, Data Architecture & Integration, Observability & Evaluation, Cloud & Enterprise Software, Programming Languages).
 
 ## Execution Instructions
 
 1. **Read Candidate Config & Opportunity Analysis**: Read `config/config.yaml` and `out/<target-slug>/runtime/opportunity-analysis.yaml`.
-2. **Read Canonical OKF Knowledge**: Read `okf/positioning-statements.md`, `okf/messaging-library.md`, `okf/story-library.md`, `okf/evidence/*.md`, `okf/achievements/*.md`, `okf/capabilities/*.md`, and `okf/behaviour-profile.md`.
-3. **Render Executive Resume (`out/<target-slug>/resume-executive.md`)**: Full submission-ready executive resume.
-4. **Render ATS Resume (`out/<target-slug>/resume-ats.md`)**: Full ATS-optimized resume.
-5. **Render Recruiter Resume (`out/<target-slug>/resume-recruiter.md`)**: Full recruiter summary resume.
-6. **Append Log**: `okf/log.md`.
+2. **Load Complete Canonical Selection**: Load 100% of `out/<target-slug>/runtime/canonical-selection.yaml` verbatim into context.
+3. **Load Fact-Free Synthetic Templates**: Read `templates/projections/resume-executive.template.md` and `templates/projections/resume-ats.template.md` for formatting and structure. DO NOT inspect other opportunity directories.
+4. **Read Canonical OKF Knowledge**: Read `okf/positioning-statements.md`, `okf/messaging-library.md`, `okf/story-library.md`, `okf/evidence/*.md`, `okf/achievements/*.md`, `okf/capabilities/*.md`, and `okf/behaviour-profile.md`.
+5. **Render Executive Resume (`out/<target-slug>/resume-executive.md`)**: Full submission-ready executive resume.
+6. **Render ATS Resume (`out/<target-slug>/resume-ats.md`)**: Full ATS-optimized resume.
+7. **Render Recruiter Resume (`out/<target-slug>/resume-recruiter.md`)**: Full recruiter summary resume.
+8. **Append Log**: `okf/log.md`.
+

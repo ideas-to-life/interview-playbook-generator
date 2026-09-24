@@ -102,7 +102,30 @@ Every Skill's input set determines its output set. Re-running a Skill overwrites
 15. **Full Canonical Context Invariant (Forensic Finding A)**: Projection skills MUST load the complete `canonical-selection.yaml`, including education degrees/institutions and certifications, ensuring qualifications remain actively present in model context rather than relying on ungrounded generative recall.
 16. **Cross-Opportunity Isolation Invariant (Forensic Finding B)**: During opportunity analysis or projection generation, agents MUST NEVER read, inspect, or use prior opportunity directories under `out/<other-target-slug>/` as structural or stylistic templates. Every opportunity projection must be derived strictly from canonical knowledge (`out/okf/`), opportunity context (`opportunity-analysis.yaml`), and frozen facts (`canonical-selection.yaml`).
 17. **Target Terminology Evidence Boundary (Forensic Finding C)**: Target-position keywords (e.g., enterprise software tools like Workday, NetSuite, Coupa, Concur, or cloud CCoE frameworks) must never enter candidate skills, experience bullets, or executive summaries unless independently supported by canonical evidence in `career-record.yaml` or `out/okf/`.
-18. **Validator Scope Awareness & Current Limitations (Forensic Finding D)**: Automated validators (`scripts/canonical_validator.py` and `scripts/employment_validator.py`) enforce deterministic regex/pattern checks against known regressors (BBC title inflation, UFRJ degree hallucination, WPP/BBC/BAT date mutations, Compugraf/Souza Cruz direct employer conflation, governance claim inflation). They do NOT comprehensively validate education start/end dates, secondary certifications, foreign language proficiencies, or unmodeled tech stacks. Agents remain strictly accountable for manual compliance across all unautomated dimensions.
+18. **Unified Deterministic Projection Validator**: `scripts/projection_validator.py` deterministically audits all generated collateral against `canonical-selection.yaml` and `career-record.yaml`. It executes two-stage remediation: Stage 1 automatically sanitizes repairable canonical facts (education dates 1988–1991, formal titles, degrees) with recorded alerts; Stage 2 halts execution with exit code 1 if un-sanitizable direct claims (unverified AWS or Sun SCEA certifications, Spanish language inflation beyond Elementary, or direct claims of unevidenced platforms like Workday, NetSuite, Coupa, Concur) remain.
+
+## The 5-Tier Information Boundary
+
+To prevent cross-opportunity contamination, platform hallucination, and credential mutations, all projection workflows operate within a strict 5-tier information boundary:
+
+```
+Tier 1: Canonical Career Record (Supreme Source of Truth, Read-Only)
+        mind-palace/canonical/career-record.yaml
+                          │
+Tier 2: Canonical Knowledge Graph (Derived Knowledge, Read-Only by Projections)
+        out/okf/ (capabilities, themes, evidence cards, identity)
+                          │
+Tier 3: Frozen Opportunity Context (Per-Opportunity Immutable Context)
+        out/<target-slug>/runtime/canonical-selection.yaml (100% complete loading)
+        out/<target-slug>/runtime/opportunity-analysis.yaml (partitioned ATS vocabulary)
+                          │
+Tier 4: Fact-Free Synthetic Templates (Structural & Styling Guidance Only)
+        templates/projections/ (neutral placeholder data; ZERO candidate or prior-run facts)
+                          │
+Tier 5: Generated Projections & Validation Gate (Derived Collateral & Verification)
+        out/<target-slug>/*.md
+        scripts/projection_validator.py ➔ out/<target-slug>/runtime/projection-validation-report.yaml
+```
 
 ## How the pipeline runs (v0.6)
 
@@ -146,7 +169,7 @@ PROJECTION & VALIDATION LAYER (views & reports; writes to out/<target-slug>/)
   ├── upwork-proposal             (if target_type: upwork ➔ out/<target-slug>/upwork-qualification-report.md, upwork-screening-answers.md, upwork-work-samples.md, upwork-evidence-gaps.md)
   └── playbook-assembler          (out/<target-slug>/playbook.md & out/<target-slug>/interview-cheatsheet.md)
   canonical-validator             (python3 scripts/canonical_validator.py <target-slug> ➔ canonical-conflict-report.yaml)
-  projection-validator            (scripts/employment_validator.py ➔ out/<target-slug>/runtime/projection-validation-report.yaml)
+  projection-validator            (python3 scripts/projection_validator.py <target-slug> ➔ projection-validation-report.yaml)
   archetype-fit-validator        (out/<target-slug>/runtime/projection-validation-report.yaml overpositioning check)
   brand-validator                 (out/<target-slug>/runtime/brand-validation-report.yaml)
 

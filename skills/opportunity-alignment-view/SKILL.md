@@ -21,7 +21,10 @@ NEVER FABRICATE:
 1. **Read-only**: Never modify any concept file in `okf/`.
 2. **Canonical Links**: Every alignment section MUST link back to canonical OKF capability and evidence card nodes.
 3. **Respect Fit Constraints (v6.1 FR-2, FR-9)**: Alignment ratings in `opportunity-alignment.md` MUST NOT exceed the `maximum_alignment` specified in `projection-strategy.yaml`.
-4. **Immutable Employment Metadata**: Any employment headers or career history references in alignment tables must strictly match `okf/employment-records.yaml`.
+4. **Immutable Employment Metadata**: Any employment headers or career history references in alignment tables must strictly match selected facts in `out/<target-slug>/runtime/canonical-selection.yaml` (and `okf/employment-records.yaml`).
+5. **Full Canonical Context Invariant**: The generator MUST load the complete, untruncated `out/<target-slug>/runtime/canonical-selection.yaml` (including education, certifications, and languages) into context.
+6. **Cross-Opportunity Isolation Invariant**: The generator MUST NEVER read, inspect, or use prior opportunity directories under `out/<other-target-slug>/`. Derive all context strictly from canonical OKF and active opportunity runtime files.
+7. **Target Terminology Evidence Boundary**: Unevidenced target-position keywords (e.g., Workday, NetSuite, Coupa, Concur) must never be marked as demonstrated or direct candidate experience.
 
 ## Requirement Decomposition Rules (v6.1 FR-8)
 
@@ -66,7 +69,7 @@ To prevent combining materially different requirements into a single alignment r
 
 ## Execution Instructions
 
-1. **Read `out/<target-slug>/runtime/opportunity-analysis.yaml` and `projection-strategy.yaml`**.
+1. **Read Shared Execution Context & Canonical Selection**: Read `out/<target-slug>/runtime/opportunity-analysis.yaml`, `out/<target-slug>/runtime/canonical-selection.yaml`, and `projection-strategy.yaml`. Load 100% of canonical selection into context. DO NOT inspect other opportunity directories.
 2. **Decompose Requirements**: Apply decomposition rules to broad requirements.
 3. **Map Evidence & Relationships**: Assign `direct`, `adjacent`, `transferable`, or `absent` per decomposed row.
 4. **Apply Alignment Cap**: Ensure no rating exceeds `maximum_alignment` from `fit_constraints`.

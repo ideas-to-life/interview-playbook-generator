@@ -67,7 +67,7 @@ auto_commit:
     message: "[Spec Kit] Add tasks"
   after_implement:
     enabled: true
-    message: "[Spec Kit] Implement canonical career record integration (005-canonical-record-integration)"
+    message: "[Spec Kit] Implement projection data integrity & provenance remediation (006-projection-data-integrity)"
   after_checklist:
     enabled: false
     message: "[Spec Kit] Add checklist"

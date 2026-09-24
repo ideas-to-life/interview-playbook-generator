@@ -21,6 +21,9 @@ NEVER FABRICATE:
 3. **Length Constraint**: Strictly maximum 1 page (≤500 words).
 4. **Traceable**: Grounded in canonical OKF evidence cards and signature achievements.
 5. **Immutable Employment References**: Any references to current or former roles, employers, job titles, or dates must match selected canonical facts in `out/<target-slug>/runtime/canonical-selection.yaml` (and `okf/employment-records.yaml`) exactly. Never inflate titles or approximate dates.
+6. **Full Canonical Context Invariant**: The generator MUST load the complete, untruncated `out/<target-slug>/runtime/canonical-selection.yaml` (including all education, certifications, and languages beyond line 50) into model context.
+7. **Cross-Opportunity Isolation Invariant**: The generator MUST NEVER read, inspect, or use prior opportunity directories under `out/<other-target-slug>/` for structure or styling. Use only the fact-free synthetic structural template in `templates/projections/cover-letter.template.md`.
+8. **Target Terminology Evidence Boundary**: Unevidenced target-position keywords (e.g., Workday, NetSuite, Coupa, Concur) must NEVER be claimed as direct candidate experience. They may only appear in explicit gap or transferable architecture framing.
 
 ## Section Structure
 
@@ -32,7 +35,9 @@ NEVER FABRICATE:
 
 ## Execution Instructions
 
-1. **Read `okf/messaging-library.md` & `okf/story-library.md`**: Extract canonical 30s intro and executive story assets.
-2. **Read Shared Execution Context & Canonical Selection**: Read `out/<target-slug>/runtime/opportunity-analysis.yaml` and `out/<target-slug>/runtime/canonical-selection.yaml`. Extract company, role_title, hiring_goals, capability_priorities, coverage_matrix, and immutable selected canonical facts (formal titles, dates).
-3. **Render Cover Letter (`out/<target-slug>/cover-letter.md`)**.
-4. **Append Log**: `okf/log.md`.
+1. **Read Shared Execution Context**: Read `out/<target-slug>/runtime/opportunity-analysis.yaml`. Extract company, role_title, hiring_goals, capability_priorities, coverage_matrix.
+2. **Load Complete Canonical Selection**: Load 100% of `out/<target-slug>/runtime/canonical-selection.yaml` verbatim into context (including education, certifications, and languages).
+3. **Load Fact-Free Synthetic Template**: Read `templates/projections/cover-letter.template.md` for formatting and structure. DO NOT inspect other opportunity directories.
+4. **Read Canonical OKF Knowledge**: Read `okf/messaging-library.md` & `okf/story-library.md` to extract canonical 30s intro and executive story assets.
+5. **Render Cover Letter (`out/<target-slug>/cover-letter.md`)**: Ensure max 1 page (≤500 words) strictly obeying factual boundaries.
+6. **Append Log**: `okf/log.md`.

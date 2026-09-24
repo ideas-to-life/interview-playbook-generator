@@ -142,3 +142,139 @@ class CanonicalCareerRecord:
             if q.current_status.lower() != "resolved"
         ]
 
+
+@dataclass
+class LanguageEntry:
+    language: str
+    proficiency: str
+    status: str = "verified"
+    notes: Optional[str] = None
+
+
+@dataclass
+class ValidationFinding:
+    source_file: str
+    category: str  # 'education' | 'certification' | 'language' | 'employment' | 'technology' | 'isolation'
+    severity: str  # 'FATAL' | 'SANITIZED' | 'WARNING'
+    generated_claim: str
+    reason: str
+    action_taken: str  # 'sanitized_in_place' | 'validation_failure_block' | 'warning_logged'
+    canonical_baseline: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        d = {
+            "source_file": self.source_file,
+            "category": self.category,
+            "severity": self.severity,
+            "generated_claim": self.generated_claim,
+            "reason": self.reason,
+            "action_taken": self.action_taken,
+        }
+        if self.canonical_baseline:
+            d["canonical_baseline"] = self.canonical_baseline
+        return d
+
+
+@dataclass
+class CheckDetail:
+    status: str  # 'PASSED' | 'FAILED' | 'SANITIZED'
+    details: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        d = {"status": self.status}
+        if self.details:
+            d["details"] = self.details
+        return d
+
+
+@dataclass
+class ValidationSummary:
+    total_files_audited: int
+    total_findings: int
+    sanitized_count: int
+    unresolved_defects: int
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "total_files_audited": self.total_files_audited,
+            "total_findings": self.total_findings,
+            "sanitized_count": self.sanitized_count,
+            "unresolved_defects": self.unresolved_defects,
+        }
+
+
+@dataclass
+class ProjectionValidationReport:
+    target_slug: str
+    evaluated_at: str
+    overall_status: str  # 'PASSED' | 'FAILED' | 'PASSED_WITH_SANITIZATION'
+    validator_version: str = "1.0.0"
+    summary: Optional[ValidationSummary] = None
+    checks: Dict[str, CheckDetail] = field(default_factory=dict)
+    findings: List[ValidationFinding] = field(default_factory=list)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "report_metadata": {
+                "target_slug": self.target_slug,
+                "evaluated_at": self.evaluated_at,
+                "overall_status": self.overall_status,
+                "validator_version": self.validator_version,
+            },
+            "summary": self.summary.to_dict() if self.summary else {
+                "total_files_audited": 0,
+                "total_findings": len(self.findings),
+                "sanitized_count": sum(1 for f in self.findings if f.severity == "SANITIZED"),
+                "unresolved_defects": sum(1 for f in self.findings if f.severity == "FATAL"),
+            },
+            "checks": {k: v.to_dict() for k, v in self.checks.items()},
+            "findings": [f.to_dict() for f in self.findings],
+        }
+
+
+@dataclass
+class ATSEvidencedTerm:
+    term: str
+    evidence_source: str  # 'career_record' | 'okf_capability' | 'okf_evidence_card'
+    evidence_ref: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "term": self.term,
+            "evidence_source": self.evidence_source,
+            "evidence_ref": self.evidence_ref,
+        }
+
+
+@dataclass
+class ATSRequiredJobTerm:
+    term: str
+    status: str = "unmatched_requirement_gap"
+    recommended_framing: str = "transferable_capability"  # 'explicit_gap' | 'transferable_capability' | 'adjacent_experience'
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "term": self.term,
+            "status": self.status,
+            "recommended_framing": self.recommended_framing,
+        }
+
+
+@dataclass
+class ATSVocabularyPartition:
+    candidate_evidenced_vocabulary: List[ATSEvidencedTerm] = field(default_factory=list)
+    required_job_vocabulary: List[ATSRequiredJobTerm] = field(default_factory=list)
+    scoring_rules: Dict[str, Any] = field(default_factory=lambda: {
+        "evidenced_credit_multiplier": 1.0,
+        "unevidenced_credit_multiplier": 0.0,
+        "unevidenced_direct_claim_penalty": "integrity_defect_failure",
+    })
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "candidate_evidenced_vocabulary": [t.to_dict() for t in self.candidate_evidenced_vocabulary],
+            "required_job_vocabulary": [t.to_dict() for t in self.required_job_vocabulary],
+            "scoring_rules": self.scoring_rules,
+        }
+
+

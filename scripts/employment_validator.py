@@ -218,135 +218,19 @@ def validate_canonical_integrity(artefact_content: str, canonical_records: list[
     return validate_employment_history(artefact_content, canonical_records)
 
 
+from scripts.projection_validator import sanitize_projection_content
+
+
 def sanitize_artefact_content(artefact_content: str, canonical_records: list[dict] = None) -> Tuple[str, List[Dict[str, Any]]]:
-    """Deterministically sanitizes artefact content by rewriting discrepancies back to canonical truth.
-    
-    Returns:
-        (sanitized_content, sanitization_alerts)
-    """
-    sanitized = artefact_content
+    """Deterministically sanitizes artefact content by delegating to scripts.projection_validator."""
+    sanitized, findings = sanitize_projection_content(artefact_content)
     alerts = []
-
-    # 1. Sanitize Academic Degree (Scenario 1)
-    msc_patterns = [
-        (
-            r"(?:MSc|Master of Science)(?:\s+in\s+Computer\s+Science)?(?:,\s*|\s+from\s+|\s+-\s+)(?:Federal University of Rio de Janeiro|UFRJ)",
-            "BSc Computer Science, Universidade de Mogi das Cruzes",
-            "degree_level",
-            "Rewrote unverified MSc/UFRJ claim to canonical BSc Computer Science, Universidade de Mogi das Cruzes"
-        ),
-        (
-            r"Federal University of Rio de Janeiro|UFRJ",
-            "Universidade de Mogi das Cruzes",
-            "institution",
-            "Rewrote unverified institution UFRJ to canonical Universidade de Mogi das Cruzes"
-        ),
-        (
-            r"\bMSc in Computer Science\b",
-            "BSc in Computer Science",
-            "degree_level",
-            "Rewrote inflated MSc degree to canonical BSc"
-        ),
-    ]
-
-    for pat, rep, field_type, reason in msc_patterns:
-        match = re.search(pat, sanitized, re.IGNORECASE)
-        if match:
-            orig = match.group(0)
-            sanitized = re.sub(pat, rep, sanitized, flags=re.IGNORECASE)
-            alerts.append({
-                "field_type": field_type,
-                "original": orig,
-                "sanitized": rep,
-                "reason": reason,
-                "action_taken": "canonical_override",
-            })
-
-    # 2. Sanitize BBC Formal Title (Scenario 2 & 3)
-    bbc_title_patterns = [
-        (
-            r"Head of Enterprise Architecture\s*&\s*Digital Evolution",
-            "Lead Enterprise Architect - Technology Transformation Group",
-            "formal_title",
-            "Rewrote inflated BBC title 'Head of Enterprise Architecture & Digital Evolution' to canonical formal title"
-        ),
-        (
-            r"(\*\*\s*)Head of Enterprise Architecture(\s*\*\*)",
-            r"\1Lead Enterprise Architect - Technology Transformation Group\2",
-            "formal_title",
-            "Rewrote inflated formal title 'Head of Enterprise Architecture' to canonical 'Lead Enterprise Architect - Technology Transformation Group'"
-        ),
-        (
-            r"(###\s*BBC\s+Studios.*?\n\*\*)Head of Enterprise Architecture(\*\*)",
-            r"\1Lead Enterprise Architect - Technology Transformation Group\2",
-            "formal_title",
-            "Rewrote BBC formal title to canonical 'Lead Enterprise Architect - Technology Transformation Group'"
-        ),
-    ]
-
-    for pat, rep, field_type, reason in bbc_title_patterns:
-        match = re.search(pat, sanitized)
-        if match:
-            orig = match.group(0)
-            sanitized = re.sub(pat, rep, sanitized)
-            alerts.append({
-                "field_type": field_type,
-                "original": orig,
-                "sanitized": rep,
-                "reason": reason,
-                "action_taken": "canonical_override",
-            })
-
-    # 3. Sanitize Dates (Chronology)
-    date_patterns = [
-        (
-            r"(WPP(?:\s+Media)?.*?\b)2022\s*[–\-]\s*(?:Present|202\d)",
-            r"\1Dec 2025 – Jul 2026",
-            "dates",
-            "Rewrote fabricated WPP date (2022-Present) to canonical Dec 2025 – Jul 2026"
-        ),
-        (
-            r"(BBC(?:\s+Studios)?.*?\b)2020\s*[–\-]\s*2022",
-            r"\1Oct 2021 – Nov 2025",
-            "dates",
-            "Rewrote fabricated BBC period (2020-2022) to canonical Oct 2021 – Nov 2025"
-        ),
-    ]
-
-    for pat, rep, field_type, reason in date_patterns:
-        match = re.search(pat, sanitized, re.IGNORECASE)
-        if match:
-            orig = match.group(0)
-            sanitized = re.sub(pat, rep, sanitized, flags=re.IGNORECASE)
-            alerts.append({
-                "field_type": field_type,
-                "original": orig,
-                "sanitized": rep,
-                "reason": reason,
-                "action_taken": "canonical_override",
-            })
-
-    # 4. Sanitize Claim Strength (Scenario 8)
-    claim_patterns = [
-        (
-            r"[Ee]stablished and led the enterprise architecture governance function",
-            "Supported and contributed to the enterprise architecture governance function",
-            "claim_strength",
-            "Down-leveled unsupported enhancement 'established and led' to canonical 'supported and contributed to'"
-        ),
-    ]
-
-    for pat, rep, field_type, reason in claim_patterns:
-        match = re.search(pat, sanitized)
-        if match:
-            orig = match.group(0)
-            sanitized = re.sub(pat, rep, sanitized)
-            alerts.append({
-                "field_type": field_type,
-                "original": orig,
-                "sanitized": rep,
-                "reason": reason,
-                "action_taken": "canonical_override",
-            })
-
+    for f in findings:
+        alerts.append({
+            "field_type": f.category,
+            "original": f.generated_claim,
+            "sanitized": f.canonical_baseline,
+            "reason": f.reason,
+            "action_taken": "canonical_override",
+        })
     return sanitized, alerts
