@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "AI Lead Enterprise Architect"
+  target_role: "Applied AI Architect, Startups"
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: "+44 (0) 7304 093460"
@@ -13,11 +13,11 @@ candidate:
   canonical_record: "canonical/career-record.yaml"
 
 target_opportunity:
-  company: "Tenth Revolution Group"
-  role_title: "AI Lead Enterprise Architect"
-  industry: "Talent acquisition and development"
+  company: "Anthropic"
+  role_title: "Applied AI Architect, Startups"
+  industry: "Research Services"
   interviewer: ""
-  source: "config/target-position/tenth-ai-lead-enterprise-architect.md"
+  source: "config/target-position/anthropic-applied-ai-startups.md"
   target_type: "employment"  # Options: employment (default), upwork
 
 projections:

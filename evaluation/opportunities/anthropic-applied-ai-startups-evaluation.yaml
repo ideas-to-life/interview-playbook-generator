@@ -1,0 +1,13 @@
+version: "6.0"
+generated_at: "2026-09-24T15:35:00Z"
+target_slug: "anthropic-applied-ai-startups"
+prediction_evaluation:
+  predicted_archetype: "consulting_ai_leader"
+  predicted_overall_fit: "Moderate-High"
+  actual_outcome: "pending_submission"
+  prediction_accuracy: "Pending"
+  confirmed_signals:
+    - "Hands-on Python/LLM engineering directly evidenced in WPP and CAS prototypes"
+    - "Multi-agent systems and MCP tool development align with Claude developer platform focus"
+    - "Startup operating context and quota-carrying experience appropriately flagged as adjacent/transferable"
+  missed_signals: []
