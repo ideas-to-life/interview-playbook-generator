@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Applied AI Architect, Startups"
+  target_role: "Enterprise Architect"
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: "+44 (0) 7304 093460"
@@ -13,11 +13,11 @@ candidate:
   canonical_record: "canonical/career-record.yaml"
 
 target_opportunity:
-  company: "Anthropic"
-  role_title: "Applied AI Architect, Startups"
-  industry: "Research Services"
+  company: "iForce"
+  role_title: "Enterprise Architect"
+  industry: "Recruiment Services"
   interviewer: ""
-  source: "config/target-position/anthropic-applied-ai-startups.md"
+  source: "config/target-position/iforce-enterprise-architect.md"
   target_type: "employment"  # Options: employment (default), upwork
 
 projections:
