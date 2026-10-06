@@ -1,0 +1,62 @@
+# Contract: Evidence-Partitioned ATS Vocabulary
+# Schema for ATS vocabulary partitioning inside out/<target-slug>/runtime/opportunity-analysis.yaml
+
+$schema: "http://json-schema.org/draft-07/schema#"
+title: EvidencePartitionedATSVocabulary
+type: object
+required:
+  - candidate_evidenced_vocabulary
+  - required_job_vocabulary
+  - scoring_rules
+properties:
+  candidate_evidenced_vocabulary:
+    type: array
+    description: "Keywords from target JD directly supported by canonical record or verified OKF capabilities"
+    items:
+      type: object
+      required:
+        - term
+        - evidence_source
+        - evidence_ref
+      properties:
+        term:
+          type: string
+        evidence_source:
+          type: string
+          enum: ["career_record", "okf_capability", "okf_evidence_card"]
+        evidence_ref:
+          type: string
+  required_job_vocabulary:
+    type: array
+    description: "Keywords required by JD lacking candidate evidence; must only appear as gaps or transferable framing"
+    items:
+      type: object
+      required:
+        - term
+        - status
+        - recommended_framing
+      properties:
+        term:
+          type: string
+        status:
+          type: string
+          enum: ["unmatched_requirement_gap"]
+        recommended_framing:
+          type: string
+          enum: ["explicit_gap", "transferable_capability", "adjacent_experience"]
+  scoring_rules:
+    type: object
+    required:
+      - evidenced_credit_multiplier
+      - unevidenced_credit_multiplier
+      - unevidenced_direct_claim_penalty
+    properties:
+      evidenced_credit_multiplier:
+        type: number
+        minimum: 1.0
+      unevidenced_credit_multiplier:
+        type: number
+        maximum: 0.0
+      unevidenced_direct_claim_penalty:
+        type: string
+        enum: ["integrity_defect_failure"]

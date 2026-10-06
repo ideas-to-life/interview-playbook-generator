@@ -10,6 +10,7 @@ candidate:
   email: "avfranco@hotmail.com"
   linkedin: "https://linkedin.com/in/avfranco"
   portfolio_url: "https://avfranco-br.github.io/portfolio/"
+  canonical_record: "canonical/career-record.yaml"
 
 target_opportunity:
   company: "Vervaunt"

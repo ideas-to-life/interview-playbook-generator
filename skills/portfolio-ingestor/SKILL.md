@@ -24,24 +24,26 @@ Every statement written into `okf/sources/*.md` must adhere to:
 
 ## Input & Output Contracts
 
-- **Inputs**: Read path declared in `candidate.portfolio_dir` & `target_opportunity.source` in `config/config.yaml`.
+- **Inputs**: Read paths declared in `candidate.portfolio_dir`, `candidate.canonical_record`, and `target_opportunity.source` in `config/config.yaml`.
 - **Outputs**:
   - `okf/sources/index.md` (type: `SourceIndex`, `okf_version: "0.2"`)
   - `okf/sources/<slug>.md` (type: `Source`)
-  - `okf/employment-records.yaml` (Authoritative Canonical Employment Records)
+  - `okf/employment-records.yaml` (Authoritative Canonical Employment Records derived directly from `career-record.yaml`)
   - `okf/log.md` (append update entry)
 
 ## Execution Instructions
 
-1. **Automated Ingestion Script**: Execute `python3 scripts/ingest_portfolio.py` to recursively scan `candidate.portfolio_dir` (e.g. `/Users/avfranco/GitHub/mind-palace/`) across all subdirectories (`articles/`, `learnings/`, `architecture-philosophy/`, `experiments/`, `standard-operational-procedure/`, `portfolio/`, `resume-profile/`, `narratives/`, `about/`).
-2. **Create `Source` Concepts**: For each discovered file:
+1. **Automated Ingestion Script**: Execute `python3 scripts/ingest_portfolio.py` to recursively scan `candidate.portfolio_dir` across all active subdirectories (`articles/`, `learnings/`, `architecture-philosophy/`, `experiments/`, `standard-operational-procedure/`, `portfolio/`, `resume-profile/`, `narratives/`, `about/`).
+   - **Quarantine Exclusion**: Any `quarantine/` directory is strictly excluded from file discovery and cannot be ingested as evidence or sources.
+2. **Canonical Career Record Loading**: Load the authoritative career record from `candidate.canonical_record` (e.g. `canonical/career-record.yaml`) using `scripts/canonical_loader.py`.
+3. **Extract Employment Records**: Write `okf/employment-records.yaml` directly from the canonical career record (`career-record.yaml`). Legacy `Positions.csv` parsing is completely deprecated and removed to prevent unverified titles or employers from entering the knowledge graph.
+4. **Create `Source` Concepts**: For each discovered non-quarantined file:
    - Extract title, author (default `human:alexandre.franco`), last_modified, and resource path.
    - Format concept frontmatter with `type: Source` and frontmatter `sources` list containing itself as `id`.
    - Write body with `[evidence]` line confirming file presence and `[inference]` classifying document type (e.g. ArticleSource, LearningLogSource, PhilosophySource, PracticeSource).
-3. **Build `SourceIndex`**: Write `okf/sources/index.md` with:
+5. **Build `SourceIndex`**: Write `okf/sources/index.md` with:
    - Frontmatter `okf_version: "0.2"`, `type: SourceIndex`.
    - Markdown list of all discovered sources with relative links (`[Title](<slug>.md)`).
    - Coverage summary detailing document types discovered.
-4. **Extract Employment Records**: Write `okf/employment-records.yaml` containing structured canonical employment history facts (`employer`, `title`, `start_date`, `end_date`, `status`, `location`, `sources`, and `approved_aliases`).
-5. **Append Log**: Append ISO-8601 timestamped entry to `okf/log.md`.
+6. **Append Log**: Append ISO-8601 timestamped entry to `okf/log.md`.
 

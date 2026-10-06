@@ -1,0 +1,121 @@
+# Contract: Projection Validation Report
+# Schema definition for out/<target-slug>/runtime/projection-validation-report.yaml
+
+$schema: "http://json-schema.org/draft-07/schema#"
+title: ProjectionValidationReport
+type: object
+required:
+  - report_metadata
+  - summary
+  - checks
+  - findings
+properties:
+  report_metadata:
+    type: object
+    required:
+      - target_slug
+      - evaluated_at
+      - overall_status
+      - validator_version
+    properties:
+      target_slug:
+        type: string
+      evaluated_at:
+        type: string
+        format: date-time
+      overall_status:
+        type: string
+        enum: ["PASSED", "FAILED", "PASSED_WITH_SANITIZATION"]
+      validator_version:
+        type: string
+  summary:
+    type: object
+    required:
+      - total_files_audited
+      - total_findings
+      - sanitized_count
+      - unresolved_defects
+    properties:
+      total_files_audited:
+        type: integer
+      total_findings:
+        type: integer
+      sanitized_count:
+        type: integer
+      unresolved_defects:
+        type: integer
+  checks:
+    type: object
+    required:
+      - education
+      - certifications
+      - languages
+      - employment_chronology
+      - technology_claims
+      - cross_opportunity_isolation
+    properties:
+      education:
+        type: object
+        required: [status]
+        properties:
+          status: { type: string, enum: ["PASSED", "FAILED", "SANITIZED"] }
+          details: { type: string }
+      certifications:
+        type: object
+        required: [status]
+        properties:
+          status: { type: string, enum: ["PASSED", "FAILED", "SANITIZED"] }
+          details: { type: string }
+      languages:
+        type: object
+        required: [status]
+        properties:
+          status: { type: string, enum: ["PASSED", "FAILED", "SANITIZED"] }
+          details: { type: string }
+      employment_chronology:
+        type: object
+        required: [status]
+        properties:
+          status: { type: string, enum: ["PASSED", "FAILED", "SANITIZED"] }
+          details: { type: string }
+      technology_claims:
+        type: object
+        required: [status]
+        properties:
+          status: { type: string, enum: ["PASSED", "FAILED"] }
+          details: { type: string }
+      cross_opportunity_isolation:
+        type: object
+        required: [status]
+        properties:
+          status: { type: string, enum: ["PASSED", "FAILED"] }
+          details: { type: string }
+  findings:
+    type: array
+    items:
+      type: object
+      required:
+        - source_file
+        - category
+        - severity
+        - generated_claim
+        - reason
+        - action_taken
+      properties:
+        source_file:
+          type: string
+        category:
+          type: string
+          enum: ["education", "certification", "language", "employment", "technology", "isolation"]
+        severity:
+          type: string
+          enum: ["FATAL", "SANITIZED", "WARNING"]
+        generated_claim:
+          type: string
+        canonical_baseline:
+          type: string
+        reason:
+          type: string
+        action_taken:
+          type: string
+          enum: ["sanitized_in_place", "validation_failure_block", "warning_logged"]

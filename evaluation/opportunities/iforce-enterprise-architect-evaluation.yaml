@@ -1,0 +1,22 @@
+version: "6.0"
+generated_at: "2026-10-06T12:55:00Z"
+target_slug: "iforce-enterprise-architect"
+prediction_evaluation:
+  predicted_archetype: "enterprise_architect"
+  predicted_overall_fit: "Moderate-High"
+  actual_outcome: "active"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Direct alignment on Enterprise Architecture Strategy, Target Operating Models, and Roadmapping verified"
+    - "Proven track record in legacy technical estate rationalisation and technical debt reduction (BBC Studios, BAT)"
+    - "Demonstrated architecture governance with certified TOGAF 9 and LeanIX practitioner credentials"
+    - "Modern architecture patterns (event-driven, microservices, API-first) strongly evidenced"
+    - "Transferable cloud architecture governance and landing zone guardrails without claiming unverified AWS certifications"
+    - "Global matrixed executive stakeholder experience and readiness for London hybrid / Dubai international travel"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.0
+    projection_quality: 99.0
+    opportunity_fit: 88.0
+    archetype_fit: 95.0

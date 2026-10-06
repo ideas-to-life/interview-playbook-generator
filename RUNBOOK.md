@@ -163,6 +163,12 @@ To independently inspect generated client-facing proposal copy for zero internal
 python3 scripts/upwork_validator.py
 ```
 
+### Deterministic Factual Projection Validation & Remediation
+To deterministically validate generated projection views against canonical records, automatically sanitize repairable facts (dates, titles, degrees), and enforce hard failure on unevidenced credentials/platforms:
+```bash
+python3 scripts/projection_validator.py <target-slug>
+```
+
 ---
 
 ## 7. Troubleshooting & Common Scenarios

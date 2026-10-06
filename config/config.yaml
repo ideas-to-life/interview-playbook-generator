@@ -3,20 +3,21 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Director Enterprise Architecture"
+  target_role: "Enterprise Architect"
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: "+44 (0) 7304 093460"
   email: "alexandre.franco@mostelli.com"
   linkedin: "https://linkedin.com/in/avfranco"
   portfolio_url: "https://alexandrefranco.dev"
+  canonical_record: "canonical/career-record.yaml"
 
 target_opportunity:
-  company: "FTSE Russell | LSEG Technology"
-  role_title: "Director Enterprise Architecture"
-  industry: ""
+  company: "iForce"
+  role_title: "Enterprise Architect"
+  industry: "Recruiment Services"
   interviewer: ""
-  source: "config/target-position/lseg-director-enterprise-architecture.md"
+  source: "config/target-position/iforce-enterprise-architect.md"
   target_type: "employment"  # Options: employment (default), upwork
 
 projections:

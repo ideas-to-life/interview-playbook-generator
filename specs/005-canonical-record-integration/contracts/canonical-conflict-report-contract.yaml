@@ -1,0 +1,47 @@
+# Schema Contract: Canonical Conflict Audit Report
+# Target location: out/<target-slug>/runtime/canonical-conflict-report.yaml
+
+$schema: "http://json-schema.org/draft-07/schema#"
+title: CanonicalConflictReport
+type: object
+required:
+  - target_slug
+  - evaluated_at
+  - total_conflicts
+  - conflicts
+properties:
+  target_slug:
+    type: string
+  evaluated_at:
+    type: string
+    format: date-time
+  total_conflicts:
+    type: integer
+    minimum: 0
+  conflicts:
+    type: array
+    items:
+      type: object
+      required:
+        - source_file
+        - field_type
+        - conflicting_claim
+        - canonical_fact
+        - action_taken
+      properties:
+        source_file:
+          type: string
+          description: "Path to secondary document containing conflicting statement"
+        field_type:
+          type: string
+          enum: ["formal_title", "degree_level", "institution", "dates", "employer_relationship", "claim_strength"]
+        conflicting_claim:
+          type: string
+        canonical_fact:
+          type: string
+        action_taken:
+          type: string
+          enum: ["canonical_override"]
+        severity:
+          type: string
+          enum: ["high", "medium", "low"]
