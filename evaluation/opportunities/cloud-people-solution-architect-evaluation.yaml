@@ -1,0 +1,21 @@
+version: "6.0"
+generated_at: "2026-10-09T12:23:45+00:00"
+target_slug: "cloud-people-solution-architect"
+prediction_evaluation:
+  predicted_archetype: "enterprise_architect"
+  predicted_overall_fit: "Moderate-High"
+  actual_outcome: "active"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Direct alignment on Solution Architecture and High Level Design (HLD) governance across complex enterprise transformations"
+    - "Direct alignment on Systems Integration, APIs, Middleware, and Hybrid Integration Platforms (SAP CPI, Talend, event-driven patterns)"
+    - "Direct alignment on Architecture Review Board (ARB) leadership and Design Authority governance"
+    - "Direct alignment on application portfolio rationalisation, legacy decommissioning, and technical debt reduction using SAP LeanIX"
+    - "Correctly identified transferable positioning requirement for Salesforce.com ecosystem vs vendor-neutral solution architecture"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.0
+    projection_quality: 99.0
+    opportunity_fit: 88.5
+    archetype_fit: 92.0

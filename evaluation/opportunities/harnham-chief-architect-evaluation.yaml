@@ -1,0 +1,21 @@
+version: "6.0"
+generated_at: "2026-10-12T17:46:00+00:00"
+target_slug: "harnham-chief-architect"
+prediction_evaluation:
+  predicted_archetype: "chief_architect"
+  predicted_overall_fit: "High"
+  actual_outcome: "active"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Direct alignment on taking ownership of the Enterprise Architecture function and evolving the long-term technology strategy"
+    - "Proven track record establishing scalable cloud-native architecture patterns and modern engineering standards while challenging legacy paradigms"
+    - "Demonstrated authority driving AI-enabled architecture, automation, and agentic engineering capabilities (WPP Media & BBC Studios)"
+    - "Deep background balancing architectural governance, regulatory compliance, and risk control with PE-sponsored innovation and delivery velocity"
+    - "Proven executive partnership across C-suite sponsors, Product, Security, Engineering, and Data leaders"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.5
+    projection_quality: 99.5
+    opportunity_fit: 99.5
+    archetype_fit: 99.2

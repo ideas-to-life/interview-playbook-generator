@@ -1,0 +1,20 @@
+version: "6.0"
+generated_at: "2026-10-12T10:25:00+00:00"
+target_slug: "principal-ai-ml-architect"
+prediction_evaluation:
+  predicted_archetype: "consulting_principal_ai_architect"
+  predicted_overall_fit: "High"
+  actual_outcome: "active"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Direct alignment on 50/50 split between technical pre-sales discovery/scoping and technical delivery leadership verified"
+    - "Deep hands-on authority in Agentic AI, LLMs, model optimisation, and multi-agent coordination frameworks (WPP Media, Mostelli)"
+    - "Proven multi-cloud solution architecture expertise across Google Cloud (Vertex AI, GKE), AWS, and Azure"
+    - "Strong executive communication, consultative discovery workshops, and technical pre-sales pitching track record"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.5
+    projection_quality: 99.5
+    opportunity_fit: 99.5
+    archetype_fit: 99.0

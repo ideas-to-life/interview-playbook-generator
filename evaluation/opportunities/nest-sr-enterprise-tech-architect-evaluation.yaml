@@ -1,0 +1,20 @@
+version: "6.0"
+generated_at: "2026-10-14T14:46:00+01:00"
+target_slug: "nest-sr-enterprise-tech-architect"
+prediction_evaluation:
+  predicted_archetype: "enterprise_architect"
+  predicted_overall_fit: "High"
+  actual_outcome: "active"
+  prediction_accuracy: "High"
+  confirmed_signals:
+    - "Direct alignment on Enterprise Architecture strategy, capability-based planning, and roadmapping verified"
+    - "Proven track record chairing Architecture Review Boards (ARB) and establishing pragmatic governance operating models"
+    - "Strong senior stakeholder influencing and strategic delivery partner collaboration background (demonstrated at BBC Studios and BAT)"
+    - "Regulated global enterprise governance experience provides solid transferable foundation for pension regulatory standards"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.5
+    projection_quality: 99.2
+    opportunity_fit: 98.5
+    archetype_fit: 99.0

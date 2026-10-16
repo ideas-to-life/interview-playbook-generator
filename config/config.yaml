@@ -13,11 +13,11 @@ candidate:
   canonical_record: "canonical/career-record.yaml"
 
 target_opportunity:
-  company: "iForce"
+  company: "Financial Times"
   role_title: "Enterprise Architect"
-  industry: "Recruiment Services"
-  interviewer: ""
-  source: "config/target-position/iforce-enterprise-architect.md"
+  industry: "newspaper and digital publisher"
+  interviewer: "Recruiter"
+  source: "config/target-position/ft-enterprise-architect.md"
   target_type: "employment"  # Options: employment (default), upwork
 
 projections:

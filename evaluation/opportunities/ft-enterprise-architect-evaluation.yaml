@@ -1,0 +1,13 @@
+version: '6.0'
+generated_at: '2026-10-16T13:55:24.656631+00:00'
+target_slug: ft-enterprise-architect
+prediction_evaluation:
+  predicted_archetype: enterprise_architect
+  predicted_overall_fit: High
+  actual_outcome: in_progress
+  prediction_accuracy: High
+  confirmed_signals:
+  - Enterprise architecture strategy and governance identified as primary mandate
+  - Digital publishing editorial tools flagged as addressable adjacent domain gap
+  - BBC Studios media background identified as high-value transferable experience
+  missed_signals: []

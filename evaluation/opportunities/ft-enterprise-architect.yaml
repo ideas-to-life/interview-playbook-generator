@@ -1,0 +1,11 @@
+market_feedback:
+  opportunity: ft-enterprise-architect
+  stage: application_submission
+  outcome: in_progress
+  positive:
+  - strong_enterprise_architecture_background
+  - proven_operating_model_and_governance_experience
+  - strong_media_background_at_bbc_studios
+  - certified_togaf_and_leanix
+  concerns:
+  - digital_newsroom_editorial_tooling_depth
