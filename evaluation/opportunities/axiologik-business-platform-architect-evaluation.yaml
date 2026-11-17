@@ -1,0 +1,25 @@
+version: "6.0"
+generated_at: "2026-11-12T12:26:40Z"
+target_slug: "axiologik-business-platform-architect"
+prediction_evaluation:
+  predicted_archetype: "enterprise_architect"
+  predicted_overall_fit: "High"
+  predicted_selection_classification: "Strong Fit"
+  actual_outcome: "pending_interview"
+  interviewer: "Hiring Leadership / Programme Leadership"
+  prediction_accuracy: "Baseline Established"
+  anticipated_positive_signals:
+    - "Direct authority bridging business strategy, process modeling, and platform technology (BBC Studios Lead EA; LeanIX, Signavio, TOGAF 9)"
+    - "Extensive history partnering directly with Business Analysts and PMO to shape business capability blueprints and enterprise roadmaps"
+    - "Demonstrated operating model evolution and establishment of LeanIX as single system of record for cross-domain capability planning"
+    - "Decades of complex enterprise integration governance across hybrid cloud (Azure, AWS), enterprise SaaS, and legacy platforms at BAT and BBC Studios"
+    - "Proven solution design assurance and third-party supplier proposal challenge across multi-vendor programmes"
+  anticipated_risk_signals:
+    - "Absence of direct hands-on Salesforce administration or developer certifications (mitigated by framing Salesforce as advantageous commercial SaaS platform)"
+    - "Potential risk of over-indexing on recent cutting-edge Agentic AI platforms rather than core Business and Platform Architecture"
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.2
+    projection_quality: 99.0
+    opportunity_fit: 94.0
+    archetype_fit: 96.0

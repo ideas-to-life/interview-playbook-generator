@@ -1,0 +1,11 @@
+version: "6.0"
+generated_at: "2026-11-17T10:36:00Z"
+target_slug: "ifg-sn-automation-integration-engineer"
+prediction_evaluation:
+  status: "pending_market_feedback"
+  predicted_archetype: "ai_automation_builder"
+  predicted_overall_fit: "Low-Moderate"
+  prediction_accuracy: "not_measurable"
+  confirmed_signals: []
+  missed_signals: []
+  note: "No market-feedback input exists for this opportunity; no outcome or accuracy claim is made."

@@ -1,0 +1,21 @@
+version: "6.0"
+generated_at: "2026-10-31T11:33:15Z"
+target_slug: "waffle-enterprise-AI-architect"
+prediction_evaluation:
+  predicted_archetype: "enterprise_ai_architect"
+  predicted_overall_fit: "High"
+  actual_outcome: "pending_submission"
+  prediction_accuracy: "Baseline Established (Pre-Submission)"
+  confirmed_signals:
+    - "Direct 1:1 canonical alignment on Three-Zone AI Enablement (Ideas › Build › Run) via BBC Studios GenAI Framework & automated SAP LeanIX use-case intake"
+    - "Direct canonical alignment on Design Authority chairing, operating model governance, and ADR register management (BBC Studios, BAT SR&D, CAS)"
+    - "Direct canonical alignment across all 3 priority programme patterns: SDD/SDLC tooling (CAS), Routing ML (WPP Buyer Agent), and CS Agent grounding (EA4ALL)"
+    - "Direct LiteLLM proxy orchestration (WPP PCA) and enterprise API Management (BAT) supporting M2 AI Gateway selection"
+    - "Proactively bounded Entra ID / Conditional Access / Purview configuration and Kong/Azure APIM gateway options as transferable/adjacent to prevent over-claiming"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.5
+    projection_quality: 99.0
+    opportunity_fit: 92.0
+    archetype_fit: 95.0

@@ -1,0 +1,20 @@
+version: "6.0"
+generated_at: "2026-10-28T10:31:20Z"
+target_slug: "lexisnexis-ai-architect"
+prediction_evaluation:
+  predicted_archetype: "enterprise_ai_architect"
+  predicted_overall_fit: "Moderate-High"
+  actual_outcome: "pending_submission"
+  prediction_accuracy: "Baseline Established"
+  confirmed_signals:
+    - "Direct match on Agentic AI Architecture, multi-step reasoning, and multi-agent coordination (WPP Media)"
+    - "Direct match on Architecture Decision Records (ADRs) as code (CAS) and reasoning observability/evaluation harnesses (RAI & WPP Media)"
+    - "Direct match on Responsible AI and regulated enterprise governance (BBC Studios GenAI Framework & BAT SR&D)"
+    - "Proactively flagged tooling gaps (Databricks, C#) and desirable IP/patent domain adjacency with honest transferable framing"
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.0
+    projection_quality: 99.0
+    opportunity_fit: 84.0
+    archetype_fit: 90.0

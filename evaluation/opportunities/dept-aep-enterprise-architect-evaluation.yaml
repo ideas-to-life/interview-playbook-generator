@@ -1,0 +1,25 @@
+version: "6.0"
+generated_at: "2026-10-30T12:01:40Z"
+target_slug: "dept-aep-enterprise-architect"
+prediction_evaluation:
+  predicted_archetype: "consulting_ai_leader"
+  predicted_overall_fit: "Moderate-High"
+  predicted_selection_classification: "Stretch Fit"
+  actual_outcome: "pending_interview"
+  interviewer: "Christopher Bromley - Head of Adobe, EMEA"
+  prediction_accuracy: "Baseline Established"
+  anticipated_positive_signals:
+    - "Direct C-Suite, Marketing, and Technical storytelling & roadmapping authority (BBC Studios Lead EA; Gartner, LeanIX Insight, and SAP Signavio Day speaker)"
+    - "Fresh Senior Director leadership in media/advertising agentic AI ecosystems at WPP Media (WPP Open alignment, Media Buyer Agent, Post Campaign Analysis, ProductionBoards)"
+    - "Deep enterprise platform integration across API Management, SAP CPI, Talend, Elastic Stack, and regulated security/data governance at BAT"
+    - "Strong Generative & Agentic AI differentiation ('Skills To Set You Apart')"
+  anticipated_risk_signals:
+    - "Absence of direct hands-on Adobe Experience Platform (AEP, RTCDP, AJO, CJA, Target, Workfront) implementation history and Adobe Certified Expert (ACE) credentials"
+    - "Corporate EA and independent advisory background rather than agency Salesforce/Dynamics quota ownership"
+    - "Absence of native/Flutter/React-Native mobile application development (minor secondary differentiator)"
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 99.0
+    projection_quality: 98.8
+    opportunity_fit: 78.0
+    archetype_fit: 74.0
