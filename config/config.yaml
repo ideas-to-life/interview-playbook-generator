@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Senior Automation & Integration Engineer"
+  target_role: "Enterprise AI Architect"
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: "+44 (0) 7304 093460"
@@ -13,11 +13,11 @@ candidate:
   canonical_record: "canonical/career-record.yaml"
 
 target_opportunity:
-  company: "Impact Food Group"
-  role_title: "Senior Automation & Integration Engineer"
-  industry: "Food"
+  company: "Linklaters"
+  role_title: "Enterprise AI Architect"
+  industry: "Law"
   interviewer: ""
-  source: "config/target-position/ifg-sn-automation-integration-engineer.md"
+  source: "config/target-position/linklaters-enterprise-ai-architect.md"
   target_type: "employment"  # Options: employment (default), upwork
 
 projections:

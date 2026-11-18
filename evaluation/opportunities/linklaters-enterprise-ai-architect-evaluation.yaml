@@ -1,0 +1,15 @@
+version: "6.0"
+generated_at: "2026-11-18T11:29:00Z"
+target_slug: linklaters-enterprise-ai-architect
+evaluation_status: NOT_EVALUATED
+reason: "No market-feedback input exists at evaluation/opportunities/linklaters-enterprise-ai-architect.yaml."
+prediction_snapshot:
+  predicted_archetype: enterprise_ai_architect
+  predicted_overall_fit: moderate
+  anticipated_strengths:
+    - "Enterprise AI governance and architecture operating model"
+    - "Agentic architecture standards, evaluation, observability, and guardrails"
+  anticipated_concerns:
+    - "Legal-domain and legal-AI-platform evidence"
+    - "RAG, graph, MCP, named platform, and verified personal production-delivery evidence"
+external_validation_scores: null
