@@ -1,0 +1,172 @@
+<mxfile host="app.diagrams.net" agent="Claude Code" version="24.7.17">
+  <diagram id="component-architecture" name="Component Architecture">
+    <mxGraphModel dx="1540" dy="1040" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1540" pageHeight="1040" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Title -->
+        <mxCell id="2" value="Runner Intelligence Engine: Component Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="550" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- UI / Application Boundary -->
+        <mxCell id="3" value="UI / Application Boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eef5ff;strokeColor=#6c8ebf;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="90" y="100" width="1320" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- Gradio UI + App Entry -->
+        <mxCell id="4" value="Gradio UI + App Entry" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="150" y="155" width="260" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- RunnerOrchestrator -->
+        <mxCell id="5" value="RunnerOrchestrator" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="470" y="155" width="260" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- PipelineContext -->
+        <mxCell id="6" value="PipelineContext" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="790" y="155" width="260" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Pipeline / Process Components -->
+        <mxCell id="7" value="Pipeline / Process Components" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff7ef;strokeColor=#d79b00;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="90" y="280" width="1320" height="290" as="geometry"/>
+        </mxCell>
+
+        <!-- FeatureEngineering -->
+        <mxCell id="8" value="FeatureEngineering" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="140" y="350" width="150" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- PersistRuns -->
+        <mxCell id="9" value="PersistRuns" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="320" y="350" width="130" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Snapshot -->
+        <mxCell id="10" value="Snapshot" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="480" y="350" width="130" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Guardrail -->
+        <mxCell id="11" value="Guardrail" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="640" y="350" width="130" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Positioning -->
+        <mxCell id="12" value="Positioning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="800" y="350" width="140" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- GoalTrajectory -->
+        <mxCell id="13" value="GoalTrajectory" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="970" y="350" width="140" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- PersistAnalysis -->
+        <mxCell id="14" value="PersistAnalysis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1140" y="350" width="170" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Intelligence Block -->
+        <mxCell id="15" value="Intelligence Block&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;parallel Insights + Plan, then sequential Brief generation&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ede7f6;strokeColor=#7e57c2;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="805" y="455" width="420" height="85" as="geometry"/>
+        </mxCell>
+
+        <!-- Agent / Service / Infrastructure Components -->
+        <mxCell id="16" value="Agent / Service / Infrastructure Components" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f2ff;strokeColor=#7e57c2;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="90" y="610" width="1320" height="230" as="geometry"/>
+        </mxCell>
+
+        <!-- Agents -->
+        <mxCell id="17" value="Agents&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;FeatureEngineeringAgent, InsightsAgent,&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;PlanAgent, VisualizationAgent, ChatAgent, GuardrailAgent&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ede7f6;strokeColor=#7e57c2;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="140" y="690" width="280" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- Services and Domain -->
+        <mxCell id="18" value="Services and Domain&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;SnapshotService, GoalService, BriefService,&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;RecommendationService, Positioning services, Pydantic models&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="470" y="690" width="340" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- Prompt and LLM Layer -->
+        <mxCell id="19" value="Prompt and LLM Layer&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;prompt store, model registry, LiteLLM,&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;structured output hardening&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="860" y="690" width="260" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- Persistence -->
+        <mxCell id="20" value="Persistence&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;SQLite repositories for&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;runs, snapshots, trends, goals&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1170" y="690" width="190" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- Footer Note -->
+        <mxCell id="21" value="Pattern Overlay&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;This subsystem exhibits an orchestrator-managed pipeline, deterministic guardrail logic, provider-agnostic LLM access, prompt schema contracts, and graceful fallback behavior in routing and brief generation.&lt;/font&gt;" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="90" y="885" width="1320" height="85" as="geometry"/>
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="22" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="4" target="5">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="23" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="5" target="6">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="24" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="5" target="8">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="25" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="8" target="9">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="26" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="9" target="10">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="27" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="10" target="11">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="28" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="11" target="12">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="29" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="12" target="13">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="30" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="13" target="14">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="31" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="12" target="15">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="32" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="13" target="15">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="33" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="14" target="20">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="34" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="15" target="19">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="35" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="8" target="17">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="36" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="10" target="18">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

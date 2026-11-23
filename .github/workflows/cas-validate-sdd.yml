@@ -1,10 +1,14 @@
-name: CAS SDD Validation
+name: CAS SDD & TDD Validation
 
 on:
   pull_request:
     branches: [ main, master ]
     paths:
       - 'src/**'
+      - 'tests/**'
+      - 'requirements.txt'
+      - 'pyproject.toml'
+      - '.cas/**'
 
 jobs:
   validate-sdd:
@@ -15,36 +19,32 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Validate Specification Presence
+      - name: Set up CAS CLI
+        uses: ideas-to-life/setup-cas@main
+
+      - name: Check Commit Exemption
+        id: check-exempt
         run: |
-          echo "[CAS][INFO] Validating Specification-Driven Development (SDD) compliance..."
-          
-          # Check for exemptions in commit messages
           EXEMPT=$(git log --format=%B -n 1 ${{ github.event.pull_request.head.sha }} | grep -E "\[skip-governance\]|\[bugfix\]" || true)
           if [ -n "$EXEMPT" ]; then
             echo "[CAS][SKIP] Exemption found in commit message: $EXEMPT"
-            exit 0
+            echo "exempt=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exempt=false" >> "$GITHUB_OUTPUT"
           fi
 
-          # Get list of changed files
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.event.pull_request.head.sha }})
-          
-          HAS_SRC_CHANGES=false
-          HAS_SPEC_CHANGES=false
-          
-          for file in $CHANGED_FILES; do
-            if [[ $file == src/* ]]; then
-              HAS_SRC_CHANGES=true
-            fi
-            if [[ $file == specs/* ]] || [[ $file == .specify/* ]]; then
-              HAS_SPEC_CHANGES=true
-            fi
-          done
+      - name: Validate SDD & TDD Compliance Across Configured SDLC Profile
+        if: steps.check-exempt.outputs.exempt != 'true'
+        run: cas governance verify-diff --target-dir .
 
-          if [ "$HAS_SRC_CHANGES" = true ] && [ "$HAS_SPEC_CHANGES" = false ]; then
-            echo "[CAS][ERROR] Code changes detected in 'src/' without corresponding specification in 'specs/' or '.specify/'."
-            echo "[CAS][HINT] Please create a specification before implementing features. Use '[bugfix]' in the commit message to bypass for trivial fixes."
-            exit 1
-          fi
+      - name: "Validate Architectural Guardrails (Anti-Pattern Linter - ARCH-LINT-001, ARCH-LINT-002, ARCH-LINT-003: provider-agnostic-llm-client)"
+        if: steps.check-exempt.outputs.exempt != 'true'
+        run: cas governance lint --target-dir .
 
-          echo "[CAS][SUCCESS] SDD validation passed."
+      - name: Verify Statistical Control Bands
+        if: steps.check-exempt.outputs.exempt != 'true'
+        run: cas governance check-bands --target-dir .
+
+      - name: Evaluate Agent Skills
+        if: steps.check-exempt.outputs.exempt != 'true'
+        run: cas skills eval

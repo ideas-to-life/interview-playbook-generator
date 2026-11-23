@@ -1,0 +1,30 @@
+output:
+  feature:
+    name: string
+    module: string
+    description: string
+
+  decision:
+    status: string
+    reason: string
+    alternative: string
+
+  code_changes:
+    - file: string
+      change_type: string
+      summary: string
+
+  architecture_decision:
+    description: string
+    rationale: string
+
+  architectural_impact:
+    - affected_components: [string]
+      pattern_usage: [string]
+      pattern_justification: string
+
+  risks:
+    - description: string
+
+  validation_notes:
+    - description: string

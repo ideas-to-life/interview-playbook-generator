@@ -1,0 +1,39 @@
+{
+  "project": "ideas-to-life-cas",
+  "branch": "master",
+  "feature_dir": "specs/006-projection-data-integrity",
+  "sdlc_profile": "speckit",
+  "stage": 5,
+  "stage_name": "Stage 5: Architecture Linter",
+  "start_time": 1795433803.779305,
+  "updated_at": 1795434056.1387122,
+  "gates": {
+    "lint": {
+      "name": "lint",
+      "status": "PASSED",
+      "details": "0 violations",
+      "timestamp": 1795434056.138699
+    }
+  },
+  "checklist": {
+    "spec_md": false,
+    "plan_md": false,
+    "tasks_md": false,
+    "tests": false,
+    "src": false
+  },
+  "events": [
+    {
+      "timestamp": 1795433805.179837,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    },
+    {
+      "timestamp": 1795434056.138699,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    }
+  ]
+}

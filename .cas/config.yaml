@@ -1,0 +1,169 @@
+# Continuous Architecture System (.cas/config.yaml)
+# Centralized runtime configuration for onboarded repository
+version: "1.0"
+
+project:
+  name: "interview-playbook-generator"
+  description: "Continuous Architecture System Substrate Project"
+
+llm:
+  default_provider: "huggingface" # huggingface | gemini | openai | mock | ollama
+  default_model: "deepseek-ai/DeepSeek-V4-Flash-0731"
+  fallback_provider: "gemini"
+  fallback_model: "gemini-3.8-flash"
+  temperature: 0.1
+  timeout_seconds: 60
+
+governance:
+  enforcement: "strict"             # strict | advisory
+  fail_on: "high"                   # critical | high | medium | low
+  active_profile: "auto"            # auto | speckit | anthropic-native | superpowers | agent-skills
+  bands_file: ".cas/bands.yaml"
+  auto_precedence:
+    - speckit
+    - anthropic-native
+    - superpowers
+    - agent-skills
+  profiles:
+    speckit:
+      artifacts:
+        intent:
+          - "specs/*-*/intent.md"
+          - ".specify/assessments/*/intake.md"
+          - ".specify/assessments/*/decision.md"
+        spec:
+          - "specs/*-*/spec.md"
+        plan:
+          - "specs/*-*/plan.md"
+        tasks:
+          - "specs/*-*/tasks.md"
+        tests:
+          - "tests/**/test_*.py"
+          - "tests/**/*_test.py"
+      plan_required_sections:
+        files_that_change:
+          - "Files that change"
+          - "Project Structure"
+          - "Source Code"
+          - "Affected CAS Surfaces"
+        order_of_work:
+          - "Order of work"
+          - "Phases"
+          - "Implementation"
+          - "Tasks"
+        risks:
+          - "Risks"
+          - "Constitution Check"
+          - "Complexity Tracking"
+          - "Constraints"
+        proof:
+          - "Proof"
+          - "Verification"
+          - "Testing"
+          - "Quickstart"
+    anthropic-native:
+      artifacts:
+        intent:
+          - "intent.md"
+          - "specs/*/intent.md"
+        spec:
+          - "spec.md"
+          - "specs/*/spec.md"
+        plan:
+          - "plan.md"
+          - "specs/*/plan.md"
+        tasks:
+          - "tasks.md"
+          - "plan.md"
+        tests:
+          - "tests/**/test_*.py"
+          - "tests/**/*_test.py"
+      plan_required_sections:
+        files_that_change:
+          - "Files that change"
+          - "Project Structure"
+        order_of_work:
+          - "Order of work"
+          - "Steps"
+          - "Phases"
+        risks:
+          - "Risks"
+          - "Trade-offs"
+        proof:
+          - "Proof"
+          - "Verification"
+    superpowers:
+      artifacts:
+        intent:
+          - "docs/plans/*-design.md"
+        spec:
+          - "docs/plans/*-design.md"
+        plan:
+          - "docs/plans/*-plan.md"
+          - "docs/plans/*.md"
+        tasks:
+          - "docs/plans/*-plan.md"
+          - "docs/plans/*.md"
+        tests:
+          - "tests/**/test_*.py"
+          - "tests/**/*_test.py"
+      plan_required_sections:
+        files_that_change:
+          - "Files"
+          - "Files that change"
+          - "Architecture"
+        order_of_work:
+          - "Tasks"
+          - "Task 1"
+          - "Order of work"
+          - "Steps"
+        risks:
+          - "Risks"
+          - "Constraints"
+          - "Trade-offs"
+        proof:
+          - "Verification"
+          - "Proof"
+          - "Testing"
+    agent-skills:
+      artifacts:
+        intent:
+          - "docs/specs/*-intent.md"
+          - "docs/specs/*.md"
+        spec:
+          - "docs/specs/*-spec.md"
+          - "docs/specs/*.md"
+        plan:
+          - "docs/plans/*-plan.md"
+          - "docs/plans/*.md"
+        tasks:
+          - "docs/plans/*-tasks.md"
+          - "docs/plans/*-plan.md"
+        tests:
+          - "tests/**/test_*.py"
+          - "tests/**/*_test.py"
+      plan_required_sections:
+        files_that_change:
+          - "Files that change"
+          - "Files"
+          - "Modules"
+        order_of_work:
+          - "Order of work"
+          - "Tasks"
+          - "Slices"
+        risks:
+          - "Risks"
+          - "Assumptions"
+          - "Trade-offs"
+        proof:
+          - "Proof"
+          - "Verification"
+          - "Tests"
+
+knowledge:
+  workspace_path: "~/cas-knowledge"
+  git_sync: true
+
+telemetry:
+  enabled: true
+  export_traces: false

@@ -1,0 +1,119 @@
+name: CAS Continuous Architecture Loop
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - '.cas/**'
+      - 'src/**'
+      - 'specs/**'
+      - 'tests/**'
+  # schedule:
+  #   - cron: '0 2 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  continuous-architecture:
+    runs-on: ubuntu-latest
+    env:
+      CAS_PROJECT: ${{ vars.CAS_PROJECT || github.event.repository.name }}
+      KNOWLEDGE_REPO_NAME: ${{ vars.KNOWLEDGE_REPO_NAME || 'cas-brain/knowledge' }}
+      CAS_DEFAULT_PROVIDER: ${{ vars.CAS_DEFAULT_PROVIDER || 'openai' }}
+      CAS_DEFAULT_MODEL: ${{ vars.CAS_DEFAULT_MODEL || 'gpt-6.1-sol' }}
+      CAS_MAX_TOKENS: ${{ vars.CAS_MAX_TOKENS || '10000' }}
+      CAS_TEMPERATURE: ${{ vars.CAS_TEMPERATURE || '1.0' }}
+      COPILOT_OTEL_ENABLED: ${{ vars.COPILOT_OTEL_ENABLED || 'false' }}
+      COPILOT_OTEL_ENDPOINT: ${{ vars.COPILOT_OTEL_ENDPOINT || '' }}
+    steps:
+      - name: Checkout Target Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up CAS CLI
+        uses: ideas-to-life/setup-cas@main
+
+      - name: Pre-flight Environment & Credential Check
+        id: check-creds
+        env:
+          KNOWLEDGE_TOKEN: ${{ secrets.CAS_KNOWLEDGE_BRAIN || secrets.CAS_KNOWLEDGE_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          OTEL_EXPORTER_OTLP_HEADERS: ${{ secrets.OTEL_EXPORTER_OTLP_HEADERS }}
+        run: |
+          cas governance check-env --target-dir .
+          if [ -z "$KNOWLEDGE_TOKEN" ]; then
+            echo "has_knowledge_token=false" >> "$GITHUB_OUTPUT"
+            echo "[CAS][WARN] CAS_KNOWLEDGE_BRAIN (or legacy CAS_KNOWLEDGE_TOKEN) is not configured."
+            echo "[CAS][INFO] Degrading gracefully to local deterministic diagnostics mode."
+            echo "[CAS][HINT] Configure secrets at: https://github.com/${{ github.repository }}/settings/secrets/actions"
+          else
+            echo "has_knowledge_token=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run Deterministic Architecture Linter & Control Bands
+        run: |
+          echo "[CAS][INFO] Running deterministic architecture health checks and statistical control bands..."
+          cas governance lint --target-dir .
+          cas governance check-bands --target-dir . --advisory
+
+      - name: Checkout Central Knowledge Layer (cas-brain/knowledge)
+        if: steps.check-creds.outputs.has_knowledge_token == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.KNOWLEDGE_REPO_NAME }}
+          token: ${{ secrets.CAS_KNOWLEDGE_BRAIN || secrets.CAS_KNOWLEDGE_TOKEN }}
+          path: cas-knowledge
+
+      - name: Run Continuous Architecture Synthesis Loop
+        if: steps.check-creds.outputs.has_knowledge_token == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          OTEL_EXPORTER_OTLP_HEADERS: ${{ secrets.OTEL_EXPORTER_OTLP_HEADERS }}
+          CAS_KNOWLEDGE_WORKSPACE: ${{ github.workspace }}/cas-knowledge
+        run: |
+          if [ -z "$OPENAI_API_KEY" ] && [ -z "$GEMINI_API_KEY" ] && [ -z "$HF_TOKEN" ]; then
+            echo "[CAS][WARN] No LLM provider API keys configured (OPENAI_API_KEY / GEMINI_API_KEY / HF_TOKEN). Skipping AI synthesis loop."
+          else
+            cas run continuous-architecture-loop \
+              --project "$CAS_PROJECT" \
+              --target-dir . \
+              --override '{"governance_fail_on_error": false}'
+          fi
+
+      - name: Run Pattern Discovery & Classification Flow
+        if: steps.check-creds.outputs.has_knowledge_token == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          OTEL_EXPORTER_OTLP_HEADERS: ${{ secrets.OTEL_EXPORTER_OTLP_HEADERS }}
+          CAS_KNOWLEDGE_WORKSPACE: ${{ github.workspace }}/cas-knowledge
+        run: |
+          if [ -n "$OPENAI_API_KEY" ] || [ -n "$GEMINI_API_KEY" ] || [ -n "$HF_TOKEN" ]; then
+            cas run pattern-lifecycle-flow \
+              --project "$CAS_PROJECT" \
+              --target-dir . \
+              --override '{"governance_fail_on_error": false}'
+          fi
+
+      - name: Commit & Push Updated Architectural Models to Central Brain
+        if: steps.check-creds.outputs.has_knowledge_token == 'true'
+        working-directory: cas-knowledge
+        run: |
+          git config --global user.name "CAS Bot"
+          git config --global user.email "cas-bot@users.noreply.github.com"
+          git add .
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(cas): automated architecture synthesis for ${CAS_PROJECT}"
+            git pull --rebase --autostash origin main
+            git push origin main
+          else
+            echo "[CAS][INFO] No architectural model updates to persist."
+          fi

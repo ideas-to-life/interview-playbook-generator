@@ -1,0 +1,58 @@
+name: CAS Skill Evaluations
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'src/cas_skills/**'
+      - '.cas/**'
+      - 'AGENTS.md'
+      - 'GEMINI.md'
+      - 'CLAUDE.md'
+      - '.github/workflows/cas-skill-evals.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'src/cas_skills/**'
+      - '.cas/**'
+      - 'AGENTS.md'
+      - 'GEMINI.md'
+      - 'CLAUDE.md'
+      - '.github/workflows/cas-skill-evals.yml'
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: 'LLM provider for Tier 2 evaluation (optional, e.g. stub)'
+        required: false
+        default: ''
+      skill:
+        description: 'Specific skill to evaluate (optional)'
+        required: false
+        default: ''
+  schedule:
+    - cron: '0 4 * * *'
+
+jobs:
+  evaluate-skills:
+    name: Evaluate CAS Agent Skills
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up CAS CLI
+        uses: ideas-to-life/setup-cas@main
+
+      - name: Run Deterministic Skill Evaluations
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.skill }}" ]; then
+            ARGS="$ARGS --skill ${{ github.event.inputs.skill }}"
+          fi
+          if [ -n "${{ github.event.inputs.provider }}" ]; then
+            ARGS="$ARGS --provider ${{ github.event.inputs.provider }}"
+          fi
+          echo "[CAS][INFO] Running: cas skills eval $ARGS"
+          cas skills eval $ARGS

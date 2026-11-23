@@ -1,0 +1,66 @@
+# CAS Statistical Control Bands Configuration (Stage 6: Maintain -> Stage 1: Plan)
+# Evaluates architectural drift metrics using Western Electric control rules:
+# - 1sigma: log telemetry
+# - 2sigma: diagnose root cause and offending packages/rules
+# - 3sigma: propose remediation by auto-drafting a Stage 1 intent.md in the active SDLC profile path
+version: "1.0"
+baseline: rolling_30d
+rules: western_electric
+
+metrics:
+  martin_distance_d:
+    description: "Maximum Normalized Distance from Main Sequence D = |A + I - 1| across coupled packages"
+    baseline: rolling_30d
+    rules: western_electric
+    tiers:
+      1sigma:
+        threshold: 0.50
+        action: log
+      2sigma:
+        threshold: 0.70
+        action: diagnose
+        tools: "Read,Grep,Glob"
+      3sigma:
+        threshold: 0.85
+        action: propose
+        routes:
+          - "intent.md"
+          - "pull_request"
+
+  lint_violations:
+    description: "Deterministic architecture and anti-pattern linter violations (ARCH-LINT-001..004)"
+    baseline: rolling_30d
+    rules: western_electric
+    tiers:
+      1sigma:
+        threshold: 1
+        action: log
+      2sigma:
+        threshold: 3
+        action: diagnose
+        tools: "Read,Grep,Bash(uv run cas governance lint)"
+      3sigma:
+        threshold: 5
+        action: propose
+        routes:
+          - "intent.md"
+          - "pull_request"
+
+  rework_rate:
+    description: "Post-implementation architectural rework rate percentage across recent commits"
+    baseline: rolling_30d
+    rules: western_electric
+    tiers:
+      1sigma:
+        threshold: 5.0
+        action: log
+      2sigma:
+        threshold: 10.0
+        action: diagnose
+        tools: "Read,Grep,Bash(git log -n 50 --oneline)"
+      3sigma:
+        threshold: 15.0
+        action: propose
+        routes:
+          - "intent.md"
+          - "pull_request"

@@ -1,0 +1,27 @@
+{
+  "skill_name": "cas-audit-agent-rules",
+  "evals": [
+    {
+      "id": "deduplicate-root-rules",
+      "prompt": "Our repository has separate AGENTS.md, GEMINI.md, and CLAUDE.md files that each contain 15KB of identical text, eating up our token budget. Audit and optimize these rule files.",
+      "expected_output": "An audit recommendation designating AGENTS.md as the canonical SSOT, establishing symlinks or shared references, and enforcing the 20,000 token budget rule.",
+      "files": [],
+      "assertions": {
+        "must_include": ["AGENTS.md", "canonical", "token budget", "symlink"],
+        "must_not_include": ["keep duplicate files"],
+        "expected_decision": "accepted"
+      }
+    },
+    {
+      "id": "prune-generic-coding-guidance",
+      "prompt": "AGENTS.md contains 200 lines explaining basic PEP8 formatting, standard pytest usage, and full copy-pasted python mock snippets. Audit and streamline it.",
+      "expected_output": "An audit recommendation applying progressive disclosure that prunes discoverable language defaults (PEP8) and moves procedural code blocks and runbooks into dedicated on-demand skills.",
+      "files": [],
+      "assertions": {
+        "must_include": ["progressive disclosure", "on-demand skills", "prune"],
+        "must_not_include": ["expand pep8 details"],
+        "expected_decision": "accepted"
+      }
+    }
+  ]
+}

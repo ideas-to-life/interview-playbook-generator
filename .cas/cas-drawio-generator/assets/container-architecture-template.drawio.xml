@@ -1,0 +1,152 @@
+<mxfile host="app.diagrams.net" agent="Claude Code" version="24.7.17">
+  <diagram id="container-architecture" name="Container Architecture">
+    <mxGraphModel dx="1440" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1440" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Title -->
+        <mxCell id="2" value="Runner Agentic Intelligence: Container Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="500" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- System Boundary -->
+        <mxCell id="3" value="System Boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffdf5;strokeColor=#c9b458;strokeWidth=3;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="260" y="90" width="930" height="660" as="geometry"/>
+        </mxCell>
+
+        <!-- Gradio Application -->
+        <mxCell id="4" value="Gradio Application&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;src/_app/gradio_app.py&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;file upload, chat, localized UI,&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;performance card rendering&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="320" y="160" width="240" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- Orchestrator + Pipeline -->
+        <mxCell id="5" value="Orchestrator + Pipeline&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;src/agents/orchestrator.py&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;builds repos/services/agents,&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;executes pipeline steps&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="620" y="160" width="260" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- Prompt + Router -->
+        <mxCell id="6" value="Prompt + Router&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;src/prompts/ + src/router/&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;prompt storage,&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;CHAT vs CHART routing&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="940" y="160" width="200" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- Ingestion Container -->
+        <mxCell id="7" value="Ingestion Container&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;src/ingestion/&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;format detection, parsing,&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;running-only validation,&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;weekly feature grouping&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="320" y="360" width="240" height="150" as="geometry"/>
+        </mxCell>
+
+        <!-- Domain + Services + Engines -->
+        <mxCell id="8" value="Domain + Services + Engines&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;src/domain/, src/services/,&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;src/engines/, src/application/&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;snapshots, trends, positioning,&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;recommendations, goal trajectory&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="620" y="360" width="260" height="150" as="geometry"/>
+        </mxCell>
+
+        <!-- Agent Container -->
+        <mxCell id="9" value="Agent Container&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;Insights, Plan, Chat,&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;Visualization, Guardrail,&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;Feature Engineering&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;using LiteLLM clients&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="940" y="360" width="200" height="150" as="geometry"/>
+        </mxCell>
+
+        <!-- Visualization Renderer -->
+        <mxCell id="10" value="Visualization Renderer&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;src/tools/viz_executor.py&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;deterministic matplotlib templates&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="320" y="570" width="240" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- Persistence Container -->
+        <mxCell id="11" value="Persistence Container&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;src/persistence/&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;SQLite repositories + capability guards&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="620" y="570" width="260" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- Observability -->
+        <mxCell id="12" value="Observability&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;src/observability/&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;JSON logs, spans, trace context&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=15;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="940" y="570" width="200" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- External: Runner -->
+        <mxCell id="13" value="Runner" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="160" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- External: LLM Providers -->
+        <mxCell id="14" value="LLM Providers&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;Gemini/OpenAI/HF&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="170" width="150" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- External: SQLite DB -->
+        <mxCell id="15" value="SQLite DB" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="310" width="150" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- External: HF Spaces -->
+        <mxCell id="16" value="HF Spaces&lt;br&gt;&lt;font style=&quot;font-size:11px&quot;&gt;optional deploy target&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="460" width="150" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- Footer Note -->
+        <mxCell id="17" value="Container boundaries are derived from module/package boundaries in src/ and from README + AS_BUILT. The repo also contains notebooks and design artefacts, but they are supporting documentation rather than runtime containers." style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="800" width="1360" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="18" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="13" target="4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="19" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="4" target="5">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="20" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="5" target="6">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="21" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="4" target="7">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="22" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="5" target="8">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="23" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="6" target="9">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="24" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="7" target="8">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="25" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="8" target="9">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="26" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="7" target="10">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="27" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="8" target="11">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="28" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="9" target="12">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="29" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="6" target="14">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="30" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="11" target="15">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="31" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="10" target="11">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="32" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="12" target="16">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

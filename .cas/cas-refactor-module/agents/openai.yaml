@@ -1,0 +1,4 @@
+interface:
+  display_name: "CAS Refactor Module"
+  short_description: "Refactor modules without behaviour drift"
+  default_prompt: "Use $cas-refactor-module to refactor this module without changing observable behaviour."

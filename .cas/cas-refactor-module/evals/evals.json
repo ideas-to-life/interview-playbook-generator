@@ -1,0 +1,38 @@
+{
+  "skill_name": "cas-refactor-module",
+  "evals": [
+    {
+      "id": "decouple-monolithic-step",
+      "prompt": "The reasoning step in src/cas_runner/steps/orchestration.py is doing both prompt rendering and external IO in a single monolithic function. Refactor it to decouple IO from prompt preparation.",
+      "expected_output": "A refactoring plan that extracts IO operations into a separate helper or IO boundary while preserving observable behavior, citing contract-first-architecture and deterministic-core-selective-augmentation.",
+      "files": [],
+      "assertions": {
+        "must_include": ["contract-first-architecture", "deterministic-core-selective-augmentation", "observable behavior"],
+        "must_not_include": ["modify public api", "breaking change"],
+        "expected_decision": "accepted"
+      }
+    },
+    {
+      "id": "reject-behaviour-breaking-refactor",
+      "prompt": "Refactor the FlowRunner.run() signature in src/cas_runner/runner.py to return a tuple of (status, dict) instead of None, and delete the legacy event listeners.",
+      "expected_output": "A refactoring proposal with decision.status set to 'rejected' because changing FlowRunner.run() return signature and deleting listeners changes observable behavior and breaks existing callers.",
+      "files": [],
+      "assertions": {
+        "must_include": ["rejected", "observable behavior", "breaks existing callers"],
+        "must_not_include": ["decision.status: accepted", "approved"],
+        "expected_decision": "rejected"
+      }
+    },
+    {
+      "id": "isolate-vendor-sdk-leak",
+      "prompt": "There are direct imports of google.generativeai inside the compliance checker module. Refactor it to route through LiteLLMClient.",
+      "expected_output": "A refactoring plan that replaces direct vendor SDK imports with the LiteLLMClient abstraction, enforcing the provider-agnostic-llm-client pattern without changing checker outputs.",
+      "files": [],
+      "assertions": {
+        "must_include": ["provider-agnostic-llm-client", "LiteLLMClient"],
+        "must_not_include": ["google.generativeai", "vendor-specific"],
+        "expected_decision": "accepted"
+      }
+    }
+  ]
+}

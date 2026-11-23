@@ -1,20 +1,296 @@
-# Agent Context: GEMINI.md
+<!-- CAS-GOVERNANCE:BEGIN -->
+# Operational Governance: GEMINI.md
 
-You are an interactive CLI agent specializing in software engineering. This repository enforces **CAS Governance**.
+> [!CAUTION]
+> ### 🚨 CRITICAL ENFORCEMENT: MANDATORY SDD/TDD & CAS SKILLS WORKFLOW 🚨
+> You MUST NOT write, modify, or refactor any production code (`src/**`) without FIRST executing:
+> 1. **Git Branch Isolation:** Confirm the active branch matches feature branch naming conventions ('<NNN-feature-name>'); NEVER write or modify production code directly on 'main' or 'master'.
+> 2. **SDD Artifact Resolution (`.cas/config.yaml`) & Zero-Hallucination Intent Triage**: Confirm or create the active Intent, Specification, and Implementation Plan (`Files that change`, `Order of work`, `Risks`, `Proof`) matching the repository's configured SDLC profile (`auto`, `speckit`, `anthropic-native`, `superpowers`, or `agent-skills`). Run `cas governance verify-intent --target-dir .` to ensure all `[A]` code evidence citations exist and no unresolved `[Q]` questions block `Status: accepted`.
+> 3. **CAS Skills Alignment & Plan Routing**: Invoke the mandatory CAS Skill (`cas-add-or-modify-feature` or `cas-refactor-module` in `.cas/` / `.agents/skills/`), verify all proposed changes against `.cas/patterns/patterns-catalogue.yaml` (`invariants` and `anti_patterns`), and run `cas governance route-plan --target-dir .` to determine the governance path (Path A, B, or C).
+> 4. **Proportionate Governance Routing (Path A / B / C)**:
+>    - **Path A (Governed Reuse)**: Reuses ratified patterns from `.cas/patterns/patterns-catalogue.yaml` while satisfying all `invariants` and avoiding all `anti_patterns` → unlocked for autonomous TDD build.
+>    - **Path B (Architectural Novelty)**: Introduces a net-new architectural pattern or cross-boundary dependency → draft a candidate ADR/proposal and pause for human Architect review.
+>    - **Path C (Architectural Exception)**: Intentionally deviates from a rule or invariant → requires an explicit, time-bound exception record (`exc-*.yaml`) approved by an Architect.
+> 5. **Test-Driven Development (TDD — Red-Green-Refactor)**: Write or update failing unit tests under `tests/` BEFORE modifying production code under `src/`. Never weaken or delete existing test assertions during bugfixes (`[bugfix]`).
+> 6. **Fresh-Context Verification (`.cas/agents/verifier.md`)**: Run deterministic diff verification (`cas governance verify-diff --target-dir .`) and PR review check (`cas governance review-pr --target-dir .`), and invoke the isolated read-only Verifier subagent (`.agents/subagents/verifier.md`) before completing a task or PR.
 
-## Mandatory Instructions
+## Core Mandates
 
-1. **Always read AGENTS.md & RUNBOOK.md**: `AGENTS.md` provides operational boundaries and non-negotiable hard rules; `RUNBOOK.md` provides execution steps and usage guides.
-2. **Use CAS / Pipeline Skills**: Before modifying code or running projection tasks, activate the appropriate Skill in `skills/`.
-3. **Specification-First**: If a user asks for a feature or refinement, your first step is to create or update a spec in `specs/`.
-4. **Surgical Edits**: Prefer precise code replacements over overwriting entire files.
-5. **Validate Behavior**: Never assume a change is correct. Always run `pytest -v` or validator scripts (`scripts/upwork_validator.py`).
+1. **Specification-Driven Development (SDD & Two-Key Invariance)**: Every feature or structural change requires both a specification (`spec.md`) and plan (`plan.md`) resolved via `.cas/config.yaml`. Modifying code files not declared in the plan violates `PLAN-002`; adding code without updating the specification violates `SPEC-002`.
+2. **Pattern Invariants & Anti-Patterns**: Every design and code diff must satisfy the `invariants` and avoid the `anti_patterns` codified in `.cas/patterns/patterns-catalogue.yaml` and `.cas/rules/architecture_rules.md`.
+3. **Deterministic PreToolUse Guardrails**: Runtime hooks in `.cas/hooks/path-protection.sh` and `.cas/hooks/production-gate.sh` block unauthorized edits to protected governance/secret files, test-tampering on bugfix branches, and un-specified/unplanned production code edits.
+4. **Independent Verification & PR Gate**: Self-auditing in the same context window is insufficient; diffs must pass `.agents/subagents/verifier.md` and the 3-pass `REVIEW.md` contract (`Critical: 0 | High: 0`).
 
-## Topic Management
-Use the `update_topic` tool (if available) to keep the user informed of your strategic intent and progress across multi-turn tasks.
+## Skill & Subagent Registry
 
-## Code Conventions
-- Adhere to the local project style found in existing source files.
-- Prioritize composition and delegation over complex inheritance.
-- Ensure all new logic is covered by unit or integration tests in `tests/`.
+- **`cas-add-or-modify-feature`**: Mandatory before adding features, extending functionality, or introducing integrations.
+- **`cas-refactor-module`**: Mandatory before restructuring or decoupling existing modules while preserving behavior.
+- **`cas-audit-agent-rules`**: Mandatory for auditing, deduplicating, and optimizing agent rules and instruction files.
+- **`verifier` (`.agents/subagents/verifier.md` / `.cas/agents/verifier.md`)**: Read-only Fresh-Context Verifier subagent for unbiased diff auditing.
 
+## Continuous Architecture Cockpit & Discovery
+
+Launch the local architecture cockpit or query architectural state:
+
+```bash
+# 1. Launch interactive Web Architecture Cockpit (offline 5+1 workspace SPA)
+cas ui [--port 8080] [--open]
+
+# 2. Launch real-time Terminal Architecture Cockpit (HUD)
+cas dashboard
+cas governance watch
+
+# 3. Query architectural state and decisions
+cas explain control-loops
+cas explain adrs --all
+cas explain flows
+cas explain layers
+```
+
+## Verification
+
+Run the following deterministic commands to verify compliance before completing any task or PR:
+
+*(Note: 'cas' is the installed CLI in onboarded projects. If developing directly inside the CAS runner repository itself, invoke via 'uv run cas'.)*
+
+```bash
+# 1. Run unit and regression test suite
+pytest
+
+# 2. Run deterministic architecture & anti-pattern linter (ARCH-LINT-001..004)
+cas governance lint --target-dir .
+
+# 3. Run 3-pass diff/PR verification against active SDD profile and REVIEW.md
+cas governance verify-diff --target-dir .
+cas governance review-pr --target-dir .
+cas governance watch
+
+# 4. Run deterministic agent skill evaluations
+cas skills eval
+```
+
+---
+*This file is a governed CAS contract. Do not weaken or remove managed governance rules without an approved architectural decision.*
+<!-- CAS-GOVERNANCE:END -->
+
+## What this project is
+
+The Career Projection Platform (Interview Playbook Generator v0.6) turns a candidate's portfolio (CV, LinkedIn, slide decks, architecture docs, publications) and a target opportunity (JD / recruiter message / role summary) into a structured OKF v0.2 knowledge graph and multiple tailored executive communication artefacts (Resumes, Cover Letters, LinkedIn Profiles, Playbooks, Briefings). The pipeline runs as a sequence of Skills — each Skill is a `SKILL.md` file the user invokes; state passes between Skills as the OKF bundle and execution context on disk. There is no LLM code to run; the agent (you) *is* the runtime.
+
+## The five hard rules
+
+These are non-negotiable. They are repeated in every Skill's `SKILL.md` and exist because violating any of them produces output that is worse than no output.
+
+### 1. Never fabricate
+
+```
+NEVER FABRICATE:
+- Projects (named programmes, products, systems)
+- Metrics (percentages, dollar figures, counts)
+- Team sizes
+- Budgets
+- Technologies (named tools, languages, platforms)
+- Responsibilities
+- Tenure (start/end dates when not in source)
+```
+
+If a value on this list is needed and you cannot find it in any source:
+
+1. Search all sources again (it may be in a different document).
+2. If still missing, write it as `[assumption]` with a clear marker the user can grep for.
+3. Mark the containing concept `status: draft`.
+4. Reference the missing value in `okf/knowledge-gaps.md` with a recommended portfolio improvement.
+
+**Never** invent a plausible-sounding number. The whole system's value comes from its refusal to do this.
+
+### 2. Classify every claim
+
+Every non-empty non-heading line in every concept body MUST start with one of:
+
+- `[evidence]` — directly stated in a source. Requires a `[^source-id]` footnote.
+- `[inference]` — derived from one or more `[evidence]` lines. Reasoning stated in the same line or the next.
+- `[recommendation]` — advice for the candidate. Grounded in an earlier `[evidence]` or `[inference]`.
+- `[assumption]` — placeholder for a value not found in any source.
+
+Untagged lines are rejected by the lint pass. Do not write them.
+
+### 3. Attribute every claim to a source
+
+In addition to classification, every claim should be attributable. Use the OKF v0.2 footnote form:
+
+```markdown
+[evidence] Led the migration of the X platform to Y. [^cv-2024]
+```
+
+The footnote label resolves to an entry in the concept's frontmatter `sources` list:
+
+```yaml
+sources:
+  - id: cv-2024
+    resource: inputs/cv.pdf
+    title: CV (2024 edition)
+    author: human:alexandre.franco
+```
+
+Without attribution, a claim is just prose.
+
+### 4. Stop and ask rather than guess
+
+Trigger the stop-and-ask protocol when:
+
+- The target opportunity is missing or unparseable.
+- The portfolio path is missing or empty.
+- A required field has two reasonable readings.
+- Classification cannot be determined.
+- `knowledge-gaps` reports a `critical` gap AND config says `fail_on_severe_gaps: true`.
+
+Surface the question to the user; do not invent an answer.
+
+### 5. Idempotent re-runs
+
+Every Skill's input set determines its output set. Re-running a Skill overwrites its own output directory cleanly. The `generated.at` timestamp updates on every write; `verified` is preserved if the body is unchanged. Agents executing a Skill MUST perform explicit disk write/touch operations on every run so that output files bear active modification timestamps. Reading existing files without executing disk writes is prohibited.
+
+## Governing Principles
+
+1. **Tailor expression, not identity**: Tailor the expression of the candidate to the opportunity, never the identity of the candidate to the opportunity.
+2. **Evidence determining authority**: Evidence determines what Alexandre can credibly claim; canonical identity determines who Alexandre is; the target opportunity determines which of those truths should be emphasised.
+3. **Identity Preservation Invariant**:
+   `Projected Identity = Canonical Professional Identity + Target-Relevant Emphasis - Irrelevant Detail`
+   Target-role tailoring may change the emphasis of the candidate's canonical identity, but must never redefine the candidate's canonical professional identity.
+4. **Evidence relevance does not imply evidence equivalence**: A claim may only be generated at the level of ownership, scope, specificity, duration and seniority explicitly supported by its evidence.
+5. **No inferred leadership from contribution**: When evidence supports contribution to a capability, the system must not infer leadership, ownership, establishment, or end-to-end responsibility for that capability.
+6. **Project relevance aggressively, project responsibility conservatively**:
+   Canonical identity determines who the candidate is $\rightarrow$ Evidence determines what the candidate has done $\rightarrow$ Claim-strength validation determines how strongly that experience may be stated $\rightarrow$ Target relevance determines what should be emphasised.
+7. **Target requirements vs Candidate evidence**: Target requirements describe what the client needs; candidate evidence describes what the candidate has done. Target requirements must never become candidate evidence or candidate positioning unless independently supported by canonical evidence.
+8. **Transferable framing over domain substitution**: When target requirements are adjacent to, but not directly evidenced by, candidate experience, the projection must use explicit transferable framing rather than domain substitution.
+9. **Journey vs Destination Invariant**: The target defines the destination; the evidence defines the journey. Projection may explain why the candidate’s demonstrated experience makes the destination credible, but it must never rewrite the journey as though the candidate has already reached it.
+10. **Career History Evidence Integrity Invariant**: Employer names, employment dates, job titles, status, and locations are immutable evidence. Projection may tailor presentation and accomplishment emphasis around those facts, but must never alter, infer, normalize, approximate, reconstruct, split, merge, or fabricate employment-history facts.
+11. **Canonical Career Record Precedence**: `canonical/career-record.yaml` (in `candidate.portfolio_dir`, e.g. `mind-palace/canonical/career-record.yaml`) is the supreme source of truth for all professional facts (employment history, formal titles, dates, education degrees/institutions, and certifications). It unconditionally supersedes secondary documents, derived content, AI-generated text, and LLM inference.
+12. **Quarantine Structural Exclusion**: Any document, folder, or snippet in `quarantine/` is strictly excluded from factual sourcing. It must never be ingested as evidence or cited in any projection.
+13. **Factual Selection Decoupling (Activity A vs B)**: Selection of canonical facts for an opportunity is executed during runtime analysis and frozen into `out/<target-slug>/runtime/canonical-selection.yaml` via `scripts/canonical_selector.py`. Projection skills consume these immutable selected facts and must never alter dates, titles, or credentials.
+14. **Automated Sanitization**: Detected discrepancies in generated output artefacts (mutated dates, inflated titles, unverified degrees) are automatically rewritten back to canonical truth with alerts recorded in `projection-validation-report.yaml` and `canonical-conflict-report.yaml`.
+15. **Full Canonical Context Invariant (Forensic Finding A)**: Projection skills MUST load the complete `canonical-selection.yaml`, including education degrees/institutions and certifications, ensuring qualifications remain actively present in model context rather than relying on ungrounded generative recall.
+16. **Cross-Opportunity Isolation Invariant (Forensic Finding B)**: During opportunity analysis or projection generation, agents MUST NEVER read, inspect, or use prior opportunity directories under `out/<other-target-slug>/` as structural or stylistic templates. Every opportunity projection must be derived strictly from canonical knowledge (`out/okf/`), opportunity context (`opportunity-analysis.yaml`), and frozen facts (`canonical-selection.yaml`).
+17. **Target Terminology Evidence Boundary (Forensic Finding C)**: Target-position keywords (e.g., enterprise software tools like Workday, NetSuite, Coupa, Concur, or cloud CCoE frameworks) must never enter candidate skills, experience bullets, or executive summaries unless independently supported by canonical evidence in `career-record.yaml` or `out/okf/`.
+18. **Unified Deterministic Projection Validator**: `scripts/projection_validator.py` deterministically audits all generated collateral against `canonical-selection.yaml` and `career-record.yaml`. It executes two-stage remediation: Stage 1 automatically sanitizes repairable canonical facts (education dates 1988–1991, formal titles, degrees) with recorded alerts; Stage 2 halts execution with exit code 1 if un-sanitizable direct claims (unverified AWS or Sun SCEA certifications, Spanish language inflation beyond Elementary, or direct claims of unevidenced platforms like Workday, NetSuite, Coupa, Concur) remain.
+
+## The 5-Tier Information Boundary
+
+To prevent cross-opportunity contamination, platform hallucination, and credential mutations, all projection workflows operate within a strict 5-tier information boundary:
+
+```
+Tier 1: Canonical Career Record (Supreme Source of Truth, Read-Only)
+        mind-palace/canonical/career-record.yaml
+                          │
+Tier 2: Canonical Knowledge Graph (Derived Knowledge, Read-Only by Projections)
+        out/okf/ (capabilities, themes, evidence cards, identity)
+                          │
+Tier 3: Frozen Opportunity Context (Per-Opportunity Immutable Context)
+        out/<target-slug>/runtime/canonical-selection.yaml (100% complete loading)
+        out/<target-slug>/runtime/opportunity-analysis.yaml (partitioned ATS vocabulary)
+                          │
+Tier 4: Fact-Free Synthetic Templates (Structural & Styling Guidance Only)
+        templates/projections/ (neutral placeholder data; ZERO candidate or prior-run facts)
+                          │
+Tier 5: Generated Projections & Validation Gate (Derived Collateral & Verification)
+        out/<target-slug>/*.md
+        scripts/projection_validator.py ➔ out/<target-slug>/runtime/projection-validation-report.yaml
+```
+
+## How the pipeline runs (v0.6)
+
+```
+CANONICAL LAYER (supreme source of professional facts)
+  career-record.yaml             (mind-palace/canonical/career-record.yaml, loaded via scripts/canonical_loader.py)
+
+KNOWLEDGE LAYER (canonical graph; writes to out/okf/)
+  portfolio-ingestor             (Executes python3 scripts/ingest_portfolio.py; excludes quarantine/)
+  portfolio-analyzer
+  achievement-extractor
+  evidence-card-generator        (Extended: 6 fields + dup detection)
+  behaviour-profile-generator    (Canonical: okf/behaviour-profile.md)
+  capability-extractor            (Canonical: okf/capabilities/)
+  signature-achievements-curator  (Canonical: okf/signature-achievements.md)
+  signature-theme-miner
+  executive-identity-generator    (okf/executive-identity.md, voice-profile.md, positioning-statements.md)
+  narrative-engine                (okf/narrative-library.md, messaging-library.md)
+  story-engine                    (okf/story-library.md)
+
+RUNTIME INTELLIGENCE LAYER (derived execution context; writes to out/<target-slug>/runtime/)
+  opportunity-analyzer            (out/<target-slug>/runtime/opportunity-analysis.yaml)
+  ├── canonical-selector          (Activity A: python3 scripts/canonical_selector.py <target-slug> ➔ canonical-selection.yaml)
+  upwork-qualification            (if target_type: upwork ➔ out/<target-slug>/runtime/upwork-qualification.yaml)
+  archetype-classifier            (out/<target-slug>/runtime/archetype-analysis.yaml)
+  gap-classifier                  (out/<target-slug>/runtime/gap-analysis.yaml)
+  archetype-fit-evaluator         (out/<target-slug>/runtime/opportunity-fit-report.yaml)
+  projection-strategy-generator   (out/<target-slug>/runtime/projection-strategy.yaml)
+
+COACHING LAYER (derived; reads canonical + opportunity-analysis)
+  interview-strategy-generator    (okf/interview-strategy.md)
+  knowledge-gaps                  (okf/knowledge-gaps.md; pre-assembly gate)
+
+PROJECTION & VALIDATION LAYER (views & reports; writes to out/<target-slug>/)
+  projection-registry             (Orchestrates registered projections into out/<target-slug>/)
+  ├── resume-projection           (out/<target-slug>/resume-executive.md, resume-ats.md, resume-recruiter.md)
+  ├── cover-letter-projection     (out/<target-slug>/cover-letter.md)
+  ├── linkedin-projection         (out/<target-slug>/linkedin-profile.md)
+  ├── opportunity-alignment-view  (out/<target-slug>/opportunity-alignment.md)
+  ├── executive-brief-view         (out/<target-slug>/executive-brief.md)
+  ├── upwork-proposal             (if target_type: upwork ➔ out/<target-slug>/upwork-qualification-report.md, upwork-screening-answers.md, upwork-work-samples.md, upwork-evidence-gaps.md)
+  └── playbook-assembler          (out/<target-slug>/playbook.md & out/<target-slug>/interview-cheatsheet.md)
+  canonical-validator             (python3 scripts/canonical_validator.py <target-slug> ➔ canonical-conflict-report.yaml)
+  projection-validator            (python3 scripts/projection_validator.py <target-slug> ➔ projection-validation-report.yaml)
+  archetype-fit-validator        (out/<target-slug>/runtime/projection-validation-report.yaml overpositioning check)
+  brand-validator                 (out/<target-slug>/runtime/brand-validation-report.yaml)
+
+EVALUATION LAYER (learning & feedback; writes to evaluation/opportunities/)
+  market-feedback-evaluator      (evaluation/opportunities/<target-slug>-evaluation.yaml)
+```
+
+For an end-to-end run on the portfolio, the user runs:
+
+```
+/skill playbook-orchestrator
+```
+
+## Conventions
+
+### OKF v0.2 compliance
+
+Every concept document follows [`GoogleCloudPlatform/knowledge-catalog/okf/SPEC.md`](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md). The minimum required frontmatter is `type` (non-empty string). Reserved filenames: `index.md` and `log.md`.
+
+### Project concept types
+
+v0.6 types: `Source`, `SourceIndex`, `PortfolioAnalysis`, `Achievement`, `EvidenceCard`, `Capability`, `SignatureAchievements`, `ExecutiveBehaviourProfile`, `ExecutiveIdentity`, `VoiceProfile`, `PositioningStatements`, `NarrativeLibrary`, `StoryLibrary`, `MessagingLibrary`, `InterviewStrategy`, `KnowledgeGap`, `UpworkQualificationReport`, `UpworkScreeningAnswers`, `UpworkWorkSamples`, `UpworkEvidenceGaps`, `ArchetypeAnalysis`, `GapAnalysis`, `OpportunityFitReport`, `ProjectionStrategy`.
+
+### File layout
+
+- `skills/<name>/SKILL.md` — the Skill's instructions.
+- `scripts/` — deterministic loader, selector, validator, and ingestion scripts.
+- `config/config.example.yaml` — the YAML config template.
+- `out/` — gitignored output directory.
+  - `out/okf/` — canonical OKF bundle (shared across target opportunities).
+  - `out/<target-slug>/` — opportunity-scoped execution context & views (e.g. `out/senior-architect-vallum/`, `out/tenth-ai-lead-enterprise-architect/`).
+  - `out/<target-slug>/runtime/` — derived runtime YAMLs and validation reports.
+- `evaluation/opportunities/` — market feedback evaluation reports.
+
+## Testing & Verification
+
+1. **Test Suite Execution**: 172 tests across 34 modules in `tests/` protecting canonical loading, selection contracts, career evidence integrity, claim boundary verification, and versioned success criteria:
+   ```bash
+   pytest tests/ -v
+   ```
+2. **Canonical Conflict Audit**:
+   ```bash
+   python3 scripts/canonical_validator.py <target-slug>
+   ```
+3. **Deterministic Factual Selection**:
+   ```bash
+   python3 scripts/canonical_selector.py <target-slug>
+   ```
+4. **Independent Proposal Validator**:
+   ```bash
+   python3 scripts/upwork_validator.py
+   ```
+5. **Snapshot per Skill**: Golden fixture comparisons under `tests/golden/<skill>/`.
+6. **Lint & Attribution Pass**: Concepts verified against classification (`[evidence]`, `[inference]`, `[recommendation]`, `[assumption]`) and valid source footnote bindings.

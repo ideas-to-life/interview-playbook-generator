@@ -15,7 +15,7 @@ candidate:
 target_opportunity:
   company: ""
   role_title: "Enterprise Architect"
-  industry: "Law"
+  industry: ""
   interviewer: ""
   source: "config/target-position/technify-enterprise-architect.md"
   target_type: "employment"  # Options: employment (default), upwork

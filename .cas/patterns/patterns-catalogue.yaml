@@ -1,51 +1,353 @@
 patterns:
   - id: "architecture-workflow-loop"
     description: "Embed a continuous architecture audit and refactor loop inside the delivery workflow to prevent structural drift during rapid experimentation."
+    invariants:
+      - "Every feature or structural change must pass through specification, pattern alignment, and governance validation gates before completion."
+      - "Architectural drift detected during implementation must trigger immediate remediation or ADR updates within the same delivery cycle."
+    anti_patterns:
+      - "Shipping structural or cross-module code changes directly without invoking mandatory architecture skills or updating specifications."
+      - "Deferring all architectural review and drift detection to post-release manual audits."
 
   - id: "build-time-governance"
     description: "Enforce architectural constraints during generation to prevent invalid structures rather than validating after the fact."
+    invariants:
+      - "Coding agents and generators must validate proposed module boundaries, dependencies, and pattern invariants before writing production code."
+      - "Proposals that violate architecture rules or pattern anti-patterns must be rejected at design time (`decision.status: rejected`)."
+    anti_patterns:
+      - "Generating non-compliant code first and relying solely on downstream human code review to catch structural violations."
+      - "Self-approving a feature proposal by citing a pattern ID while violating that pattern's structural invariants."
 
   - id: "contract-first-architecture"
     description: "Establish explicit contracts between system layers before implementation to make relationships visible and reduce hidden coupling."
+    invariants:
+      - "Cross-module and cross-layer boundaries must be defined via explicit schemas, protocols, or typed interfaces prior to implementation."
+      - "Consumers must depend exclusively on the published contract rather than concrete implementation internals."
+    anti_patterns:
+      - "Passing untyped dictionaries or ad-hoc data structures across module boundaries without a ratified schema or protocol."
+      - "Importing private internal helpers or concrete adapter classes directly across architectural layers."
+
+  - id: "declarative-agent-command-registry"
+    description: "Externalize agent command contracts, task specifications, and continuous architecture skills into declarative manifests to standardize capability definition, invocation, and verification across workspaces."
+    invariants:
+      - "Agent skills and commands must declare explicit metadata, input schemas (`INPUT.schema.yaml`), and output schemas (`OUTPUT.schema.yaml`)."
+      - "Skill discovery must resolve from standardized workspace paths (`.cas/`, `.agents/skills/`) without hardcoded host paths."
+    anti_patterns:
+      - "Embedding ad-hoc, unversioned agent instructions inside application runtime code."
+      - "Hardcoding developer-specific filesystem paths inside portable skill manifests."
 
   - id: "deterministic-core-selective-augmentation"
     description: "Build system core with deterministic, non-LLM components and use LLM augmentation only for appropriate layers to ensure reliability."
+    invariants:
+      - "Core workflow orchestration, state transitions, routing, and schema validation must execute deterministically without LLM calls."
+      - "Non-deterministic LLM reasoning must be isolated behind explicit interfaces with deterministic validation of all outputs."
+    anti_patterns:
+      - "Delegating deterministic control flow, file I/O routing, or schema validation logic to an LLM prompt."
+      - "Interleaving direct LLM API calls inside core domain models or state machine transitions."
+
+  - id: "deterministic-mock-evaluation-harness"
+    description: "Isolate agentic workflows, evaluation harnesses, and automated governance decision gates from external model providers during testing by using a drop-in deterministic mock client, ensuring zero-cost, hermetic, and reproducible execution."
+    invariants:
+      - "All unit and CI test suites must execute hermetically offline using a deterministic mock/stub implementation of the LLM client contract."
+      - "The mock client must honor the exact same interface and structured output validation path as the live production client."
+    anti_patterns:
+      - "Making live network calls to external LLM APIs or requiring live API keys during automated unit or CI test execution."
+      - "Bypassing schema validation or orchestration logic in tests by patching internal business methods instead of injecting the mock client."
 
   - id: "dual-path-routing"
     description: "Classify user intent into a small set of routes and dispatch to specialized handlers to optimize responses for different request types."
+    invariants:
+      - "Intent classification must map inputs to a bounded, explicitly enumerated set of route handlers."
+      - "Each specialized route handler must remain decoupled from the internal logic of sibling handlers."
+    anti_patterns:
+      - "Handling all distinct request intents inside a single monolithic conditional block or mega-prompt."
+      - "Allowing unclassified or ambiguous inputs to execute arbitrary unvalidated code paths."
+
+  - id: "file-backed-blackboard-workspace"
+    description: "Provide a standardized, version-controlled filesystem hierarchy as a shared blackboard for agent memory, templates, and runtime execution context without external database dependencies."
+    invariants:
+      - "Shared agent artifacts and intermediate states must be persisted in deterministic, schema-validated files within the designated workspace hierarchy."
+      - "Workspace paths must be resolved through configuration or workspace path resolvers rather than hardcoded relative strings."
+    anti_patterns:
+      - "Introducing external database servers for state that belongs in the version-controlled knowledge workspace."
+      - "Scattering temporary or unindexed state files across arbitrary source directories."
+
+  - id: "file-system-knowledge-repository"
+    description: "Persist and organize institutional architectural state, decisions, and governance models directly within a version-controlled directory hierarchy on disk to enable transparent peer-review, offline portability, and git-native governance."
+    invariants:
+      - "All institutional knowledge artifacts (ADRs, patterns, rules, maps, intents) must be stored as human-readable, git-tracked Markdown or YAML files."
+      - "Artifact filenames and frontmatter must adhere to canonical naming conventions and JSON schemas."
+    anti_patterns:
+      - "Storing authoritative architectural decisions in opaque binary formats or unversioned external SaaS stores without git synchronization."
+      - "Mutating governed knowledge files without preserving required frontmatter metadata and lineage fields."
+
+  - id: "finite-state-governance-engine"
+    description: "Constrain autonomous agent mutations and artifact lifecycles through a deterministic finite-state transition registry that verifies allowable state progressions before mutating architectural state."
+    invariants:
+      - "Every governance artifact status change must be validated against an explicit set of allowed state transitions before persistence."
+      - "Invalid or out-of-order lifecycle transitions must be deterministically rejected with an explicit error."
+    anti_patterns:
+      - "Mutating artifact `status` strings directly in ad-hoc code without validating whether the transition is legal."
+      - "Allowing autonomous agents to mark draft artifacts as `approved` or `accepted` without passing the required human review gate."
 
   - id: "graceful-fallback"
     description: "Wrap LLM calls with error handling that returns safe defaults so the system stays usable when generation fails."
+    invariants:
+      - "Transient LLM failures, timeouts, or malformed outputs must be caught at the boundary and handled via bounded retries or explicit degraded fallback outputs."
+      - "Fallback outputs must conform to the expected downstream contract and explicitly disclose degraded/fallback status where applicable."
+    anti_patterns:
+      - "Allowing unhandled provider exceptions or malformed LLM responses to crash the entire pipeline without diagnostic context."
+      - "Silently returning fabricated data on LLM failure without recording a warning, limitation disclosure, or fallback indicator."
 
   - id: "heuristic-driven-arbitration"
     description: "Use a control point to adjust LLM-produced outputs based on deterministic safety signals from other components."
+    invariants:
+      - "Deterministic safety and governance signals must take precedence over raw LLM-generated scores or recommendations."
+      - "Arbitration rules must be codified as transparent, testable deterministic logic applied after LLM inference."
+    anti_patterns:
+      - "Trusting raw LLM self-assessments or confidence scores when deterministic evidence or rule checks report a violation."
+      - "Hiding arbitration overrides inside prompt text instead of enforcing them in deterministic post-processing code."
+
+  - id: "heuristic-to-pattern-promotion-lifecycle"
+    description: "Establish an evidence-driven, staged progression pipeline for architectural knowledge that validates emergent practices through empirical observation before elevating them into authoritative cross-system standards."
+    invariants:
+      - "Patterns must progress through traceable lifecycle stages: Pattern Proposal -> Promotion Recommendation -> Promotion Decision -> ADR -> Global Pattern."
+      - "Each promotion stage must maintain unbroken `source_traceability` references to its predecessor artifacts."
+    anti_patterns:
+      - "Promoting an unvalidated heuristic directly into `global/patterns/` without a supporting promotion decision and approved ADR."
+      - "Creating orphan ADRs or global patterns that lack `source_traceability` links to proposals and recommendations."
+
+  - id: "knowledge-repository-abstraction"
+    description: "Decouple domain orchestration, reasoning logic, and agent workflows from physical storage implementations using a unified knowledge repository interface."
+    invariants:
+      - "Workflow steps and domain services must read and write knowledge artifacts exclusively through the repository/provider abstraction (`io.py`)."
+      - "Storage path resolution and serialization mechanics must be encapsulated within the repository provider layer."
+    anti_patterns:
+      - "Constructing raw filesystem paths (`open('knowledge/...')`) directly inside orchestration steps or domain reasoning modules."
+      - "Coupling business logic to specific directory layouts or storage backends."
 
   - id: "learning-loop-product-development"
     description: "Structure product development as a continuous learning cycle where experiments feed patterns, patterns inform architecture, and architecture guides future experiments."
+    invariants:
+      - "Architectural work and implementation experiments must produce structured signals or learnings that feed back into the architecture evolution map."
+      - "Future feature designs must consume the updated pattern catalogue and architecture intent resulting from prior iterations."
+    anti_patterns:
+      - "Treating architecture documentation as a one-time upfront deliverable disconnected from ongoing delivery signals."
+      - "Repeating known architectural mistakes across iterations without capturing learnings or updating steering guardrails."
 
   - id: "llm-provider-abstraction-boundary"
     description: "Introduce a provider-agnostic interface so agents can switch LLM backends without rewriting orchestration logic."
+    invariants:
+      - "All LLM invocations must traverse a single provider-agnostic client interface (`LLMClient`) decoupled from concrete vendor SDKs."
+      - "Switching between model providers (e.g., Gemini, Anthropic, OpenAI, Ollama, HuggingFace) must be driven by declarative configuration (`provider`/`model`) without changing application code."
+    anti_patterns:
+      - "Creating vendor-specific adapter classes per provider (e.g., `GeminiReasoner`, `providers/gemini.py`, `providers/ollama.py`) instead of routing through a unified multi-provider gateway."
+      - "Adding direct vendor SDK dependencies (`google-genai`, `openai`, `anthropic`) to project dependencies when a unified router (`litellm`) is the standard."
 
   - id: "orchestrator-managed-pipeline"
     description: "Use a central orchestrator to run a fixed, dependency-ordered sequence of agents so analysis steps remain consistent and traceable."
+    invariants:
+      - "Pipeline step execution order, input preparation, and output persistence must be coordinated by a central orchestrator (`FlowRunner`)."
+      - "Individual pipeline steps must not invoke subsequent steps directly or mutate global orchestrator state out of band."
+    anti_patterns:
+      - "Chaining agent steps via ad-hoc direct function calls or hidden side effects between step modules."
+      - "Duplicating retry, telemetry, or persistence boilerplate inside individual pipeline steps."
 
   - id: "parallel-agent-execution"
     description: "Concurrently executes independent agents or pipeline steps using async orchestration to reduce end-to-end latency without compromising state integrity."
+    invariants:
+      - "Concurrently executed steps must operate on isolated inputs and must not mutate shared mutable state without synchronization."
+      - "Results from parallel branches must be deterministically merged after completion to preserve reproducible outputs."
+    anti_patterns:
+      - "Running dependent steps concurrently where one step reads partial, uncommitted file mutations from another."
+      - "Allowing race conditions or non-deterministic ordering in persisted governance artifacts."
+
+  - id: "pattern-cas-decoupled-execution-model"
+    description: "Isolate reasoning logic from orchestration runners and persistence mechanisms through explicit prompt-based contracts to enable implementation-agnostic, portable workflow execution."
+    invariants:
+      - "Reasoning steps must receive structured context inputs and return schema-validated outputs without performing direct filesystem I/O."
+      - "Orchestration runners own context loading and artifact persistence separately from reasoning execution."
+    anti_patterns:
+      - "Mixing prompt formatting, live LLM calls, and disk file writes inside a single tightly coupled function."
+      - "Hardcoding environment-specific persistence paths inside reasoning contracts."
+
+  - id: "pattern-continuous-governance-loop"
+    description: "Automate architectural compliance and drift remediation continuously across delivery pipelines through an active detect-analyse-validate-enforce governance control loop."
+    invariants:
+      - "Every repository mutation affecting architecture or governance state must be verifiable by automated governance validation commands (`cas governance validate`)."
+      - "Compliance findings must trace directly to codified rules, ADRs, and patterns."
+    anti_patterns:
+      - "Disabling or skipping governance validation gates in local workflows or CI pipelines to force a merge."
+      - "Relying on manual, unrecorded tribal agreements instead of codified rules and ADRs."
+
+  - id: "pattern-proposal-only-steering-projection"
+    description: "Enforce proposal-only artifact emission during automated continuous architecture and steering projection generation, isolating changes from operational branches until validated and approved."
+    invariants:
+      - "Automated steering projections must update only bounded managed sections (`<!-- CAS-STEERING:BEGIN -->` ... `<!-- CAS-STEERING:END -->`) or designated proposal artifacts."
+      - "Human-authored rules and surrounding documentation outside managed blocks must be preserved intact."
+    anti_patterns:
+      - "Overwriting entire `AGENTS.md` or `GEMINI.md` files and destroying human-authored repository rules during steering sync."
+      - "Auto-committing unvalidated architectural rule mutations directly to protected production branches."
+
+  - id: "pattern-scope-classification-framework"
+    description: "Establish a formal multi-tiered scope taxonomy to classify and govern architectural patterns across defined reuse boundaries (global, domain, project, local), ensuring practices are evaluated and applied at the appropriate organizational level."
+    invariants:
+      - "Every candidate pattern must be classified into an explicit reuse scope (`global`, `domain`, `project`, or `local`) based on cross-project applicability."
+      - "Only patterns validated for cross-system reuse may be promoted into the global pattern catalogue."
+    anti_patterns:
+      - "Promoting project-specific implementation quirks into `global/patterns/` as universal mandates."
+      - "Leaving reusable cross-cutting architectural patterns trapped in local project code without scope classification."
 
   - id: "personal-need-experimentation"
     description: "Start experiments from concrete personal pain points to reduce ambiguity and increase commitment through genuine motivation."
+    invariants:
+      - "Experiments must define a concrete problem statement, hypothesis, and observable evaluation criteria grounded in real operational friction."
+      - "Outcomes from experiments must be recorded as structured learnings or signals."
+    anti_patterns:
+      - "Building speculative architectural abstractions without a concrete use case or measurable problem."
+      - "Running undocumented spikes that leave orphan code in the repository without captured learnings."
 
   - id: "prompt-as-code-separation"
     description: "Store prompts outside agent code and load them at runtime to improve maintainability and enable language variants."
+    invariants:
+      - "System instructions and prompt templates must be externalized into dedicated, versioned prompt files or prompt modules outside orchestration logic."
+      - "Runtime code must load and parameterize prompts deterministically rather than constructing multi-line prompt prose inline."
+    anti_patterns:
+      - "Embedding long system prompt strings and instructions directly inside orchestrator or business service classes."
+      - "Duplicating identical prompt text across multiple Python modules."
 
   - id: "prompt-schema-contracts-as-architecture"
     description: "Treat prompts, schemas, and structure locks as architectural contracts that constrain outputs and reduce drift."
+    invariants:
+      - "Every structured reasoning prompt must be paired with an explicit schema contract (`src/cas_runner/schemas/` or Pydantic/JSON Schema) enforced at runtime."
+      - "Changes to prompt output structures must update the corresponding schema and regression tests in lockstep."
+    anti_patterns:
+      - "Modifying a prompt's requested output fields without updating the validating JSON/Pydantic schema."
+      - "Parsing free-form LLM prose with brittle regular expressions instead of enforcing a structured output schema."
+
+  - id: "provider-agnostic-llm-client"
+    description: "Decouple agent execution pipelines and reasoning workflows from concrete model provider SDKs through a unified client abstraction paired with deterministic test doubles, guaranteeing vendor portability, standardized telemetry, and zero-cost offline testability."
+    invariants:
+      - "All live LLM calls must route through a single unified multi-provider client abstraction (e.g., `LLMClient` backed by `LiteLLMClient`) that resolves `provider/model` strings declaratively from configuration."
+      - "A deterministic offline test double (`MockLLMClient`) implementing the exact same interface must be used for all unit and CI tests."
+      - "Provider authentication must rely on standard environment variable resolution by the unified router rather than vendor-specific credential code."
+    anti_patterns:
+      - "Creating vendor-specific adapter modules or classes per provider (e.g., `providers/gemini.py`, `GeminiArchitectureReasoner`, `providers/ollama.py`, `OpenAIClient`)."
+      - "Adding direct vendor SDK libraries (`google-genai`, `google-generativeai`, `openai`, `anthropic`) to `requirements.txt` or `pyproject.toml` instead of a unified multi-provider router (`litellm`)."
+      - "Hardcoding vendor names into CLI flags or enums (e.g., `--reasoner choices={mock,gemini}`) instead of accepting declarative `provider` and `model` configuration."
+
+  - id: "provider-agnostic-llm-facade"
+    description: "Encapsulate large language model invocations behind a unified, provider-agnostic client abstraction paired with a deterministic mock test double to decouple agent orchestration from vendor-specific APIs and enable offline execution."
+    invariants:
+      - "Domain reasoners and orchestration steps must depend only on the provider-agnostic facade protocol, never on underlying vendor transport details."
+      - "The facade must normalize prompt messages, structured schema enforcement, token usage telemetry, and error handling across all providers."
+    anti_patterns:
+      - "Leaking vendor-specific response objects, SDK exception types, or structured-output kwargs into domain or orchestrator layers."
+      - "Implementing separate facade adapters for each LLM vendor instead of delegating to a unified multi-model router."
+
+  - id: "provider-agnostic-llm-gateway"
+    description: "Decouple agentic reasoning workflows, governance evaluations, and autonomous execution pipelines from downstream model providers through a unified invocation contract backed by symmetric live routing and deterministic mock implementations."
+    invariants:
+      - "The LLM gateway must enforce centralized retry policies, rate-limit backoff, token/cost telemetry capture, and structured output validation for all model calls."
+      - "Switching between cloud and local model providers must require zero code changes—only configuration or environment variable updates."
+    anti_patterns:
+      - "Bypassing the centralized gateway to call vendor SDK endpoints directly from feature modules."
+      - "Re-implementing custom retry loops, API key loaders, and schema parsers inside vendor-specific provider classes."
+
+  - id: "pure-functional-health-evaluation"
+    description: "Isolate health scoring, compliance evaluation, and diagnostic reason derivation into deterministic, side-effect-free pure functions operating strictly over immutable input metrics."
+    invariants:
+      - "Health and compliance scoring functions must be deterministic pure functions that produce identical outputs for identical input metrics without side effects."
+      - "Evaluation functions must not perform network I/O, LLM calls, or filesystem mutations."
+    anti_patterns:
+      - "Mixing file loading, database queries, or LLM inference inside health score calculation functions."
+      - "Relying on hidden global state or wall-clock time inside compliance scoring formulas."
+
+  - id: "registry-guarded-governance-state-machine"
+    description: "Constrain autonomous agent mutations and artifact lifecycle transitions to deterministic, validated progressions through an explicit TransitionRegistry state machine."
+    invariants:
+      - "All lifecycle state transitions must be registered in and verified by a central `TransitionRegistry` before any state mutation occurs."
+      - "Unregistered or forbidden state transitions must raise a deterministic validation error."
+    anti_patterns:
+      - "Scattering ad-hoc `if status == ...` checks across multiple modules instead of querying the central transition registry."
+      - "Permitting silent state overwrites that bypass lifecycle transition validation."
+
+  - id: "rule-grounded-compliance-evaluation"
+    description: "Evaluate codebase deltas and repository state against codified deterministic rule specifications to produce machine-readable, auditable compliance findings rather than relying on subjective or non-deterministic model assessments."
+    invariants:
+      - "Every compliance finding must reference a specific codified rule ID or ADR constraint and provide verifiable repository evidence."
+      - "Deterministic rule checks must execute reproducibly and cannot be overridden by subjective LLM narrative."
+    anti_patterns:
+      - "Emitting generic, ungrounded architectural opinions without citing a specific rule ID and concrete file/code evidence."
+      - "Using non-deterministic LLM prompts as the sole check for constraints that can be verified deterministically."
+
+  - id: "schema-enforced-domain-contracts"
+    description: "Establish deterministic structural and semantic validation boundaries between non-deterministic actors and core business state through strict, strongly-typed domain schema contracts."
+    invariants:
+      - "All data crossing from non-deterministic LLM outputs or external inputs into core domain logic must be validated against strict JSON Schema or Pydantic models."
+      - "Schema validation failures must halt or trigger structured retry/fallback before corrupt data can reach domain state."
+    anti_patterns:
+      - "Consuming raw unvalidated JSON dicts from LLM responses directly in domain services or persistence layers."
+      - "Using permissive schemas (`additionalProperties: true` everywhere with no required fields) that fail to catch structural drift."
+
+  - id: "schema-guided-reasoning"
+    description: "Enforce strict JSON Schema validation contracts directly on prompt templates and model invocation parameters to ensure deterministic, structurally verified outputs across agent reasoning steps."
+    invariants:
+      - "Reasoning invocations requiring structured data must inject schema instructions and validate the parsed response against the target schema before returning."
+      - "Malformed or schema-noncompliant LLM outputs must raise a structured validation error (`StructuredOutputError`)."
+    anti_patterns:
+      - "Asking an LLM in prose to 'return JSON' without supplying a formal schema contract and runtime validator."
+      - "Swallowing schema validation errors and returning unvalidated raw text to callers expecting structured objects."
+
+  - id: "sequential-pipeline-flow-runner"
+    description: "Coordinate multi-stage architectural verification, steering compilation, and agent analysis through a deterministic linear execution pipeline that propagates shared immutable context and terminates immediately upon critical governance violations."
+    invariants:
+      - "Pipeline steps must execute in a declared deterministic sequence, reading from shared execution context and returning structured step outputs."
+      - "Critical validation or governance failures in any step must halt downstream step execution immediately."
+    anti_patterns:
+      - "Continuing pipeline execution after a step fails schema validation or critical governance checks."
+      - "Allowing steps to mutate upstream context keys in undocumented ways that break downstream step contracts."
+
+  - id: "sequential-pipeline-orchestration"
+    description: "Coordinate multi-phase verification, assessment, and steering pipelines through an ordered sequential execution spine that propagates shared context and halts immediately on governance failure."
+    invariants:
+      - "Each orchestration phase must complete its contract validation (`prepare_inputs` -> `execute` -> `validate`) before the next phase begins."
+      - "Orchestration state and telemetry must be recorded consistently at each phase boundary."
+    anti_patterns:
+      - "Skipping the `validate` phase of a pipeline step during production or test orchestration runs."
+      - "Coupling individual step implementations to specific pipeline ordering assumptions outside the flow registry."
 
   - id: "stabilise-core-loop-before-multimodal"
     description: "Defer multimodal features until the text-based agent loop and contracts are stable, to avoid compounding uncertainty."
+    invariants:
+      - "Core text/structured-data reasoning contracts, test harnesses, and error recovery loops must be verified stable before adding image, audio, or binary modalities."
+      - "Multimodal extensions must layer onto existing validated contracts without breaking text-only execution paths."
+    anti_patterns:
+      - "Introducing complex multimodal pipelines before core structured output validation and deterministic testing are working."
+      - "Breaking deterministic offline unit tests by coupling core domain flows to binary media inputs."
 
   - id: "structured-output-via-schema"
     description: "Define a formal schema for agent outputs and validate LLM responses against it to keep results machine-readable and reliable."
+    invariants:
+      - "Every agent or LLM output consumed by code must be parsed and validated against an explicit schema (JSON Schema, YAML schema, or Pydantic model)."
+      - "Code blocks or markdown fences surrounding JSON responses must be cleanly extracted prior to schema validation."
+    anti_patterns:
+      - "Relying on fragile string splitting or regexes to extract fields from unstructured LLM responses."
+      - "Persisting unvalidated LLM output directly to governed knowledge artifacts."
+
+  - id: "telemetry-observable-agent-steps"
+    description: "Standardize distributed OpenTelemetry tracing and structured metric envelopes across autonomous agent execution workflows to trace invocation latency, token spend, and step failure boundaries transparently."
+    invariants:
+      - "Every LLM invocation and orchestration step must capture structured usage metadata (prompt/completion tokens, estimated cost, latency, status)."
+      - "Telemetry emission must be non-intrusive and must not alter deterministic business outputs or leak sensitive credentials."
+    anti_patterns:
+      - "Executing live LLM calls without capturing token usage and cost metadata in the response envelope."
+      - "Logging raw API keys or sensitive secret values inside telemetry traces."
 
   - id: "typed-execution-context"
     description: "Replaces implicit dictionary-based state passing with a structured, versioned, and strongly typed object to ensure contract safety across pipeline steps."
+    invariants:
+      - "Shared execution state and configuration passed across modules must use strongly typed models (`ExecutionProfile`, `RuntimeConfig`, dataclasses/Pydantic) with explicit defaults."
+      - "Field types and constraints must be validated at construction time."
+    anti_patterns:
+      - "Passing deeply nested, undocumented `dict[str, Any]` bags across module boundaries where keys are guessed via `.get()`."
+      - "Mutating untyped configuration dictionaries in place across unrelated pipeline stages."

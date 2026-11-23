@@ -1,0 +1,30 @@
+output:
+  feature:
+    name: string        # Feature identifier
+    module: string      # Target module
+    description: string # What it does
+
+  decision:
+    status: string        # accepted | rejected | proposed
+    reason: string        # Explanation for decision (especially for rejections)
+    alternative: string   # Suggested alternative approach if rejected
+
+  code_changes:
+    - file: string      # Path to file
+      change_type: string  # create | modify | delete
+      summary: string      # What changed and why
+
+  architecture_decision:
+    description: string     # Architectural decision rationale
+    rationale: string       # Why this approach was taken over alternatives
+  
+  architectural_impact:
+    - affected_components: [string]
+      pattern_usage: [string]  # Pattern IDs from catalogue
+      pattern_justification: string  # Why this pattern applies or why a new structure is needed
+
+  risks:
+    - description: string  # Potential issues
+
+  validation_notes:
+    - description: string  # How you validated against rules

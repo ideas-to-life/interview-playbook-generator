@@ -1,0 +1,7 @@
+interface:
+  display_name: "CAS Knowledge Links"
+  short_description: "Link governed CAS knowledge artefacts"
+  default_prompt: "Use $cas-refactor-knowledge-links to add evidence-backed relationship metadata and markdown links between CAS knowledge artefacts."
+
+policy:
+  allow_implicit_invocation: true

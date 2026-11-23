@@ -1,0 +1,4 @@
+input:
+  feature_request: string
+  target_module: optional[string]
+  existing_context: optional[string]

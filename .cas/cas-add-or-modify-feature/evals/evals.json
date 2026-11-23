@@ -1,0 +1,71 @@
+{
+  "skill_name": "cas-add-or-modify-feature",
+  "evals": [
+    {
+      "id": "audit-logging-feature",
+      "prompt": "I need to add audit logging to track when users modify architecture decisions in the CAS system. This is for compliance - we need to know who changed what and when. The logging should integrate with our existing infrastructure.",
+      "expected_output": "A feature plan that adds audit logging to the governance flow, reusing existing logging patterns, with changes to the ADR modification path. Should identify auth and logging as affected components.",
+      "files": [],
+      "assertions": {
+        "must_include": ["audit logging", "governance", "ADR"],
+        "must_not_include": ["custom-unlogged-channel"],
+        "expected_decision": "accepted"
+      }
+    },
+    {
+      "id": "new-llm-provider",
+      "prompt": "Can we add support for running CAS with local LLMs via Ollama alongside cloud providers? Some teams want to run it offline for security reasons.",
+      "expected_output": "A feature plan that routes LLM calls through a unified multi-provider client abstraction (provider-agnostic-llm-client / LiteLLMClient) paired with a deterministic MockLLMClient, avoiding vendor-specific adapter files.",
+      "files": [],
+      "assertions": {
+        "must_include": ["provider-agnostic-llm-client", "LiteLLMClient", "MockLLMClient"],
+        "must_not_include": ["providers/ollama.py"],
+        "expected_decision": "accepted"
+      }
+    },
+    {
+      "id": "reject-single-vendor-llm-adapter",
+      "prompt": "Add a GeminiArchitectureReasoner in providers/gemini.py using the google-genai SDK in requirements.txt and add 'gemini' to the CLI --reasoner choices.",
+      "expected_output": "A feature plan with decision.status set to 'rejected' because creating vendor-specific adapters (providers/gemini.py), adding google-genai directly, and hardcoding CLI vendor choices violate the invariants and trigger the anti_patterns of provider-agnostic-llm-client.",
+      "files": [],
+      "assertions": {
+        "must_include": ["rejected", "provider-agnostic-llm-client", "anti_patterns"],
+        "must_not_include": ["decision.status: accepted", "approved"],
+        "expected_decision": "rejected"
+      }
+    },
+    {
+      "id": "diagram-export-api",
+      "prompt": "I want to add an API endpoint that exports the Architecture Evolution Map as a PNG diagram. Users should be able to GET /aem/export.png and get a visual representation.",
+      "expected_output": "A feature plan for a new API endpoint in the diagrams flow, using existing AEM generation. Should identify api and diagrams-flow as affected components, and note the need for a diagram rendering library.",
+      "files": [],
+      "assertions": {
+        "must_include": ["diagrams", "AEM"],
+        "must_not_include": [],
+        "expected_decision": "accepted"
+      }
+    },
+    {
+      "id": "pattern-proposal-workflow",
+      "prompt": "When someone proposes a new pattern from a project, I want it to automatically create a draft ADR and notify the governance forum. Can we add that to the patterns-evolution-flow?",
+      "expected_output": "A feature plan that extends patterns-evolution-flow to auto-generate ADR drafts and trigger notifications. Should reuse existing governance-flow patterns and maintain separation between project and global layers.",
+      "files": [],
+      "assertions": {
+        "must_include": ["patterns-evolution-flow", "ADR"],
+        "must_not_include": [],
+        "expected_decision": "accepted"
+      }
+    },
+    {
+      "id": "bulk-ingestion",
+      "prompt": "We have a backlog of 500+ conversation transcripts in JSON format that need to be ingested into CAS. Can we add a bulk ingestion mode to the ingestions-flow instead of processing them one by one?",
+      "expected_output": "A feature plan for batch processing conversations through the ingestion pipeline, with progress tracking and error handling. Should maintain deterministic processing order and integrate with existing conversation_to_aw skill.",
+      "files": [],
+      "assertions": {
+        "must_include": ["ingestion pipeline", "batch", "conversation_to_aw"],
+        "must_not_include": ["randomized-order"],
+        "expected_decision": "accepted"
+      }
+    }
+  ]
+}

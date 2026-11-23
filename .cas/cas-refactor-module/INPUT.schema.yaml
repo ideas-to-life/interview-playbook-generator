@@ -1,0 +1,4 @@
+input:
+  target_path: string
+  refactor_request: string
+  constraints: optional[string]

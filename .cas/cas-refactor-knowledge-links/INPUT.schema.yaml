@@ -1,0 +1,6 @@
+input:
+  target_root: string
+  relationship_request: string
+  constraints: optional[string]
+  artifact_types: optional[list[string]]
+  validation_command: optional[string]
