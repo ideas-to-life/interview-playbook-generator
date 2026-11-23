@@ -1,0 +1,27 @@
+version: "6.0"
+generated_at: "2026-11-19T18:34:40+00:00"
+target_slug: "technify-enterprise-architect"
+
+prediction_evaluation:
+  predicted_archetype: "enterprise_architect"
+  predicted_overall_fit: "Moderate-High"
+  selection_recommendation: "Good Fit"
+  actual_outcome: "pending_market_feedback"
+  prediction_accuracy: "NOT_EVALUATED"
+  anticipated_positive_signals:
+    - "Direct alignment in enterprise architecture landscape mapping (SAP LeanIX, TOGAF 9, capability-based planning)"
+    - "Strong direct track record in multi-domain technical debt identification and multi-stack integration"
+    - "Verified external executive presentation pedigree (Gartner, LeanIX Insight, SAP Signavio Day)"
+  anticipated_risk_signals:
+    - "Lack of direct SBOM ownership, open-source licensing audits, and code-ownership provenance evidence"
+    - "No prior direct private-equity or venture-capital technical due diligence round leadership"
+    - "No direct hands-on penetration testing execution or image processing software exposure"
+    - "Unconfirmed config.yaml industry tag ('Law') vs. software product JD context"
+  confirmed_signals: []
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 98.5
+    projection_quality: 98.0
+    opportunity_fit: 78.0
+    archetype_fit: 90.0
