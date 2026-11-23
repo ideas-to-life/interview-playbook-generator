@@ -1,12 +1,12 @@
 {
-  "project": "ideas-to-life-cas",
+  "project": "interview-playbook-generator",
   "branch": "007-critical-pipeline-remediation",
   "feature_dir": "specs/007-critical-pipeline-remediation",
   "sdlc_profile": "speckit",
   "stage": 6,
   "stage_name": "Stage 6: 3-Pass Diff Verification",
   "start_time": 1795435734.534713,
-  "updated_at": 1795442310.231797,
+  "updated_at": 1795443104.8644228,
   "gates": {
     "intent": {
       "name": "intent",
@@ -24,13 +24,13 @@
       "name": "lint",
       "status": "PASSED",
       "details": "0 violations",
-      "timestamp": 1795442310.229978
+      "timestamp": 1795443104.8069499
     },
     "verify_diff": {
       "name": "verify_diff",
       "status": "PASSED",
       "details": "Critical: 0 | High: 0 | Medium: 0 | Low: 0",
-      "timestamp": 1795439704.957243
+      "timestamp": 1795443104.8637178
     },
     "review_pr": {
       "name": "review_pr",
@@ -47,18 +47,6 @@
     "src": true
   },
   "events": [
-    {
-      "timestamp": 1795437852.527754,
-      "gate": "lint",
-      "status": "PASSED",
-      "details": "0 violations"
-    },
-    {
-      "timestamp": 1795437852.57664,
-      "gate": "review_pr",
-      "status": "PASSED",
-      "details": "Critical: 0 | High: 0 | Medium: 0 | Low: 0"
-    },
     {
       "timestamp": 1795437855.150826,
       "gate": "lint",
@@ -166,6 +154,18 @@
       "gate": "lint",
       "status": "PASSED",
       "details": "0 violations"
+    },
+    {
+      "timestamp": 1795443104.8069499,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    },
+    {
+      "timestamp": 1795443104.8637178,
+      "gate": "verify_diff",
+      "status": "PASSED",
+      "details": "Critical: 0 | High: 0 | Medium: 0 | Low: 0"
     }
   ]
 }
