@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from scripts.canonical_models import (
+from src.scripts.canonical_models import (
     ProjectionValidationReport,
     ValidationSummary,
     ValidationFinding,
@@ -107,3 +107,57 @@ def test_projection_validation_report_schema_contract():
         assert f["action_taken"] in ["sanitized_in_place", "validation_failure_block", "warning_logged"]
         assert len(f["generated_claim"]) > 0
         assert len(f["reason"]) > 0
+
+
+def test_validate_projection_content_conforms_to_contract_checks():
+    """Actual validate_projection_content() output must emit the 6 contract check keys."""
+    from src.scripts.projection_validator import validate_projection_content
+
+    report = validate_projection_content("## Summary\n- Enterprise Architect\n")
+    data = report.to_dict()
+    checks = data["checks"]
+
+    for required_check in [
+        "education",
+        "certifications",
+        "languages",
+        "employment_chronology",
+        "technology_claims",
+        "cross_opportunity_isolation",
+    ]:
+        assert required_check in checks, f"Missing contract check key: {required_check}"
+        assert checks[required_check]["status"] in ["PASSED", "FAILED", "SANITIZED"]
+
+
+def test_validate_opportunity_projections_preserves_sanitization_findings(tmp_path):
+    """validate_opportunity_projections() must preserve Stage 1 SANITIZED findings in the emitted report."""
+    from src.scripts.projection_validator import validate_opportunity_projections
+
+    slug = "sanitization-test-role"
+    opp_dir = tmp_path / slug
+    opp_dir.mkdir(parents=True)
+    resume_path = opp_dir / "resume-executive.md"
+    resume_path.write_text(
+        "## Education\n"
+        "- **MSc in Computer Science**, Federal University of Rio de Janeiro (1995–1999)\n",
+        encoding="utf-8",
+    )
+
+    report = validate_opportunity_projections(slug, auto_sanitize=True, out_root=tmp_path)
+
+    updated = resume_path.read_text(encoding="utf-8")
+    assert "Universidade de Mogi das Cruzes" in updated
+    assert "1988–1991" in updated
+    assert "1995" not in updated
+
+    assert report.overall_status == "PASSED_WITH_SANITIZATION"
+    assert report.summary.sanitized_count >= 1
+    assert report.checks["education"].status == "SANITIZED"
+    assert len(report.findings) >= 1
+
+    report_yaml = opp_dir / "runtime" / "projection-validation-report.yaml"
+    assert report_yaml.exists()
+    persisted = yaml.safe_load(report_yaml.read_text(encoding="utf-8"))
+    assert persisted["report_metadata"]["overall_status"] == "PASSED_WITH_SANITIZATION"
+    assert persisted["summary"]["sanitized_count"] >= 1
+    assert len(persisted["findings"]) >= 1

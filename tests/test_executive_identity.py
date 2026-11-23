@@ -6,7 +6,7 @@ GOLDEN_DIR = "tests/golden/executive-identity"
 
 
 def test_skill_exists():
-    path = "skills/executive-identity-generator/SKILL.md"
+    path = "src/skills/executive-identity-generator/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()

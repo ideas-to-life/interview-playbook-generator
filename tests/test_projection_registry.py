@@ -7,7 +7,7 @@ GOLDEN = "tests/golden/projection-registry/projection-registry.yaml"
 
 
 def test_skill_exists():
-    path = "skills/projection-registry/SKILL.md"
+    path = "src/skills/projection-registry/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()

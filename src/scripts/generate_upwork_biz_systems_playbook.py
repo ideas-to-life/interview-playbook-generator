@@ -11,7 +11,7 @@ from datetime import datetime
 
 TIMESTAMP = datetime.now().astimezone().isoformat()
 TARGET_SLUG = "upwork-business-systems-technology-architecture-consultant"
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 OUT_DIR = REPO_ROOT / "out" / TARGET_SLUG
 RUNTIME_DIR = OUT_DIR / "runtime"
 EVAL_DIR = REPO_ROOT / "evaluation" / "opportunities"

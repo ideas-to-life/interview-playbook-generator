@@ -4,7 +4,7 @@ import pytest
 import tempfile
 import time
 from pathlib import Path
-from scripts.canonical_loader import (
+from src.scripts.canonical_loader import (
     load_canonical_career_record,
     resolve_canonical_path,
     CanonicalRecordError,
@@ -80,3 +80,52 @@ def test_unresolved_questions_querying():
     for q in resolved:
         assert q.current_status == "resolved"
         assert q.resolution is not None
+
+
+def test_certification_year_extracted_from_issue_date_and_null_when_absent(tmp_path):
+    """Loader parses year from issue_date and leaves year as None when absent without fabricating."""
+    record_yaml = tmp_path / "career-record.yaml"
+    record_yaml.write_text(
+        """
+metadata: null
+identity: null
+education: null
+certifications:
+  - id: CERT-DATE
+    name: Sample Cert With Date
+    issuing_organisation: Org A
+    issue_date: "Apr 2022"
+  - id: CERT-NODATE
+    name: Sample Cert Without Date
+    issuing_organisation: Org B
+career:
+  - id: CAR-NOLOC
+    organisation: Org C
+    formal_title: Architect
+    period:
+      start: "Jan 2020"
+      end: "Dec 2021"
+unresolved_questions: null
+""",
+        encoding="utf-8",
+    )
+    record = load_canonical_career_record(record_path=str(record_yaml))
+    cert_date = record.get_certification_entry("CERT-DATE")
+    cert_nodate = record.get_certification_entry("CERT-NODATE")
+    role_noloc = record.get_career_entry("CAR-NOLOC")
+
+    assert cert_date is not None and cert_date.year == 2022
+    assert cert_nodate is not None and cert_nodate.year is None
+    assert role_noloc is not None and role_noloc.location == ""
+
+
+def test_empty_yaml_file_raises_canonical_record_error(tmp_path):
+    """Empty YAML config or canonical record raises CanonicalRecordError cleanly."""
+    empty_yaml = tmp_path / "empty.yaml"
+    empty_yaml.write_text("", encoding="utf-8")
+
+    with pytest.raises(CanonicalRecordError):
+        load_canonical_career_record(record_path=str(empty_yaml))
+
+    with pytest.raises(CanonicalRecordError):
+        resolve_canonical_path(config_path=str(empty_yaml))

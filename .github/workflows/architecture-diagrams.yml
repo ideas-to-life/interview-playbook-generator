@@ -7,19 +7,19 @@ on:
   push:
     branches: [ main, master ]
     paths:
-      - 'skills/**'
+      - 'src/skills/**'
       - 'config/**'
       - 'AGENTS.md'
       - 'ARCHITECTURE.md'
-      - 'scripts/generate_architecture_diagrams.py'
+      - 'src/scripts/generate_architecture_diagrams.py'
   pull_request:
     branches: [ main, master ]
     paths:
-      - 'skills/**'
+      - 'src/skills/**'
       - 'config/**'
       - 'AGENTS.md'
       - 'ARCHITECTURE.md'
-      - 'scripts/generate_architecture_diagrams.py'
+      - 'src/scripts/generate_architecture_diagrams.py'
 
 jobs:
   diagrams:
@@ -61,7 +61,7 @@ jobs:
 
       - name: Generate Architecture Diagrams
         run: |
-          python scripts/generate_architecture_diagrams.py
+          python src/scripts/generate_architecture_diagrams.py
 
       - name: Verify Git Status (Check for uncommitted diagram changes)
         id: gitstatus

@@ -15,12 +15,12 @@ from typing import List, Dict, Any, Optional
 import yaml
 
 # Ensure repo root is on sys.path
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from scripts.canonical_loader import load_canonical_career_record, CanonicalRecordError
-from scripts.canonical_models import CanonicalCareerRecord
+from src.scripts.canonical_loader import load_canonical_career_record, CanonicalRecordError
+from src.scripts.canonical_models import CanonicalCareerRecord
 
 
 # Canonical truth definitions for auditing

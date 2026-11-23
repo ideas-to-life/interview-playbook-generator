@@ -3,7 +3,7 @@ import os
 
 
 def test_skill_exists():
-    path = "skills/behaviour-profile-generator/SKILL.md"
+    path = "src/skills/behaviour-profile-generator/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()

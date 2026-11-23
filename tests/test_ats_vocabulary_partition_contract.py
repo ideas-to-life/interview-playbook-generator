@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from scripts.canonical_models import (
+from src.scripts.canonical_models import (
     ATSVocabularyPartition,
     ATSEvidencedTerm,
     ATSRequiredJobTerm,

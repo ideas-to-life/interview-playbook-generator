@@ -8,45 +8,75 @@ Downstream projection skills (resume, cover letter, linkedin, playbook) consume
 these selected facts directly without independent re-interpretation or date/title alteration.
 """
 
-import os
-import sys
 import re
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 import yaml
 
 # Ensure repo root is on sys.path
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from scripts.canonical_loader import load_canonical_career_record, CanonicalRecordError
-from scripts.canonical_models import (
+from src.scripts.canonical_loader import load_canonical_career_record
+from src.scripts.canonical_models import (
     CanonicalCareerRecord,
-    CareerEntry,
-    EducationEntry,
-    CertificationEntry,
-    UnresolvedQuestion,
     ATSVocabularyPartition,
     ATSEvidencedTerm,
     ATSRequiredJobTerm,
 )
 
+SLUG_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
+
+
+def _validate_target_slug(target_slug: str) -> str:
+    """Validates target_slug to prevent path traversal."""
+    if not target_slug or not SLUG_PATTERN.fullmatch(target_slug):
+        raise ValueError(
+            f"Invalid target_slug '{target_slug}': must match {SLUG_PATTERN.pattern}"
+        )
+    return target_slug
+
 
 def _text_contains_term(text: str, term: str) -> bool:
-    """Checks if text contains term as whole word/phrase."""
+    """Checks if text contains term as whole word/phrase, supporting symbol-bearing terms like C++ and .NET."""
     if not text or not term:
         return False
     escaped = re.escape(term.strip())
-    pattern = rf"(?i)\b{escaped}\b"
+    pattern = rf"(?i)(?<!\w){escaped}(?!\w)"
     return bool(re.search(pattern, text))
+
+
+def _load_okf_corpus(okf_dir: Optional[Path] = None) -> List[Tuple[str, str, str]]:
+    """Loads OKF capability and evidence markdown texts once for reuse across term checks."""
+    search_dirs: List[Path] = []
+    if okf_dir and Path(okf_dir).exists():
+        search_dirs.append(Path(okf_dir))
+    else:
+        for candidate in [REPO_ROOT / "out" / "okf", REPO_ROOT / "okf"]:
+            if candidate.exists():
+                search_dirs.append(candidate)
+
+    corpus: List[Tuple[str, str, str]] = []
+    for base_dir in search_dirs:
+        for sub_name, ev_source in [("capabilities", "okf_capability"), ("evidence", "okf_evidence_card")]:
+            sub_dir = base_dir / sub_name
+            if sub_dir.exists():
+                for md_file in sorted(sub_dir.glob("*.md")):
+                    try:
+                        corpus.append((ev_source, md_file.stem, md_file.read_text(encoding="utf-8")))
+                    except Exception as exc:
+                        print(f"WARNING: Failed to read OKF file {md_file}: {exc}", file=sys.stderr)
+    return corpus
 
 
 def classify_term_evidence(
     term: str,
     canonical_record: Optional[CanonicalCareerRecord] = None,
     okf_dir: Optional[Path] = None,
+    _preloaded_okf: Optional[List[Tuple[str, str, str]]] = None,
 ) -> Optional[ATSEvidencedTerm]:
     """Classifies a term against Tier 1 (canonical record) and Tier 2 (OKF capabilities/evidence)."""
     if canonical_record is None:
@@ -62,7 +92,6 @@ def classify_term_evidence(
 
     # Tier 1: Canonical Career Record
     if canonical_record:
-        # Check professional domains / identity
         domains = (
             canonical_record.identity.get("professional_domains", [])
             if isinstance(canonical_record.identity, dict)
@@ -76,7 +105,6 @@ def classify_term_evidence(
                     evidence_ref="career-record.yaml#identity",
                 )
 
-        # Check education
         for edu in canonical_record.education:
             searchable = f"{edu.institution} {edu.degree_name} {edu.field_of_study}"
             if _text_contains_term(searchable, clean_term):
@@ -86,7 +114,6 @@ def classify_term_evidence(
                     evidence_ref=f"career-record.yaml#{edu.id}",
                 )
 
-        # Check certifications
         for cert in canonical_record.certifications:
             searchable = f"{cert.name} {cert.issuing_body}"
             if _text_contains_term(searchable, clean_term):
@@ -96,7 +123,6 @@ def classify_term_evidence(
                     evidence_ref=f"career-record.yaml#{cert.id}",
                 )
 
-        # Check career entries
         for entry in canonical_record.career:
             searchable_parts = [
                 entry.formal_title,
@@ -114,44 +140,14 @@ def classify_term_evidence(
                 )
 
     # Tier 2: OKF Capabilities and Evidence Cards
-    search_dirs = []
-    if okf_dir and Path(okf_dir).exists():
-        search_dirs.append(Path(okf_dir))
-    else:
-        for candidate in [REPO_ROOT / "out" / "okf", REPO_ROOT / "okf"]:
-            if candidate.exists():
-                search_dirs.append(candidate)
-
-    for base_dir in search_dirs:
-        # Check capabilities
-        cap_dir = base_dir / "capabilities"
-        if cap_dir.exists():
-            for cap_file in cap_dir.glob("*.md"):
-                try:
-                    content = cap_file.read_text(encoding="utf-8")
-                    if _text_contains_term(content, clean_term):
-                        return ATSEvidencedTerm(
-                            term=clean_term,
-                            evidence_source="okf_capability",
-                            evidence_ref=cap_file.stem,
-                        )
-                except Exception:
-                    pass
-
-        # Check evidence cards
-        ev_dir = base_dir / "evidence"
-        if ev_dir.exists():
-            for ev_file in ev_dir.glob("*.md"):
-                try:
-                    content = ev_file.read_text(encoding="utf-8")
-                    if _text_contains_term(content, clean_term):
-                        return ATSEvidencedTerm(
-                            term=clean_term,
-                            evidence_source="okf_evidence_card",
-                            evidence_ref=ev_file.stem,
-                        )
-                except Exception:
-                    pass
+    okf_corpus = _preloaded_okf if _preloaded_okf is not None else _load_okf_corpus(okf_dir)
+    for ev_source, stem, content in okf_corpus:
+        if _text_contains_term(content, clean_term):
+            return ATSEvidencedTerm(
+                term=clean_term,
+                evidence_source=ev_source,
+                evidence_ref=stem,
+            )
 
     return None
 
@@ -165,6 +161,7 @@ def partition_ats_vocabulary(
     if canonical_record is None:
         canonical_record = load_canonical_career_record()
 
+    preloaded_okf = _load_okf_corpus(okf_dir)
     evidenced: List[ATSEvidencedTerm] = []
     required: List[ATSRequiredJobTerm] = []
     seen = set()
@@ -175,7 +172,12 @@ def partition_ats_vocabulary(
             continue
         seen.add(clean.lower())
 
-        ev_match = classify_term_evidence(clean, canonical_record=canonical_record, okf_dir=okf_dir)
+        ev_match = classify_term_evidence(
+            clean,
+            canonical_record=canonical_record,
+            okf_dir=okf_dir,
+            _preloaded_okf=preloaded_okf,
+        )
         if ev_match:
             evidenced.append(ev_match)
         else:
@@ -205,13 +207,13 @@ def select_canonical_facts(
     output_path: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Selects and freezes immutable canonical facts for a target opportunity."""
+    _validate_target_slug(target_slug)
     if canonical_record is None:
         canonical_record = load_canonical_career_record()
 
     # 1. Select Roles (Preserve immutable metadata, IDs, and titles)
     selected_roles: List[Dict[str, Any]] = []
     for entry in canonical_record.career:
-        # Determine relevance rationale based on opportunity keywords or default domain fit
         rationale = "Core enterprise architecture leadership and system delivery"
         if "mostelli" in entry.employer.lower():
             rationale = "Current independent advisory practice in AI transformation and architecture governance"
@@ -242,51 +244,48 @@ def select_canonical_facts(
 
         selected_roles.append(role_dict)
 
-    # 2. Select Education (Immutable canonical credentials)
+    # 2. Select Education (Immutable canonical credentials; never fabricate missing start_year)
     selected_education: List[Dict[str, Any]] = []
     for edu in canonical_record.education:
-        start_yr = edu.start_year if edu.start_year else (1988 if "mogi" in edu.institution.lower() else None)
         selected_education.append({
             "canonical_id": edu.id,
             "institution": edu.institution,
             "degree_name": edu.degree_name,
             "degree_level": edu.degree_level,
             "field_of_study": edu.field_of_study,
-            "start_year": start_yr,
+            "start_year": edu.start_year,
             "end_year": edu.end_year,
         })
 
-    # 3. Select Certifications (Verified professional qualifications)
+    # 3. Select Certifications (Verified professional qualifications; never fabricate missing year)
     selected_certifications: List[Dict[str, Any]] = []
     for cert in canonical_record.certifications:
         selected_certifications.append({
             "canonical_id": cert.id,
             "name": cert.name,
             "issuing_body": cert.issuing_body,
-            "year": cert.year if cert.year else 2021,
+            "year": cert.year,
         })
 
-    # 4. Select Languages (Verified language proficiencies)
+    # 4. Select Languages (Verified language proficiencies; never fabricate missing languages)
     selected_languages: List[Dict[str, Any]] = []
-    raw_langs = canonical_record.identity.get("languages", []) if hasattr(canonical_record, "identity") and isinstance(canonical_record.identity, dict) else []
-    if isinstance(raw_langs, list) and raw_langs:
+    raw_langs = (
+        canonical_record.identity.get("languages", [])
+        if hasattr(canonical_record, "identity") and isinstance(canonical_record.identity, dict)
+        else []
+    )
+    if isinstance(raw_langs, list):
         for lang in raw_langs:
             if isinstance(lang, dict):
                 selected_languages.append({
                     "language": lang.get("language") or lang.get("name", ""),
-                    "proficiency": lang.get("proficiency", "Elementary"),
+                    "proficiency": lang.get("proficiency"),
                 })
             elif isinstance(lang, str):
                 selected_languages.append({
                     "language": lang,
-                    "proficiency": "Professional Working",
+                    "proficiency": None,
                 })
-    if not selected_languages:
-        selected_languages = [
-            {"language": "Portuguese", "proficiency": "Native / Bilingual"},
-            {"language": "English", "proficiency": "Full Professional"},
-            {"language": "Spanish", "proficiency": "Elementary"},
-        ]
 
     # 5. Unresolved items flagged exclusively for internal coaching (FR-010)
     unresolved_items = []
@@ -320,7 +319,11 @@ def select_canonical_facts(
 
 def main():
     slug = sys.argv[1] if len(sys.argv) > 1 else "default"
-    record = select_canonical_facts(slug)
+    try:
+        record = select_canonical_facts(slug)
+    except ValueError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        sys.exit(1)
     print(f"Canonical factual selection completed for '{slug}': {len(record['selected_roles'])} roles selected.")
 
 

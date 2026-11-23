@@ -5,19 +5,19 @@ Enforces read-only access, fast-fail on missing/invalid YAML (<1s),
 and strict canonical precedence.
 """
 
-import sys
 import os
+import re
+import sys
 from pathlib import Path
+from typing import Optional
+import yaml
 
 # Ensure repo root is on sys.path
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from typing import Optional, Dict, Any
-import yaml
-
-from scripts.canonical_models import (
+from src.scripts.canonical_models import (
     CanonicalCareerRecord,
     CareerEntry,
     EducationEntry,
@@ -34,7 +34,7 @@ class CanonicalRecordError(Exception):
 
 def get_repo_root() -> Path:
     """Returns repository root directory."""
-    return Path(__file__).resolve().parent.parent
+    return Path(__file__).resolve().parent.parent.parent
 
 
 def resolve_canonical_path(config_path: Optional[str] = None) -> Path:
@@ -51,7 +51,13 @@ def resolve_canonical_path(config_path: Optional[str] = None) -> Path:
     except Exception as e:
         raise CanonicalRecordError(f"Failed to parse config file {cfg_file}: {e}")
 
-    candidate_cfg = cfg.get("candidate", {})
+    if not isinstance(cfg, dict):
+        raise CanonicalRecordError(f"Configuration file {cfg_file} is not a valid YAML mapping.")
+
+    candidate_cfg = cfg.get("candidate") or {}
+    if not isinstance(candidate_cfg, dict):
+        raise CanonicalRecordError(f"Configuration key 'candidate' in {cfg_file} must be a YAML mapping.")
+
     portfolio_dir_str = candidate_cfg.get("portfolio_dir", "")
     canonical_rel_or_abs = candidate_cfg.get("canonical_record", "canonical/career-record.yaml")
 
@@ -65,12 +71,25 @@ def resolve_canonical_path(config_path: Optional[str] = None) -> Path:
     return portfolio_dir / canonical_rel_or_abs
 
 
+def _extract_cert_year(item: dict) -> Optional[int | str]:
+    """Extracts certification year from issue_year, year, or issue_date without fabricating defaults."""
+    year = item.get("issue_year") or item.get("year")
+    if year is not None:
+        return year
+    issue_date = item.get("issue_date")
+    if issue_date:
+        match = re.search(r"\b((?:19|20)\d{2})\b", str(issue_date))
+        if match:
+            return int(match.group(1))
+    return None
+
+
 def load_canonical_career_record(
     config_path: Optional[str] = None,
     record_path: Optional[str] = None
 ) -> CanonicalCareerRecord:
     """Loads and validates CanonicalCareerRecord.
-    
+
     Treats file as strictly read-only.
     Fails fast (<1s) if missing, unreadable, or malformed.
     """
@@ -96,16 +115,15 @@ def load_canonical_career_record(
     if not isinstance(data, dict):
         raise CanonicalRecordError(f"FATAL: Canonical record {target_path} is not a valid YAML mapping.")
 
-    # Parse metadata and identity
-    metadata = data.get("metadata", {})
-    identity = data.get("identity", {})
+    metadata = data.get("metadata") or {}
+    identity = data.get("identity") or {}
 
     # Parse education
     education_entries = []
-    for item in data.get("education", []):
+    for item in (data.get("education") or []):
         ev_list = [
             EvidenceRef(source=e.get("source", ""), entry_details=e.get("entry_details"))
-            for e in item.get("evidence", []) if isinstance(e, dict)
+            for e in (item.get("evidence") or []) if isinstance(e, dict)
         ]
         education_entries.append(
             EducationEntry(
@@ -125,18 +143,17 @@ def load_canonical_career_record(
 
     # Parse certifications
     certification_entries = []
-    for item in data.get("certifications", []):
+    for item in (data.get("certifications") or []):
         ev_list = [
             EvidenceRef(source=e.get("source", ""), entry_details=e.get("entry_details"))
-            for e in item.get("evidence", []) if isinstance(e, dict)
+            for e in (item.get("evidence") or []) if isinstance(e, dict)
         ]
-        year = item.get("issue_year") or item.get("year")
         certification_entries.append(
             CertificationEntry(
                 id=item.get("id", ""),
                 name=item.get("name", ""),
                 issuing_body=item.get("issuing_organisation") or item.get("issuing_body", ""),
-                year=year,
+                year=_extract_cert_year(item),
                 status=item.get("status", "verified"),
                 evidence=ev_list,
             )
@@ -144,12 +161,11 @@ def load_canonical_career_record(
 
     # Parse career
     career_entries = []
-    for item in data.get("career", []):
+    for item in (data.get("career") or []):
         employer = item.get("organisation") or item.get("employer", "")
         formal_title = item.get("formal_title", "")
-        
-        # Period parsing
-        period = item.get("period", {})
+
+        period = item.get("period")
         if isinstance(period, dict):
             start_date = period.get("start", "")
             end_date = period.get("end")
@@ -160,8 +176,9 @@ def load_canonical_career_record(
             is_current = (end_date is None or item.get("status") == "current")
 
         status = "current" if is_current or end_date is None else "former"
-        location = item.get("location", "London, UK")
-        raw_eng = str(item.get("engagement_type", "direct_employment")).lower()
+        location = item.get("location") or ""
+        raw_eng_orig = str(item.get("engagement_type", "direct_employment"))
+        raw_eng = raw_eng_orig.lower()
         if "advisory" in raw_eng:
             engagement_type = "independent_advisory"
         elif "consultan" in raw_eng or "contract" in raw_eng:
@@ -170,35 +187,33 @@ def load_canonical_career_record(
             engagement_type = "direct_employment"
 
         client = item.get("client")
-        # Explicit mapping for Compugraf / Souza Cruz relationship (Scenario 5)
-        if "compugraf" in employer.lower():
-            engagement_type = "consultancy"
-            if not client:
-                client = "Souza Cruz"
+        if not client:
+            client_match = re.search(r"contracted\s+to\s+([^)]+)", raw_eng_orig, re.IGNORECASE)
+            if client_match:
+                client = client_match.group(1).strip()
+                if engagement_type == "direct_employment":
+                    engagement_type = "consultancy"
 
-        # Scope attributes
-        resp_scope = item.get("responsibilities_scope", [])
+        resp_scope = item.get("responsibilities_scope") or []
         if isinstance(resp_scope, str):
             resp_scope = [resp_scope]
 
-        op_scope = item.get("operational_scope", [])
+        op_scope = item.get("operational_scope") or []
         if isinstance(op_scope, str):
             op_scope = [op_scope]
 
-        # Check operational_acting_scope object
         acting_resp = []
         acting_obj = item.get("operational_acting_scope")
         if isinstance(acting_obj, dict):
-            desc = acting_obj.get("operational_description", "").strip()
+            desc = (acting_obj.get("operational_description") or "").strip()
             if desc:
                 acting_resp.append(desc)
 
         ev_list = [
             EvidenceRef(source=e.get("source", ""), entry_details=e.get("entry_details"))
-            for e in item.get("evidence", []) if isinstance(e, dict)
+            for e in (item.get("evidence") or []) if isinstance(e, dict)
         ]
 
-        # Pre-populate approved aliases including formal title and variants
         aliases = [formal_title]
         clean_title = formal_title.replace("–", "-").replace("—", "-")
         if clean_title not in aliases:
@@ -211,13 +226,9 @@ def load_canonical_career_record(
             short_title = formal_title.split(" – ")[0].strip()
             if short_title and short_title not in aliases:
                 aliases.append(short_title)
-        for a in item.get("approved_aliases", []):
+        for a in (item.get("approved_aliases") or []):
             if a not in aliases:
                 aliases.append(a)
-        if "wpp" in employer.lower():
-            wpp_alias = "Senior Director, Agentic AI Systems Architecture"
-            if wpp_alias not in aliases:
-                aliases.append(wpp_alias)
 
         career_entries.append(
             CareerEntry(
@@ -234,14 +245,14 @@ def load_canonical_career_record(
                 operational_scope=op_scope,
                 acting_responsibilities=acting_resp,
                 responsibilities_scope=resp_scope,
-                verified_accomplishments=item.get("verified_accomplishments", []),
+                verified_accomplishments=item.get("verified_accomplishments") or [],
                 evidence=ev_list,
             )
         )
 
     # Parse unresolved questions
     unresolved_list = []
-    for item in data.get("unresolved_questions", []):
+    for item in (data.get("unresolved_questions") or []):
         unresolved_list.append(
             UnresolvedQuestion(
                 id=item.get("id", ""),

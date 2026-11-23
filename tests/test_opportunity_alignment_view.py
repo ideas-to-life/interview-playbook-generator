@@ -6,7 +6,7 @@ GOLDEN = "tests/golden/opportunity-alignment-view"
 
 
 def test_skill_exists():
-    path = "skills/opportunity-alignment-view/SKILL.md"
+    path = "src/skills/opportunity-alignment-view/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()

@@ -6,7 +6,7 @@ GOLDEN_DIR = "tests/golden/resume-projection"
 
 
 def test_skill_exists():
-    path = "skills/resume-projection/SKILL.md"
+    path = "src/skills/resume-projection/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()

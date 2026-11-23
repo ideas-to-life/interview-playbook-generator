@@ -7,7 +7,7 @@ GOLDEN = "tests/golden/brand-validator/brand-validation-report.yaml"
 
 
 def test_skill_exists():
-    path = "skills/brand-validator/SKILL.md"
+    path = "src/skills/brand-validator/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()
@@ -33,7 +33,7 @@ def test_golden_brand_validation_report_schema():
 
 
 def test_employment_validation_brand_integration():
-    from scripts.employment_validator import validate_employment_history
+    from src.scripts.employment_validator import validate_employment_history
     content = "### BBC Studios\n**Lead Enterprise Architect**\n*Oct 2021 – Nov 2025*"
     res = validate_employment_history(content)
     assert res["status"] == "PASS"

@@ -7,7 +7,7 @@ GOLDEN = "tests/golden/opportunity-analyzer/opportunity-analysis.yaml"
 
 
 def test_skill_exists():
-    path = "skills/opportunity-analyzer/SKILL.md"
+    path = "src/skills/opportunity-analyzer/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()

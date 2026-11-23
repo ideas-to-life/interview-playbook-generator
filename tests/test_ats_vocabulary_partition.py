@@ -8,13 +8,13 @@ Verifies that target opportunity keywords are correctly partitioned into:
 from pathlib import Path
 import pytest
 
-from scripts.canonical_models import (
+from src.scripts.canonical_models import (
     ATSVocabularyPartition,
     ATSEvidencedTerm,
     ATSRequiredJobTerm,
 )
-from scripts.canonical_loader import load_canonical_career_record
-from scripts.canonical_selector import (
+from src.scripts.canonical_loader import load_canonical_career_record
+from src.scripts.canonical_selector import (
     partition_ats_vocabulary,
     classify_term_evidence,
 )

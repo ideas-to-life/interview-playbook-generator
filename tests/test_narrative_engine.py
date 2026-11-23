@@ -6,7 +6,7 @@ GOLDEN_DIR = "tests/golden/narrative-engine"
 
 
 def test_skill_exists():
-    path = "skills/narrative-engine/SKILL.md"
+    path = "src/skills/narrative-engine/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()

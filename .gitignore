@@ -10,6 +10,9 @@ __pycache__/
 # OS files
 .DS_Store
 
+# Local environment & secrets
+.env
+
 # knowlege base 
 evidence/
 
@@ -19,4 +22,41 @@ evidence/
 .agents/skills/aspire-init
 .agents/skills/aspire-monitoring
 .agents/skills/aspire-orchestration
+
+# Locally deployed Career Projection skills (sourced from src/skills/)
+.agents/skills/.interview-playbook-skills-manifest.json
+.agents/skills/achievement-extractor/
+.agents/skills/archetype-classifier/
+.agents/skills/archetype-fit-evaluator/
+.agents/skills/archetype-fit-validator/
+.agents/skills/architecture-diagram-generator/
+.agents/skills/behaviour-profile-generator/
+.agents/skills/brand-validator/
+.agents/skills/capability-extractor/
+.agents/skills/cover-letter-projection/
+.agents/skills/evidence-card-generator/
+.agents/skills/executive-brief-view/
+.agents/skills/executive-identity-generator/
+.agents/skills/gap-classifier/
+.agents/skills/interview-strategy-generator/
+.agents/skills/knowledge-gaps/
+.agents/skills/linkedin-projection/
+.agents/skills/market-feedback-evaluator/
+.agents/skills/narrative-engine/
+.agents/skills/narrative-generator/
+.agents/skills/opportunity-alignment-view/
+.agents/skills/opportunity-analyzer/
+.agents/skills/playbook-assembler/
+.agents/skills/playbook-orchestrator/
+.agents/skills/portfolio-analyzer/
+.agents/skills/portfolio-ingestor/
+.agents/skills/projection-registry/
+.agents/skills/projection-strategy-generator/
+.agents/skills/projection-validator/
+.agents/skills/resume-projection/
+.agents/skills/signature-achievements-curator/
+.agents/skills/signature-theme-miner/
+.agents/skills/story-engine/
+.agents/skills/upwork-proposal/
+.agents/skills/upwork-qualification/
 

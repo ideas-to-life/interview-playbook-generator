@@ -6,7 +6,7 @@ GOLDEN = "tests/golden/story-engine/story-library.md"
 
 
 def test_skill_exists():
-    path = "skills/story-engine/SKILL.md"
+    path = "src/skills/story-engine/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()

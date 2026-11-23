@@ -11,7 +11,7 @@ from datetime import datetime
 
 TIMESTAMP = datetime.now().astimezone().isoformat()
 TARGET_SLUG = "upwork-senior-agentic-ai-architect"
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 OUT_DIR = REPO_ROOT / "out" / TARGET_SLUG
 RUNTIME_DIR = OUT_DIR / "runtime"
 EVAL_DIR = REPO_ROOT / "evaluation" / "opportunities"
@@ -522,11 +522,11 @@ def generate_projection_registry():
 
 def generate_projection_validation_report():
     try:
-        from scripts.upwork_validator import validate_upwork_proposal
-        from scripts.employment_validator import validate_employment_history
+        from src.scripts.upwork_validator import validate_upwork_proposal
+        from src.scripts.employment_validator import validate_employment_history
     except ModuleNotFoundError:
-        from upwork_validator import validate_upwork_proposal
-        from employment_validator import validate_employment_history
+        from src.scripts.upwork_validator import validate_upwork_proposal
+        from src.scripts.employment_validator import validate_employment_history
 
     proposal_md = (OUT_DIR / "upwork-qualification-report.md").read_text(encoding="utf-8") if (OUT_DIR / "upwork-qualification-report.md").exists() else ""
     screening_md = (OUT_DIR / "upwork-screening-answers.md").read_text(encoding="utf-8") if (OUT_DIR / "upwork-screening-answers.md").exists() else ""

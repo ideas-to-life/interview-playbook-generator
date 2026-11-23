@@ -6,7 +6,7 @@ GOLDEN = "tests/golden/signature-achievements-curator"
 
 
 def test_skill_exists():
-    path = "skills/signature-achievements-curator/SKILL.md"
+    path = "src/skills/signature-achievements-curator/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()

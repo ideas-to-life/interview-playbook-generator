@@ -1,36 +1,168 @@
 {
   "project": "ideas-to-life-cas",
-  "branch": "master",
-  "feature_dir": "specs/006-projection-data-integrity",
+  "branch": "007-critical-pipeline-remediation",
+  "feature_dir": "specs/007-critical-pipeline-remediation",
   "sdlc_profile": "speckit",
-  "stage": 5,
-  "stage_name": "Stage 5: Architecture Linter",
-  "start_time": 1795433803.779305,
-  "updated_at": 1795434056.1387122,
+  "stage": 6,
+  "stage_name": "Stage 6: 3-Pass Diff Verification",
+  "start_time": 1795435734.534713,
+  "updated_at": 1795442310.230028,
   "gates": {
+    "intent": {
+      "name": "intent",
+      "status": "PASSED",
+      "details": "14 [A] verified, 0 [Q] open",
+      "timestamp": 1795439697.108199
+    },
+    "route_plan": {
+      "name": "route_plan",
+      "status": "PATH_A_(GOVERNED_REUSE)",
+      "details": "Path A (Governed Reuse) (APPROVED)",
+      "timestamp": 1795439699.686702
+    },
     "lint": {
       "name": "lint",
       "status": "PASSED",
       "details": "0 violations",
-      "timestamp": 1795434056.138699
+      "timestamp": 1795442310.229978
+    },
+    "verify_diff": {
+      "name": "verify_diff",
+      "status": "PASSED",
+      "details": "Critical: 0 | High: 0 | Medium: 0 | Low: 0",
+      "timestamp": 1795439704.957243
+    },
+    "review_pr": {
+      "name": "review_pr",
+      "status": "PASSED",
+      "details": "Critical: 0 | High: 0 | Medium: 0 | Low: 0",
+      "timestamp": 1795439707.6702678
     }
   },
   "checklist": {
-    "spec_md": false,
-    "plan_md": false,
+    "spec_md": true,
+    "plan_md": true,
     "tasks_md": false,
-    "tests": false,
-    "src": false
+    "tests": true,
+    "src": true
   },
   "events": [
     {
-      "timestamp": 1795433805.179837,
+      "timestamp": 1795437852.527754,
       "gate": "lint",
       "status": "PASSED",
       "details": "0 violations"
     },
     {
-      "timestamp": 1795434056.138699,
+      "timestamp": 1795437852.57664,
+      "gate": "review_pr",
+      "status": "PASSED",
+      "details": "Critical: 0 | High: 0 | Medium: 0 | Low: 0"
+    },
+    {
+      "timestamp": 1795437855.150826,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    },
+    {
+      "timestamp": 1795438998.049407,
+      "gate": "intent",
+      "status": "PASSED",
+      "details": "14 [A] verified, 0 [Q] open"
+    },
+    {
+      "timestamp": 1795439000.5447328,
+      "gate": "route_plan",
+      "status": "PATH_A_(GOVERNED_REUSE)",
+      "details": "Path A (Governed Reuse) (APPROVED)"
+    },
+    {
+      "timestamp": 1795439003.053259,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    },
+    {
+      "timestamp": 1795439005.61906,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    },
+    {
+      "timestamp": 1795439005.670588,
+      "gate": "verify_diff",
+      "status": "PASSED",
+      "details": "Critical: 0 | High: 0 | Medium: 0 | Low: 0"
+    },
+    {
+      "timestamp": 1795439008.249581,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    },
+    {
+      "timestamp": 1795439008.299391,
+      "gate": "review_pr",
+      "status": "PASSED",
+      "details": "Critical: 0 | High: 0 | Medium: 0 | Low: 0"
+    },
+    {
+      "timestamp": 1795439011.626307,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    },
+    {
+      "timestamp": 1795439697.108199,
+      "gate": "intent",
+      "status": "PASSED",
+      "details": "14 [A] verified, 0 [Q] open"
+    },
+    {
+      "timestamp": 1795439699.686702,
+      "gate": "route_plan",
+      "status": "PATH_A_(GOVERNED_REUSE)",
+      "details": "Path A (Governed Reuse) (APPROVED)"
+    },
+    {
+      "timestamp": 1795439702.1697228,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    },
+    {
+      "timestamp": 1795439704.908637,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    },
+    {
+      "timestamp": 1795439704.957243,
+      "gate": "verify_diff",
+      "status": "PASSED",
+      "details": "Critical: 0 | High: 0 | Medium: 0 | Low: 0"
+    },
+    {
+      "timestamp": 1795439707.621799,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    },
+    {
+      "timestamp": 1795439707.6702678,
+      "gate": "review_pr",
+      "status": "PASSED",
+      "details": "Critical: 0 | High: 0 | Medium: 0 | Low: 0"
+    },
+    {
+      "timestamp": 1795439710.309848,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    },
+    {
+      "timestamp": 1795442310.229978,
       "gate": "lint",
       "status": "PASSED",
       "details": "0 violations"

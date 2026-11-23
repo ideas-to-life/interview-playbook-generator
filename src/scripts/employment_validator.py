@@ -19,7 +19,7 @@ from typing import List, Dict, Any, Tuple, Optional
 import yaml
 
 # Ensure repo root is on sys.path
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
@@ -218,7 +218,7 @@ def validate_canonical_integrity(artefact_content: str, canonical_records: list[
     return validate_employment_history(artefact_content, canonical_records)
 
 
-from scripts.projection_validator import sanitize_projection_content
+from src.scripts.projection_validator import sanitize_projection_content
 
 
 def sanitize_artefact_content(artefact_content: str, canonical_records: list[dict] = None) -> Tuple[str, List[Dict[str, Any]]]:

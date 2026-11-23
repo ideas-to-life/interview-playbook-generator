@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Automated Architecture Diagram & Visualisation Generator (v2.0 - Modular UI/UX).
+Automated Architecture Diagram & Visualisation Generator (v2.1 - Modular UI/UX).
 
 Auto-discovers repository architecture, skills, OKF knowledge graph schema,
 and data flows from repository manifests (AGENTS.md, ARCHITECTURE.md, config.yaml, skills/*/SKILL.md).
@@ -12,15 +12,26 @@ Outputs:
 4. OKF Knowledge Graph ER Schema in ARCHITECTURE.md
 """
 
+import argparse
 import os
 import re
-import sys
+from pathlib import Path
+from xml.sax.saxutils import escape
 
 
-def parse_skills(skills_dir="skills"):
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+
+
+def _xml_attr(value: str) -> str:
+    """Escapes XML attribute text including angle brackets and quotes."""
+    return escape(value, {'"': "&quot;", "'": "&apos;"})
+
+
+def parse_skills(skills_dir: str | Path | None = None):
     """Auto-discovers skills, frontmatter, descriptions, and layer classifications."""
     skills = []
-    if not os.path.exists(skills_dir):
+    target_skills_dir = Path(skills_dir) if skills_dir is not None else (REPO_ROOT / "src" / "skills")
+    if not target_skills_dir.exists():
         return skills
 
     layer_mapping = {
@@ -39,6 +50,11 @@ def parse_skills(skills_dir="skills"):
         "narrative-generator": "Knowledge Layer",
         # Runtime Layer
         "opportunity-analyzer": "Runtime Layer",
+        "upwork-qualification": "Runtime Layer",
+        "archetype-classifier": "Runtime Layer",
+        "gap-classifier": "Runtime Layer",
+        "archetype-fit-evaluator": "Runtime Layer",
+        "projection-strategy-generator": "Runtime Layer",
         # Coaching Layer
         "interview-strategy-generator": "Coaching Layer",
         "knowledge-gaps": "Coaching Layer",
@@ -49,18 +65,21 @@ def parse_skills(skills_dir="skills"):
         "linkedin-projection": "Projection Layer",
         "opportunity-alignment-view": "Projection Layer",
         "executive-brief-view": "Projection Layer",
+        "upwork-proposal": "Projection Layer",
         "playbook-assembler": "Projection Layer",
         "projection-validator": "Projection Layer",
+        "archetype-fit-validator": "Projection Layer",
         "brand-validator": "Projection Layer",
+        # Orchestration / Tooling / Evaluation
         "playbook-orchestrator": "Orchestration Layer",
         "architecture-diagram-generator": "Tooling Layer",
+        "market-feedback-evaluator": "Evaluation Layer",
     }
 
-    for skill_name in sorted(os.listdir(skills_dir)):
-        skill_path = os.path.join(skills_dir, skill_name, "SKILL.md")
-        if os.path.isfile(skill_path):
-            with open(skill_path, "r", encoding="utf-8") as f:
-                content = f.read()
+    for skill_name in sorted(os.listdir(target_skills_dir)):
+        skill_path = target_skills_dir / skill_name / "SKILL.md"
+        if skill_path.is_file():
+            content = skill_path.read_text(encoding="utf-8")
 
             desc = ""
             desc_match = re.search(r"description:\s*(.+)", content)
@@ -71,7 +90,7 @@ def parse_skills(skills_dir="skills"):
             skills.append({
                 "name": skill_name,
                 "description": desc,
-                "layer": layer
+                "layer": layer,
             })
 
     return skills
@@ -196,10 +215,12 @@ erDiagram
 ```"""
 
 
-def create_drawio_xml(title, root_children_xml):
+def create_drawio_xml(title: str, root_children_xml: str) -> str:
     """Wraps mxGraphModel nodes into valid Draw.io XML format."""
+    diag_id = _xml_attr(f"diag_{title.lower().replace(' ', '_')}")
+    escaped_title = _xml_attr(title)
     return f"""<mxfile host="Electron" modified="2026-07-31T12:00:00.000Z" agent="Antigravity Architecture Generator" version="21.0.0" type="device">
-  <diagram id="diag_{title.lower().replace(' ', '_')}" name="{title}">
+  <diagram id="{diag_id}" name="{escaped_title}">
     <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
@@ -211,27 +232,30 @@ def create_drawio_xml(title, root_children_xml):
 </mxfile>"""
 
 
-def build_pipeline_drawio_xml(skills):
+def build_pipeline_drawio_xml(skills) -> str:
     """Generates C4-style Draw.io XML diagram for 4-Layer Pipeline Architecture."""
     nodes_xml = []
-    
-    # Title Box
-    nodes_xml.append('<mxCell id="title" value="Career Projection Platform v0.5 — 4-Layer Pipeline Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#1E293B;" vertex="1" parent="1"><mxGeometry x="180" y="20" width="800" height="40" as="geometry" /></mxCell>')
 
-    # 4 Layer Container Boxes
+    title_val = _xml_attr("Career Projection Platform v0.6 — 4-Layer Pipeline Architecture")
+    nodes_xml.append(
+        f'<mxCell id="title" value="{title_val}" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#1E293B;" vertex="1" parent="1"><mxGeometry x="180" y="20" width="800" height="40" as="geometry" /></mxCell>'
+    )
+
     layers = [
-        ("Knowledge Layer (okf/)", "#E0F2FE", "#0284C7", 40, 80, 260, 680),
-        ("Runtime Layer (out/<target-slug>/runtime/)", "#FEF3C7", "#D97706", 320, 80, 240, 680),
-        ("Coaching Layer (okf/)", "#F3E8FF", "#7C3AED", 580, 80, 240, 680),
-        ("Projection Layer (out/)", "#DCFCE7", "#16A34A", 840, 80, 280, 680),
+        ("Knowledge Layer (okf/)", "#E0F2FE", "#0284C7", 40, 80, 260, 760),
+        ("Runtime Layer (out/<target-slug>/runtime/)", "#FEF3C7", "#D97706", 320, 80, 240, 760),
+        ("Coaching Layer (okf/)", "#F3E8FF", "#7C3AED", 580, 80, 240, 760),
+        ("Projection Layer (out/)", "#DCFCE7", "#16A34A", 840, 80, 280, 760),
     ]
 
     cell_id = 2
     for name, bg_color, border_color, x, y, width, height in layers:
-        nodes_xml.append(f'<mxCell id="{cell_id}" value="&lt;b&gt;{name}&lt;/b&gt;" style="swimlane;whiteSpace=wrap;html=1;fillColor={bg_color};strokeColor={border_color};fontColor=#0F172A;startSize=30;rounded=1;arcSize=4;" vertex="1" parent="1"><mxGeometry x="{x}" y="{y}" width="{width}" height="{height}" as="geometry" /></mxCell>')
+        label_val = _xml_attr(f"<b>{name}</b>")
+        nodes_xml.append(
+            f'<mxCell id="{cell_id}" value="{label_val}" style="swimlane;whiteSpace=wrap;html=1;fillColor={bg_color};strokeColor={border_color};fontColor=#0F172A;startSize=30;rounded=1;arcSize=4;" vertex="1" parent="1"><mxGeometry x="{x}" y="{y}" width="{width}" height="{height}" as="geometry" /></mxCell>'
+        )
         cell_id += 1
 
-    # Populate Skills into Layer Containers
     layer_skill_y = {"Knowledge Layer": 120, "Runtime Layer": 120, "Coaching Layer": 120, "Projection Layer": 120}
     layer_x_map = {"Knowledge Layer": 55, "Runtime Layer": 335, "Coaching Layer": 595, "Projection Layer": 855}
 
@@ -241,24 +265,27 @@ def build_pipeline_drawio_xml(skills):
             continue
         sx = layer_x_map[layer]
         sy = layer_skill_y[layer]
-        
-        name = skill["name"]
+
+        skill_label = _xml_attr(f"<b>{skill['name']}</b>")
+        box_width = 230 if layer == "Projection Layer" else 210
         style = "rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#64748B;fontColor=#334155;fontSize=11;shadow=1;"
-        nodes_xml.append(f'<mxCell id="{cell_id}" value="&lt;b&gt;{name}&lt;/b&gt;" style="{style}" vertex="1" parent="1"><mxGeometry x="{sx}" y="{sy}" width="{layer_x_map[layer] and (230 if layer== "Projection Layer" else 210)}" height="45" as="geometry" /></mxCell>')
+        nodes_xml.append(
+            f'<mxCell id="{cell_id}" value="{skill_label}" style="{style}" vertex="1" parent="1"><mxGeometry x="{sx}" y="{sy}" width="{box_width}" height="45" as="geometry" /></mxCell>'
+        )
         cell_id += 1
         layer_skill_y[layer] += 55
 
     return create_drawio_xml("4-Layer Pipeline Architecture", "\n        ".join(nodes_xml))
 
 
-def update_markdown_file(filepath, mermaid_content):
+def update_markdown_file(filepath: str | Path, mermaid_content: str) -> bool:
     """Safely updates or injects Mermaid diagram block in target markdown file."""
-    if not os.path.exists(filepath):
-        print(f"File not found: {filepath}")
+    target = Path(filepath)
+    if not target.exists():
+        print(f"File not found: {target}")
         return False
 
-    with open(filepath, "r", encoding="utf-8") as f:
-        content = f.read()
+    content = target.read_text(encoding="utf-8")
 
     begin_marker = "<!-- BEGIN AUTO-GENERATED ARCHITECTURE DIAGRAM -->"
     end_marker = "<!-- END AUTO-GENERATED ARCHITECTURE DIAGRAM -->"
@@ -268,48 +295,53 @@ def update_markdown_file(filepath, mermaid_content):
         pattern = re.compile(f"{re.escape(begin_marker)}.*?{re.escape(end_marker)}", re.DOTALL)
         new_content = pattern.sub(block, content)
     else:
-        # Append before '## Status' or at bottom if marker not present
         if "## Status" in content:
             new_content = content.replace("## Status", f"{block}\n\n## Status")
         else:
             new_content = content + f"\n\n## Architecture Diagram\n\n{block}\n"
 
-    with open(filepath, "w", encoding="utf-8") as f:
-        f.write(new_content)
-
-    print(f"Updated architecture diagram in {filepath}")
+    target.write_text(new_content, encoding="utf-8")
+    print(f"Updated architecture diagram in {target}")
     return True
 
 
-def main():
-    print("=== Auto-Generating Architecture Visualisations & Diagrams (v2.0) ===")
-    
-    # 1. Parse Skills and Architecture Metadata
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Auto-generate architecture diagrams.")
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="Optional directory for generated Draw.io XML (skips mutating README.md and ARCHITECTURE.md).",
+    )
+    args = parser.parse_args(argv)
+
+    print("=== Auto-Generating Architecture Visualisations & Diagrams (v2.1) ===")
+
     skills = parse_skills()
-    print(f"Discovered {len(skills)} pipeline skills across 4 architecture layers.")
+    print(f"Discovered {len(skills)} pipeline skills across architecture layers.")
 
-    # 2. Ensure docs/architecture directory exists
-    arch_dir = "docs/architecture"
-    os.makedirs(arch_dir, exist_ok=True)
+    arch_dir = args.output_dir if args.output_dir is not None else (REPO_ROOT / "docs" / "architecture")
+    arch_dir.mkdir(parents=True, exist_ok=True)
 
-    # 3. Generate Draw.io XML Files
     pipeline_xml = build_pipeline_drawio_xml(skills)
-    drawio_path = os.path.join(arch_dir, "4-layer-pipeline.drawio.xml")
-    with open(drawio_path, "w", encoding="utf-8") as f:
-        f.write(pipeline_xml)
+    drawio_path = arch_dir / "4-layer-pipeline.drawio.xml"
+    drawio_path.write_text(pipeline_xml, encoding="utf-8")
     print(f"Emitted C4 Draw.io XML: {drawio_path}")
 
-    # 4. Generate Modular Mermaid Visualizations
-    high_level_overview = generate_high_level_mermaid_overview()
-    detailed_pipeline = generate_detailed_pipeline_mermaid()
-    okf_schema = generate_mermaid_okf_schema()
+    if args.output_dir is None:
+        high_level_overview = generate_high_level_mermaid_overview()
+        detailed_pipeline = generate_detailed_pipeline_mermaid()
+        okf_schema = generate_mermaid_okf_schema()
 
-    readme_content = f"### System Architecture Overview\n\n{high_level_overview}"
-    architecture_md_content = f"### System Architecture Overview\n\n{high_level_overview}\n\n### Detailed 4-Layer Skill Data Flow\n\n{detailed_pipeline}\n\n### OKF Knowledge Graph Schema\n\n{okf_schema}"
+        readme_content = f"### System Architecture Overview\n\n{high_level_overview}"
+        architecture_md_content = (
+            f"### System Architecture Overview\n\n{high_level_overview}\n\n"
+            f"### Detailed 4-Layer Skill Data Flow\n\n{detailed_pipeline}\n\n"
+            f"### OKF Knowledge Graph Schema\n\n{okf_schema}"
+        )
 
-    # 5. Inject/Update Markdown Documentation
-    update_markdown_file("README.md", readme_content)
-    update_markdown_file("ARCHITECTURE.md", architecture_md_content)
+        update_markdown_file(REPO_ROOT / "README.md", readme_content)
+        update_markdown_file(REPO_ROOT / "ARCHITECTURE.md", architecture_md_content)
 
     print("=== Architecture Diagram Auto-Generation Complete ===")
 

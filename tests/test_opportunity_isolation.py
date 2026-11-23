@@ -11,7 +11,7 @@ import shutil
 import tempfile
 import yaml
 
-from scripts.canonical_selector import select_canonical_facts
+from src.scripts.canonical_selector import select_canonical_facts
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 

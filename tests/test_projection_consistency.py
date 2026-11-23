@@ -8,8 +8,8 @@ derived from out/<target-slug>/runtime/canonical-selection.yaml.
 from pathlib import Path
 import pytest
 
-from scripts.canonical_selector import select_canonical_facts
-from scripts.employment_validator import validate_canonical_integrity
+from src.scripts.canonical_selector import select_canonical_facts
+from src.scripts.employment_validator import validate_canonical_integrity
 
 
 def test_projections_share_identical_canonical_facts(tmp_path):

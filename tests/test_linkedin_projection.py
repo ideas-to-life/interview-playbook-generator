@@ -6,7 +6,7 @@ GOLDEN = "tests/golden/linkedin-projection/linkedin-profile.md"
 
 
 def test_skill_exists():
-    path = "skills/linkedin-projection/SKILL.md"
+    path = "src/skills/linkedin-projection/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()
