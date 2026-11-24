@@ -13,11 +13,11 @@ candidate:
   canonical_record: "canonical/career-record.yaml"
 
 target_opportunity:
-  company: ""
+  company: "Springer Nature"
   role_title: "Enterprise Architect"
-  industry: ""
-  interviewer: ""
-  source: "config/target-position/technify-enterprise-architect.md"
+  industry: "Information Services"
+  interviewer: "Head of Talent Attraction, Technology"
+  source: "config/target-position/springer-nature-enterprise-architect.md"
   target_type: "employment"  # Options: employment (default), upwork
 
 projections:

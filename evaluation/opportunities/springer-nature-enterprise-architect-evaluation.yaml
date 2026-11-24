@@ -1,0 +1,27 @@
+version: "6.0"
+generated_at: "2026-11-23T15:00:35Z"
+target_slug: "springer-nature-enterprise-architect"
+prediction_evaluation:
+  predicted_archetype: "enterprise_architect"
+  predicted_overall_fit: "Moderate-High"
+  predicted_selection_recommendation: "Good Fit"
+  actual_outcome: "pending_market_feedback"
+  prediction_accuracy: "pending"
+  anticipated_positive_signals:
+    - "15+ years Enterprise & Solution Architecture pedigree at BBC Studios and British American Tobacco"
+    - "Verified TOGAF 9, SAP LeanIX Practitioner, and Certified SAFe 5 Architect credentials"
+    - "Proven operating model modernisation, capability-based planning, and blueprint roadmaps"
+    - "Regulated Scientific R&D governance (BAT) and content/rights/licensing systems (BBC Studios)"
+  anticipated_risk_signals:
+    - "ArchiMate notation gap (learnable, bridged via TOGAF 9 and SAP LeanIX)"
+    - "Low-architecture-mandate consensus influence must be articulated via BBC Studios voluntary LeanIX adoption"
+    - "Publishing industry domain is desirable and bridged via transferable media/rights and Scientific R&D experience"
+    - "Recent WPP Media Agentic AI title requires proactive framing to avoid AI-only specialist perception"
+  confirmed_signals: []
+  missed_signals: []
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 97.5
+    projection_quality: 97.0
+    opportunity_fit: 82.0
+    archetype_fit: 92.0
