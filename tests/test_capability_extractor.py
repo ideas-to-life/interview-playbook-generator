@@ -8,7 +8,7 @@ GOLDEN = "tests/golden/capability-extractor"
 
 
 def test_capability_skill_exists():
-    path = "skills/capability-extractor/SKILL.md"
+    path = "src/skills/capability-extractor/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()

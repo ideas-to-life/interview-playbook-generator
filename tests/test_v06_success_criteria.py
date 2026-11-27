@@ -6,7 +6,7 @@ import pytest
 
 
 def test_sprint_6_standalone_skills_exist():
-    skills_dir = "skills"
+    skills_dir = "src/skills"
     sprint_6_skills = [
         "archetype-classifier",
         "archetype-fit-evaluator",
@@ -146,6 +146,6 @@ def test_v61_fit_consistency_validation_report_warnings():
 
 
 def test_total_skills_registered_is_at_least_thirty_one():
-    skills_dir = "skills"
+    skills_dir = "src/skills"
     skills = [d for d in os.listdir(skills_dir) if os.path.isdir(os.path.join(skills_dir, d))]
     assert len(skills) >= 31, f"Expected at least 31 skills, found {len(skills)}: {sorted(skills)}"

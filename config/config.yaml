@@ -3,7 +3,7 @@ pipeline_version: "0.5"
 
 candidate:
   name: "Alexandre Franco"
-  target_role: "Enterprise Architect"
+  target_role: "Generative AI Architect"
   portfolio_dir: "/Users/avfranco/GitHub/mind-palace/"
   location: "London, United Kingdom"
   phone: "+44 (0) 7304 093460"
@@ -13,11 +13,11 @@ candidate:
   canonical_record: "canonical/career-record.yaml"
 
 target_opportunity:
-  company: ""
-  role_title: "Enterprise Architect"
-  industry: ""
-  interviewer: ""
-  source: "config/target-position/technify-enterprise-architect.md"
+  company: "Nagarro"
+  role_title: "Generative AI Architect"
+  industry: "Global Digital Engineering Company"
+  interviewer: "Hiring Manager and Stakeholders"
+  source: "config/target-position/nagarro-genai-architect.md"
   target_type: "employment"  # Options: employment (default), upwork
 
 projections:

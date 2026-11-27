@@ -11,8 +11,8 @@ from pathlib import Path
 import pytest
 import yaml
 
-from scripts.canonical_models import ProjectionValidationReport
-from scripts.projection_validator import (
+from src.scripts.canonical_models import ProjectionValidationReport
+from src.scripts.projection_validator import (
     validate_projection_content,
     sanitize_projection_content,
     validate_opportunity_projections,
@@ -123,3 +123,76 @@ def test_named_technology_direct_claims_vs_transferable_framing():
     report_transferable = validate_projection_content(transferable_content)
     tech_findings_trans = [f for f in report_transferable.findings if f.category == "technology"]
     assert len(tech_findings_trans) == 0
+
+
+def test_technology_bypass_with_generic_ecosystem_or_pattern_rejected():
+    """Generic words like 'ecosystem' or 'pattern' must not exempt direct unevidenced platform claims."""
+    bypass_content = (
+        "## Key Achievements\n"
+        "- Led Workday ecosystem rollout across business units.\n"
+        "- Implemented Coupa architecture patterns globally.\n"
+    )
+    report = validate_projection_content(bypass_content)
+    tech_findings = [f for f in report.findings if f.category == "technology" and f.severity == "FATAL"]
+    assert len(tech_findings) == 2
+    assert report.overall_status == "FAILED"
+
+
+def test_dynamic_opportunity_analysis_required_vocabulary_enforced():
+    """Unevidenced tools from opportunity_analysis.ats_vocabulary.required_job_vocabulary must fail when claimed directly."""
+    opp_analysis = {
+        "ats_vocabulary": {
+            "candidate_evidenced_vocabulary": [{"term": "LeanIX"}],
+            "required_job_vocabulary": [{"term": "ServiceNow"}],
+        }
+    }
+    content = (
+        "## Experience\n"
+        "- Implemented ServiceNow ITSM platform across global operations.\n"
+    )
+    report = validate_projection_content(content, opportunity_analysis=opp_analysis)
+    tech_findings = [f for f in report.findings if f.category == "technology" and f.severity == "FATAL"]
+    assert len(tech_findings) == 1
+    assert "servicenow" in tech_findings[0].reason.lower()
+    assert report.overall_status == "FAILED"
+
+
+def test_cross_opportunity_isolation_detects_other_slug_reference():
+    """References to another opportunity directory under out/ trigger FATAL isolation finding."""
+    content = (
+        "## Notes\n"
+        "Reused summary structure from out/other-role-slug/resume-executive.md.\n"
+    )
+    report = validate_projection_content(content, target_slug="current-role")
+    iso_findings = [f for f in report.findings if f.category == "isolation" and f.severity == "FATAL"]
+    assert len(iso_findings) >= 1
+    assert report.checks["cross_opportunity_isolation"].status == "FAILED"
+    assert report.overall_status == "FAILED"
+
+
+def test_empty_or_missing_opportunity_dir_fails(tmp_path):
+    """Validating a missing or empty opportunity directory must return FAILED, not PASSED."""
+    report = validate_opportunity_projections("nonexistent-role", out_root=tmp_path)
+    assert report.overall_status == "FAILED"
+    assert report.summary.unresolved_defects >= 1
+
+
+def test_path_traversal_target_slug_rejected(tmp_path):
+    """Invalid or path-traversal target_slug values must raise ValueError."""
+    with pytest.raises(ValueError):
+        validate_opportunity_projections("../etc", out_root=tmp_path)
+
+
+def test_education_date_sanitization_precision():
+    """Education date sanitization must not insert double spaces or corrupt non-education 1995-1999 dates."""
+    content = (
+        "## Experience\n"
+        "- **Developer**, Example Corp (1995–1999)\n"
+        "## Education\n"
+        "- **BSc in Computer Science**, Universidade de Mogi das Cruzes (1995–1999)\n"
+    )
+    sanitized, findings = sanitize_projection_content(content)
+    assert "( 1988–1991)" not in sanitized
+    assert "(1988–1991)" in sanitized
+    assert "Example Corp (1995–1999)" in sanitized
+    assert len(findings) == 1

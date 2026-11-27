@@ -31,7 +31,7 @@ def test_skills_exist():
         "brand-validator",
         "architecture-diagram-generator",
     ]
-    skills_dir = "skills"
+    skills_dir = "src/skills"
     for skill in expected_skills:
         skill_path = os.path.join(skills_dir, skill, "SKILL.md")
         assert os.path.exists(skill_path), f"Missing skill definition at {skill_path}"

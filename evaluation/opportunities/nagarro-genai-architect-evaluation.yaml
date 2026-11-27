@@ -1,0 +1,27 @@
+version: "6.0"
+generated_at: "2026-11-27T11:40:00Z"
+target_slug: "nagarro-genai-architect"
+status: "NOT_EVALUATED"
+prediction_evaluation:
+  predicted_archetype: "ai_engineering_leader"
+  predicted_overall_fit: "Moderate"
+  predicted_selection_classification: "Stretch Fit"
+  actual_outcome: "pending_market_feedback"
+  prediction_accuracy: "Pending"
+  confirmed_signals: []
+  missed_signals: []
+  anticipated_risk_signals:
+    - "Prototype-stage WPP Media agentic builds (production_verified: false) vs. production-grade GenAI requirement."
+    - "Essential tooling gaps: LangGraph, LangChain, Claude SDK, Kubernetes, microservices, MCP, Microsoft Azure, AWS."
+    - "Transferable engineering/architect leadership vs. direct line management of data scientists."
+    - "Absent evidence for vector databases, model fine-tuning, distillation, open-weight self-hosting, and MLOps/LLMOps."
+  external_validation_scores:
+    evidence_integrity: 100.0
+    brand_consistency: 98.5
+    projection_quality: 97.5
+    opportunity_fit: 65.0
+    archetype_fit: 62.0
+notes: >
+  Baseline evaluation generated prior to market feedback (no evaluation/opportunities/nagarro-genai-architect.yaml
+  feedback file present). Separates high internal evidence/brand quality from candid Stretch Fit (Moderate)
+  opportunity and archetype alignment.

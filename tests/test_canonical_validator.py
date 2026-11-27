@@ -10,7 +10,7 @@ import tempfile
 import yaml
 import pytest
 
-from scripts.canonical_validator import detect_conflicts_in_text, generate_conflict_audit_report
+from src.scripts.canonical_validator import detect_conflicts_in_text, generate_conflict_audit_report
 
 
 def test_detect_conflicts_in_text_captures_discrepancies():

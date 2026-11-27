@@ -20,17 +20,17 @@ import tempfile
 import pytest
 import yaml
 
-from scripts.canonical_loader import load_canonical_career_record
-from scripts.canonical_selector import (
+from src.scripts.canonical_loader import load_canonical_career_record
+from src.scripts.canonical_selector import (
     select_canonical_facts,
     partition_ats_vocabulary,
     classify_term_evidence,
 )
-from scripts.canonical_models import (
+from src.scripts.canonical_models import (
     ProjectionValidationReport,
     ATSVocabularyPartition,
 )
-from scripts.projection_validator import (
+from src.scripts.projection_validator import (
     validate_projection_content,
     sanitize_projection_content,
     validate_opportunity_projections,
@@ -153,11 +153,11 @@ def test_scenario_5_target_jd_platform_leakage_prevented():
 def test_scenario_6_previous_projection_contamination_blocked():
     """Scenario 6: Active opportunity skills cannot read collateral from other opportunities."""
     skill_files = [
-        REPO_ROOT / "skills" / "resume-projection" / "SKILL.md",
-        REPO_ROOT / "skills" / "cover-letter-projection" / "SKILL.md",
-        REPO_ROOT / "skills" / "linkedin-projection" / "SKILL.md",
-        REPO_ROOT / "skills" / "opportunity-alignment-view" / "SKILL.md",
-        REPO_ROOT / "skills" / "executive-brief-view" / "SKILL.md",
+        REPO_ROOT / "src" / "skills" / "resume-projection" / "SKILL.md",
+        REPO_ROOT / "src" / "skills" / "cover-letter-projection" / "SKILL.md",
+        REPO_ROOT / "src" / "skills" / "linkedin-projection" / "SKILL.md",
+        REPO_ROOT / "src" / "skills" / "opportunity-alignment-view" / "SKILL.md",
+        REPO_ROOT / "src" / "skills" / "executive-brief-view" / "SKILL.md",
     ]
 
     for sf in skill_files:

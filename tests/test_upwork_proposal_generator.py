@@ -5,8 +5,8 @@ import pytest
 
 
 def test_upwork_skills_exist():
-    qual_path = "skills/upwork-qualification/SKILL.md"
-    prop_path = "skills/upwork-proposal/SKILL.md"
+    qual_path = "src/skills/upwork-qualification/SKILL.md"
+    prop_path = "src/skills/upwork-proposal/SKILL.md"
 
     assert os.path.exists(qual_path), "upwork-qualification skill must exist"
     assert os.path.exists(prop_path), "upwork-proposal skill must exist"
@@ -117,14 +117,14 @@ def test_clean_proposal_text_rules():
 
 
 def test_projection_registry_integration():
-    registry_path = "skills/projection-registry/SKILL.md"
+    registry_path = "src/skills/projection-registry/SKILL.md"
     with open(registry_path, "r", encoding="utf-8") as f:
         content = f.read()
     assert "upwork-proposal" in content
 
 
 def test_playbook_orchestrator_integration():
-    orchestrator_path = "skills/playbook-orchestrator/SKILL.md"
+    orchestrator_path = "src/skills/playbook-orchestrator/SKILL.md"
     with open(orchestrator_path, "r", encoding="utf-8") as f:
         content = f.read()
     assert "upwork-qualification" in content
@@ -132,7 +132,7 @@ def test_playbook_orchestrator_integration():
 
 
 def test_projection_validator_integration():
-    validator_path = "skills/projection-validator/SKILL.md"
+    validator_path = "src/skills/projection-validator/SKILL.md"
     with open(validator_path, "r", encoding="utf-8") as f:
         content = f.read()
     assert "Upwork Proposal & Provenance Validation" in content
@@ -399,7 +399,7 @@ def test_forensic_upwork_validator_fails_on_production_inflation():
     """Forensic Test 4: Dynamic upwork_validator MUST fail any proposal asserting production implementation
     when requirement production_status is unverified.
     """
-    from scripts.upwork_validator import validate_upwork_proposal
+    from src.scripts.upwork_validator import validate_upwork_proposal
 
     corrupted_proposal = "I have personally architected and implemented production multi-agent systems for live enterprise clients."
     screening_clean = "Answer: Prototyped agentic architecture."
@@ -426,7 +426,7 @@ def test_forensic_independent_validator_rejects_corrupted_proposal_even_if_gener
     """Independent Validator Test: Demonstrates that even if a generator outputs status: PASS,
     the independent executable validator evaluates actual markdown content and rejects corrupted claims (>99.5% accuracy).
     """
-    from scripts.upwork_validator import validate_upwork_proposal
+    from src.scripts.upwork_validator import validate_upwork_proposal
 
     clean_proposal = "Architected multi-agent platform and reasoning observability infrastructure."
     corrupted_screening = "Question 8 Answer: Achieved >99.5% accuracy over a 30-day baseline with 3-5x throughput."
@@ -520,7 +520,7 @@ def test_validator_checks_work_samples_and_rejects_corrupted_sample():
     """Extend validator coverage to work samples invariant: upwork_validator must fail any work sample
     claiming client_production when production status is unknown.
     """
-    from scripts.upwork_validator import validate_upwork_proposal
+    from src.scripts.upwork_validator import validate_upwork_proposal
 
     proposal_clean = "Architected multi-agent platform and reasoning observability infrastructure."
     screening_clean = "Answer: Prototyped agentic architecture."
@@ -553,7 +553,7 @@ def test_validator_rejects_corrupted_screening_answer_status():
     """Strengthen independent validation invariant: upwork_validator must reject screening answer Q2/Q4
     marked ANSWERED without evidence-backed numerical metric.
     """
-    from scripts.upwork_validator import validate_upwork_proposal
+    from src.scripts.upwork_validator import validate_upwork_proposal
 
     proposal_clean = "Architected multi-agent platform and reasoning observability infrastructure."
     corrupted_screening = """# Upwork Screening Answers
@@ -582,7 +582,7 @@ def test_us1_non_linear_attribution_and_attribution_shift():
     """T005 / US1: Verify candidate-agnostic attribution shift validator catches contribution inflation
     (e.g., architected -> implemented -> deployed) using generic parameterized fixtures (OrgAlpha, ProjectBeta).
     """
-    from scripts.upwork_validator import check_attribution_shift
+    from src.scripts.upwork_validator import check_attribution_shift
 
     # 1. Valid: Same or lower level claim
     assert check_attribution_shift("architected", "architected") is None
@@ -603,7 +603,7 @@ def test_us2_cross_source_composition_boundaries():
     """T010 / US2: Verify cross-source composition boundaries prohibit unsupported_composite evidence
     aggregation across separate contexts for single requirement satisfaction.
     """
-    from scripts.upwork_validator import check_evidence_composition
+    from src.scripts.upwork_validator import check_evidence_composition
 
     # 1. Valid: same_context or complementary_multi_context
     assert check_evidence_composition("same_context", "req-01") is None
@@ -620,7 +620,7 @@ def test_us3_historical_vs_proposed_technology_disambiguation():
     """T014 / US3: Verify proposed-only technologies (e.g., LangGraph, OpenAI Agents SDK)
     are flagged if claimed as past historical implementations without canonical evidence.
     """
-    from scripts.upwork_validator import check_proposed_vs_historical_technologies
+    from src.scripts.upwork_validator import check_proposed_vs_historical_technologies
 
     proposed_techs = ["LangGraph", "OpenAI Agents SDK", "Temporal"]
     
@@ -639,7 +639,7 @@ def test_us3_historical_vs_proposed_technology_disambiguation():
 def test_us4_screening_answer_consistency_and_multi_axis_state():
     """T017 / US4: Verify assertion-then-disclaimer pattern is rejected and screening answers match qualification context.
     """
-    from scripts.upwork_validator import validate_upwork_proposal
+    from src.scripts.upwork_validator import validate_upwork_proposal
 
     # Assertive claim followed by disclaimer pattern
     proposal_disclaimer = "I architected the production platform at OrgAlpha. Live production deployment is unknown."
@@ -668,7 +668,7 @@ def test_golden_scenario_1_wpp_cas_attribution_fixture():
     Requirement: "Personally implemented production multi-agent system inside operating company."
     Expected: Zero client claims asserting personal enterprise production deployment.
     """
-    from scripts.upwork_validator import validate_upwork_proposal
+    from src.scripts.upwork_validator import validate_upwork_proposal
 
     # Valid bounded proposal:
     valid_proposal = (
@@ -703,7 +703,7 @@ def test_golden_scenario_2_project_in_progress_at_departure():
     Candidate led project that was in active development upon departure.
     Expected: Project leadership and architecture design MAY be claimed, live production deployment MUST NOT be claimed.
     """
-    from scripts.upwork_validator import validate_upwork_proposal
+    from src.scripts.upwork_validator import validate_upwork_proposal
 
     valid_proposal = "Led architecture design and delivery alignment prior to departure."
     qual_data = {
@@ -727,9 +727,9 @@ def test_candidate_agnosticism_verification():
     """T024 / FR-063 & SC-038: Candidate Agnosticism Verification.
     Ensures zero hardcoded employer names (WPP, BBC) or project names exist in skills or upwork_validator.py.
     """
-    validator_path = "scripts/upwork_validator.py"
-    qual_skill_path = "skills/upwork-qualification/SKILL.md"
-    prop_skill_path = "skills/upwork-proposal/SKILL.md"
+    validator_path = "src/scripts/upwork_validator.py"
+    qual_skill_path = "src/skills/upwork-qualification/SKILL.md"
+    prop_skill_path = "src/skills/upwork-proposal/SKILL.md"
 
     for path in [validator_path, qual_skill_path, prop_skill_path]:
         assert os.path.exists(path), f"File {path} must exist"

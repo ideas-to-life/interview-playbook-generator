@@ -9,7 +9,7 @@ import re
 import yaml
 import pytest
 
-from scripts.canonical_selector import select_canonical_facts
+from src.scripts.canonical_selector import select_canonical_facts
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -108,4 +108,86 @@ def test_complete_canonical_selection_beyond_line_50(tmp_path):
     spanish = next((l for l in selection["selected_languages"] if l["language"].lower() == "spanish"), None)
     assert spanish is not None
     assert "elementary" in spanish["proficiency"].lower()
+
+
+def test_select_canonical_facts_no_fabricated_defaults(tmp_path):
+    """Missing start_year, cert year, or languages must not be fabricated."""
+    from src.scripts.canonical_models import (
+        CanonicalCareerRecord,
+        CareerEntry,
+        EducationEntry,
+        CertificationEntry,
+    )
+
+    synthetic = CanonicalCareerRecord(
+        metadata={},
+        identity={"full_name": "Candidate Example"},
+        education=[
+            EducationEntry(
+                id="EDU-1",
+                institution="Example University",
+                degree_name="BSc",
+                degree_level="Bachelor",
+                field_of_study="CS",
+                start_year=None,
+                end_year=2010,
+            )
+        ],
+        career=[
+            CareerEntry(
+                id="CAR-1",
+                employer="Example Org",
+                formal_title="Architect",
+                start_date="Jan 2020",
+                end_date="Dec 2022",
+            )
+        ],
+        certifications=[
+            CertificationEntry(
+                id="CERT-1",
+                name="Example Cert",
+                issuing_body="Cert Org",
+                year=None,
+            )
+        ],
+    )
+    out_file = tmp_path / "canonical-selection.yaml"
+    selection = select_canonical_facts(
+        "synthetic-role",
+        canonical_record=synthetic,
+        output_path=str(out_file),
+    )
+
+    assert selection["selected_education"][0]["start_year"] is None
+    assert selection["selected_certifications"][0]["year"] is None
+    assert selection["selected_languages"] == []
+
+
+def test_select_canonical_facts_rejects_traversal_slug():
+    """Path traversal target_slug must raise ValueError."""
+    with pytest.raises(ValueError):
+        select_canonical_facts("../escape")
+
+
+def test_classify_term_evidence_matches_symbol_terms():
+    """Terms with non-word boundary symbols like C++ and .NET must match cleanly."""
+    from src.scripts.canonical_models import CanonicalCareerRecord, CareerEntry
+    from src.scripts.canonical_selector import classify_term_evidence
+
+    synthetic = CanonicalCareerRecord(
+        metadata={},
+        identity={},
+        career=[
+            CareerEntry(
+                id="CAR-1",
+                employer="Example Org",
+                formal_title="Engineer",
+                start_date="2015",
+                end_date="2018",
+                responsibilities_scope=["Built C++ and .NET Core services."],
+            )
+        ],
+    )
+    assert classify_term_evidence("C++", canonical_record=synthetic) is not None
+    assert classify_term_evidence(".NET", canonical_record=synthetic) is not None
 

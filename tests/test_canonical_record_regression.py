@@ -8,7 +8,7 @@ import yaml
 from pathlib import Path
 import pytest
 
-from scripts.canonical_loader import load_canonical_career_record
+from src.scripts.canonical_loader import load_canonical_career_record
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -67,7 +67,7 @@ def test_scenario_1_education_msc_rejected_bsc_preserved():
     Canonical: BSc Computer Science, Universidade de Mogi das Cruzes.
     Expected: MSc / Federal University claim must not appear; BSc must be preserved.
     """
-    from scripts.employment_validator import validate_canonical_integrity, sanitize_artefact_content
+    from src.scripts.employment_validator import validate_canonical_integrity, sanitize_artefact_content
 
     conflicting_content = """
 # Candidate Profile
@@ -96,7 +96,7 @@ def test_scenario_2_bbc_formal_title_preserved():
     Canonical: Lead Enterprise Architect - Technology Transformation Group.
     Expected: Formal title is preserved as Lead Enterprise Architect; Head of EA title is rejected.
     """
-    from scripts.employment_validator import validate_canonical_integrity, sanitize_artefact_content
+    from src.scripts.employment_validator import validate_canonical_integrity, sanitize_artefact_content
 
     inflated_content = """
 ### BBC Studios — London, UK
@@ -121,7 +121,7 @@ def test_scenario_3_bbc_acting_scope_distinguished_from_formal_title():
     Scope previously performed by Head of Architecture may be communicated in prose,
     but MUST NOT convert into a formal Head of Architecture title header.
     """
-    from scripts.employment_validator import validate_canonical_integrity
+    from src.scripts.employment_validator import validate_canonical_integrity
 
     valid_scope_content = """
 ### BBC Studios — London, UK
@@ -148,7 +148,7 @@ def test_scenario_8_unsupported_enhancement_rejected():
     Generated attempt: Established and led the enterprise architecture governance function.
     Expected: Stronger claim is rejected and sanitized to supported level.
     """
-    from scripts.employment_validator import validate_canonical_integrity, sanitize_artefact_content
+    from src.scripts.employment_validator import validate_canonical_integrity, sanitize_artefact_content
 
     inflated_claim_content = """
 ### BBC Studios — London, UK
@@ -173,8 +173,8 @@ def test_scenario_4_bat_chronology_preserved():
     Derived content containing an incomplete BAT history (e.g. artificial split 2016–2020)
     must be rejected in favor of the canonical complete chronology (1997–2021).
     """
-    from scripts.employment_validator import validate_canonical_integrity
-    from scripts.canonical_validator import detect_conflicts_in_text
+    from src.scripts.employment_validator import validate_canonical_integrity
+    from src.scripts.canonical_validator import detect_conflicts_in_text
 
     record = load_canonical_career_record()
     bat_entries = [c for c in record.career if "British American Tobacco" in c.employer or "BAT" in c.employer or "Souza Cruz" in c.employer]
@@ -198,7 +198,7 @@ def test_scenario_5_compugraf_souza_cruz_consulting_relationship():
     work was contracted to Souza Cruz. Generator must not represent them as contradictory
     simultaneous direct employers.
     """
-    from scripts.canonical_validator import detect_conflicts_in_text
+    from src.scripts.canonical_validator import detect_conflicts_in_text
 
     record = load_canonical_career_record()
     compugraf_entry = next((c for c in record.career if "Compugraf" in c.employer), None)
@@ -221,7 +221,7 @@ def test_scenario_6_wpp_mostelli_distinct_timeline_entries():
     - Mostelli as subsequent independent advisory activity (Jul 2026 – Present).
     Generator must preserve the distinction and not merge them.
     """
-    from scripts.canonical_validator import detect_conflicts_in_text
+    from src.scripts.canonical_validator import detect_conflicts_in_text
 
     record = load_canonical_career_record()
     wpp_entry = next((c for c in record.career if "WPP" in c.employer), None)
@@ -245,7 +245,7 @@ def test_unresolved_canonical_items_safety():
     Resolved questions are safe for external collateral.
     Unresolved questions are excluded from external collateral and flagged [NEEDS CONFIRMATION] in coaching.
     """
-    from scripts.canonical_models import UnresolvedQuestion
+    from src.scripts.canonical_models import UnresolvedQuestion
 
     record = load_canonical_career_record()
 

@@ -6,7 +6,7 @@ GOLDEN = "tests/golden/executive-brief-view"
 
 
 def test_skill_exists():
-    path = "skills/executive-brief-view/SKILL.md"
+    path = "src/skills/executive-brief-view/SKILL.md"
     assert os.path.exists(path)
     with open(path) as f:
         content = f.read()
