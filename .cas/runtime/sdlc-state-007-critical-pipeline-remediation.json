@@ -6,13 +6,13 @@
   "stage": 6,
   "stage_name": "Stage 6: 3-Pass Diff Verification",
   "start_time": 1795435734.534713,
-  "updated_at": 1795443104.8644228,
+  "updated_at": 1795777221.9005508,
   "gates": {
     "intent": {
       "name": "intent",
       "status": "PASSED",
-      "details": "14 [A] verified, 0 [Q] open",
-      "timestamp": 1795439697.108199
+      "details": "0 [A] verified, 0 [Q] open",
+      "timestamp": 1795777221.899316
     },
     "route_plan": {
       "name": "route_plan",
@@ -24,7 +24,7 @@
       "name": "lint",
       "status": "PASSED",
       "details": "0 violations",
-      "timestamp": 1795443104.8069499
+      "timestamp": 1795777218.304372
     },
     "verify_diff": {
       "name": "verify_diff",
@@ -47,18 +47,6 @@
     "src": true
   },
   "events": [
-    {
-      "timestamp": 1795437855.150826,
-      "gate": "lint",
-      "status": "PASSED",
-      "details": "0 violations"
-    },
-    {
-      "timestamp": 1795438998.049407,
-      "gate": "intent",
-      "status": "PASSED",
-      "details": "14 [A] verified, 0 [Q] open"
-    },
     {
       "timestamp": 1795439000.5447328,
       "gate": "route_plan",
@@ -166,6 +154,18 @@
       "gate": "verify_diff",
       "status": "PASSED",
       "details": "Critical: 0 | High: 0 | Medium: 0 | Low: 0"
+    },
+    {
+      "timestamp": 1795777218.304372,
+      "gate": "lint",
+      "status": "PASSED",
+      "details": "0 violations"
+    },
+    {
+      "timestamp": 1795777221.899316,
+      "gate": "intent",
+      "status": "PASSED",
+      "details": "0 [A] verified, 0 [Q] open"
     }
   ]
 }
