@@ -40,7 +40,7 @@ Every registered projection Skill implements:
 
 ## Execution Instructions
 
-1. **Discover Registered Projections**: Scan `skills/` for registered projection contracts.
+1. **Discover Registered Projections**: Scan `src/skills/` (deployed to `.agents/skills/`) for registered projection contracts.
 2. **Validate Input Availability**: Confirm `okf/` bundle and `out/<target-slug>/runtime/opportunity-analysis.yaml` exist.
 3. **Execute Registered Projections**:
    - `resume-projection` ➔ `out/<target-slug>/resume-executive.md`, `out/<target-slug>/resume-ats.md`, `out/<target-slug>/resume-recruiter.md`
@@ -49,6 +49,7 @@ Every registered projection Skill implements:
    - `opportunity-alignment-view` ➔ `out/<target-slug>/opportunity-alignment.md`
    - `executive-brief-view` ➔ `out/<target-slug>/executive-brief.md`
    - `upwork-proposal` (if `target_type: upwork`) ➔ `out/<target-slug>/upwork-qualification-report.md`, `out/<target-slug>/upwork-screening-answers.md`, `out/<target-slug>/upwork-work-samples.md`
+   - `responsibilities-response-guide` (on-demand only; invoked when requested) ➔ `out/<target-slug>/responsibilities-response-guide.md`
    - `playbook-assembler` ➔ `out/<target-slug>/playbook.md`, `out/<target-slug>/interview-cheatsheet.md`
 4. **Log State**: Write registration log to `out/<target-slug>/runtime/projection-registry.yaml`.
 5. **Append Log**: `okf/log.md`.

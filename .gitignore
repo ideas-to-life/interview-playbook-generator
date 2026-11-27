@@ -53,6 +53,7 @@ evidence/
 .agents/skills/projection-registry/
 .agents/skills/projection-strategy-generator/
 .agents/skills/projection-validator/
+.agents/skills/responsibilities-response-guide/
 .agents/skills/resume-projection/
 .agents/skills/signature-achievements-curator/
 .agents/skills/signature-theme-miner/

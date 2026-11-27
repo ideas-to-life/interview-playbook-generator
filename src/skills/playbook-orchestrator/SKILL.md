@@ -35,9 +35,11 @@ Before executing pipeline steps, perform this Pre-Flight Check:
 
 ## Pipeline Execution Order (v0.6 Sprint 6)
 
+> **Runtime & Test Command Convention**: Always run repository Python scripts via `./.venv/bin/python3 src/scripts/<script>.py` and tests via `PATH="$PWD/.venv/bin:$PATH" ./.venv/bin/pytest tests/ -q` (never bare system `python3`).
+
 ```
 KNOWLEDGE LAYER (canonical; writes to out/okf/)
- 1. portfolio-ingestor             (Executes python3 scripts/ingest_portfolio.py over candidate.portfolio_dir)
+ 1. portfolio-ingestor             (Executes ./.venv/bin/python3 src/scripts/ingest_portfolio.py over candidate.portfolio_dir)
  2. portfolio-analyzer
  3. achievement-extractor
  4. evidence-card-generator        (6 fields + duplicate detection)
@@ -93,3 +95,4 @@ Upon completion, present the final output summary:
 - Playbook & Brief (`./out/<target-slug>/`)
 - Validation Reports (`./out/<target-slug>/runtime/`)
 - Market Evaluation (`./evaluation/opportunities//<target-slug>-evaluation.yaml`)
+- *(On-demand)* Invoke `responsibilities-response-guide` separately if you want `./out/<target-slug>/responsibilities-response-guide.md`.

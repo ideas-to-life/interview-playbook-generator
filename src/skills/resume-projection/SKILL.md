@@ -38,6 +38,8 @@ NEVER FABRICATE:
 12. **Full Canonical Context Invariant**: The generator MUST load the complete, untruncated `out/<target-slug>/runtime/canonical-selection.yaml` (including all education, certifications, and languages beyond line 50) into model context.
 13. **Cross-Opportunity Isolation Invariant**: The generator MUST NEVER read, inspect, or use prior opportunity directories under `out/<other-target-slug>/` for structure or styling. Use only the fact-free synthetic structural templates in `templates/projections/resume-executive.template.md` and `templates/projections/resume-ats.template.md`.
 14. **Target Terminology Evidence Boundary**: Unevidenced target-position keywords (e.g., Workday, NetSuite, Coupa, Concur) must NEVER be claimed as direct candidate experience. They may only appear in explicit gap or transferable architecture framing.
+15. **Separate-Line Language Rendering**: Always list each language proficiency on its own bullet line (never comma- or pipe-separated on a single line) so `projection_validator.py` does not cross-match `Native` with `Spanish` on the same line.
+16. **Multi-Role Employer Header Format**: Render all experience headers as `### <Formal Title> | <Employer>` with `*<Location> | <Start Date> – <End Date>*` on the following line (never standalone `**Title**` lines under repeated `### <Employer>` headings) so `employment_validator.py` validates multi-role employers accurately.
 
 ## Required 10 Standard Sections
 

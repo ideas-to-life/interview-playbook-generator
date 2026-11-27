@@ -111,10 +111,11 @@ coverage_matrix:
 
 1. **Read `config/config.yaml`**: Parse `target_opportunity` settings, target file path, and derive `<target-slug>`.
 2. **Read Target Opportunity Source**: Parse JD, recruiter notes, and hiring manager context.
-3. **Extract Hiring Goals & Positioning**: Formulate hiring goals and executive positioning.
-4. **Rank Capability Priorities**: Map capabilities from `okf/capabilities/` to target role importance.
-5. **Partition ATS Vocabulary**: Extract target terminology and partition using `partition_ats_vocabulary()` from `scripts/canonical_selector.py` against `career-record.yaml` and `out/okf/` into `candidate_evidenced_vocabulary` (credit multiplier 1.0) and `required_job_vocabulary` (credit multiplier 0.0, recommended framing for unmatched gaps).
-6. **Build Opportunity Coverage Matrix**: Map major hiring requirements to OKF evidence slugs, capabilities, and explicitly classify `evidence_relationship` (`direct`, `adjacent`, `transferable`, or `absent`).
-7. **Execute Activity A Factual Selection (FR-011)**: Run `python3 scripts/canonical_selector.py <target-slug>` to select and freeze immutable canonical facts (career roles, formal titles, exact dates, education, and certifications) into `out/<target-slug>/runtime/canonical-selection.yaml` so all downstream projection skills consume consistent facts.
-8. **Write `out/<target-slug>/runtime/opportunity-analysis.yaml`**.
-9. **Append Log**: `okf/log.md`.
+3. **Verify Config vs. JD Metadata Consistency**: Cross-check `target_opportunity.company` and `target_opportunity.industry` in `config/config.yaml` against the JD text. If a config field is uncorroborated by or conflicts with the JD (e.g., stale `industry` from a prior run), record the discrepancy in `risks`, flag it `[NEEDS CONFIRMATION]` for `knowledge-gaps.md`, and prohibit unverified industry assertions in external projections.
+4. **Extract Hiring Goals & Positioning**: Formulate hiring goals and executive positioning.
+5. **Rank Capability Priorities**: Map capabilities from `okf/capabilities/` to target role importance.
+6. **Partition ATS Vocabulary**: Extract target terminology and partition using `partition_ats_vocabulary()` from `src/scripts/canonical_selector.py` against `career-record.yaml` and `out/okf/` into `candidate_evidenced_vocabulary` (credit multiplier 1.0) and `required_job_vocabulary` (credit multiplier 0.0, recommended framing for unmatched gaps).
+7. **Build Opportunity Coverage Matrix**: Map major hiring requirements to OKF evidence slugs, capabilities, and explicitly classify `evidence_relationship` (`direct`, `adjacent`, `transferable`, or `absent`).
+8. **Execute Activity A Factual Selection (FR-011)**: Run `./.venv/bin/python3 src/scripts/canonical_selector.py <target-slug>` to select and freeze immutable canonical facts (career roles, formal titles, exact dates, education, and certifications) into `out/<target-slug>/runtime/canonical-selection.yaml` so all downstream projection skills consume consistent facts.
+9. **Write `out/<target-slug>/runtime/opportunity-analysis.yaml`**.
+10. **Append Log**: `okf/log.md`.
