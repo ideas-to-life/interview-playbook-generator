@@ -32,7 +32,7 @@ A five-axis code review of the deterministic pipeline scripts, CI tests, and gen
 
 6. **Two failing tests, malformed Draw.io XML, and `src/` layout alignment**:
    - [A] tests/test_architecture_diagram_generator.py:8 — `test_architecture_diagram_generator_script_runs` and `test_drawio_xml_file_exists_and_valid` (`24`) must invoke `sys.executable` against `src/scripts/generate_architecture_diagrams.py` with `--output-dir` and parse Draw.io XML via `xml.etree.ElementTree.parse`.
-   - [A] src/scripts/generate_architecture_diagrams.py:235 — `build_pipeline_drawio_xml` must XML-escape attribute values (such as `<target-slug>`) in `docs/architecture/4-layer-pipeline.drawio.xml`, and `src/scripts/` modules must resolve `REPO_ROOT` to the repository root (`parent.parent.parent`).
+   - [A] src/scripts/generate_architecture_diagrams.py:236 — `build_pipeline_drawio_xml` must XML-escape attribute values (such as `<target-slug>`) in `docs/architecture/4-layer-pipeline.drawio.xml`, and `src/scripts/` modules must resolve `REPO_ROOT` to the repository root (`parent.parent.parent`).
    - [A] src/scripts/deploy_skills.py:113 — `deploy_skills` and `clean_global_deployments` must separate `src/skills/` from copy-deployed local `.agents/skills/` and clean global repo symlinks.
 
 ## Scope & Constraints

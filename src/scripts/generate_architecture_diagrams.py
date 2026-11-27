@@ -67,6 +67,7 @@ def parse_skills(skills_dir: str | Path | None = None):
         "executive-brief-view": "Projection Layer",
         "upwork-proposal": "Projection Layer",
         "playbook-assembler": "Projection Layer",
+        "responsibilities-response-guide": "Projection Layer",
         "projection-validator": "Projection Layer",
         "archetype-fit-validator": "Projection Layer",
         "brand-validator": "Projection Layer",
